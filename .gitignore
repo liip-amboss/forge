@@ -1,1 +1,9 @@
-node_modules
+##### BASE IGNORES #####
+.idea/
+*.env
+
+##### FORINTEND IGNORES #####
+frontend/node_modules
+
+##### BACKEND IGNORES #####
+backend/.data

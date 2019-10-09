@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:alpine
+    environment:
+      - "POSTGRES_PASSWORD=${DATABASE_PASSWORD}"
+    volumes:
+      - ./backend/.data/postgres_dev:/var/lib/postgresql/data
+    ports:
+      # we run postgres on a non-standard port to avoid collision with a locally installed postgres
+      - 5433:5432
