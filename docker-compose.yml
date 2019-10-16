@@ -1,12 +1,60 @@
 version: "3"
 
 services:
-  postgres:
+  db:
     image: postgres:alpine
-    environment:
-      - "POSTGRES_PASSWORD=${DATABASE_PASSWORD}"
     volumes:
       - ./backend/.data/postgres_dev:/var/lib/postgresql/data
+    networks:
+      - default
+      - pontsun
+
+  backend:
+    build: .
+    command: sh -c 'while true; do ./manage.py runserver 0.0.0.0:8000; sleep 1; done'
+    env_file:
+      - ./config/.env
+    environment:
+      INITIAL: "${INITIAL:-0}"
+      DJANGO_ALLOWED_HOSTS: forge.docker.test
+      DATABASE_URL: postgres://postgres:postgres@db/postgres
+    volumes:
+      - ./backend/.venv:/venv
+      - ./backend:/code
+    depends_on:
+      - db
+    stdin_open: true
+    tty: true
+    labels:
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:forge.docker.test"
+      - 'traefik.docker.network=pontsun'
+    networks:
+      - default
+      - pontsun
     ports:
-      # we run postgres on a non-standard port to avoid collision with a locally installed postgres
-      - 5433:5432
+      - 8000
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: be-dev@liip.ch
+      PGADMIN_DEFAULT_PASSWORD: AmbossD3v
+      PGADMIN_SERVER_JSON_FILE: /servers.json
+    volumes:
+      - ./config/servers.pgadmin.json:/servers.json
+    labels:
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:pgadmin.docker.test"
+      - 'traefik.docker.network=pontsun'
+    networks:
+      - default
+      - pontsun
+    ports:
+      - 80
+
+networks:
+  default:
+  pontsun:
+    external:
+      name: pontsun
