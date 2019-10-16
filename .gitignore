@@ -6,4 +6,6 @@
 frontend/node_modules
 
 ##### BACKEND IGNORES #####
+*.pyc
 backend/.data
+backend/.venv
