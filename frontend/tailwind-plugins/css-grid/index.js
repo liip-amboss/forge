@@ -2,15 +2,16 @@ const _ = require('lodash')
 
 module.exports = function({
   grids = _.range(1, 12),
-  gaps = {},
   variants = ['responsive'],
 }) {
-  return function({ e, addUtilities }) {
+  return function({ e, addUtilities, theme }) {
+    console.log('dadas')
+
     addUtilities(
       [
         { '.css-grid': { display: 'grid' } },
         { '.css-grid-dense': { gridAutoFlow: 'dense' } },
-        ..._.map(gaps, (size, name) => ({
+        ..._.map(theme('spacing'), (size, name) => ({
           [`.${e(`grid-gap-${name}`)}`]: { gridGap: size },
         })),
         ...grids.map(columns => ({

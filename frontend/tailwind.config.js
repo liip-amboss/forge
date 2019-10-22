@@ -147,6 +147,7 @@ module.exports = {
       '56': '14rem',
       '64': '16rem',
     },
+    gridGap: theme => theme('spacing'),
     backgroundColor: theme => theme('colors'),
     backgroundPosition: {
       bottom: 'bottom',
@@ -493,11 +494,6 @@ module.exports = {
   plugins: [
     require('./tailwind-plugins/css-grid')({
       grids: [2, 3, 5, 6, 8, 10, 12],
-      gaps: {
-        0: '0',
-        4: '1rem',
-        8: '2rem',
-      },
       variants: ['responsive'],
     }),
   ],
