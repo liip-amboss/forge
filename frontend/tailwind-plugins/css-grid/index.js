@@ -1,17 +1,14 @@
 const _ = require('lodash')
 
-module.exports = function({
-  grids = _.range(1, 12),
-  variants = ['responsive'],
-}) {
+module.exports = function({ variants = ['responsive'] }) {
   return function({ e, addUtilities, theme }) {
-    const gridGaps = theme('gridGap', {})
-
+    const gridGap = theme('gridGap', {})
+    const grids = theme('grids', {})
     addUtilities(
       [
         { '.css-grid': { display: 'grid' } },
         { '.css-grid-dense': { gridAutoFlow: 'dense' } },
-        ..._.map(gridGaps, (size, name) => ({
+        ..._.map(gridGap, (size, name) => ({
           [`.${e(`grid-gap-${name}`)}`]: { gridGap: size },
         })),
         ...grids.map(columns => ({
