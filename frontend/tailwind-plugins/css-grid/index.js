@@ -5,13 +5,13 @@ module.exports = function({
   variants = ['responsive'],
 }) {
   return function({ e, addUtilities, theme }) {
-    console.log('dadas')
+    const gridGaps = theme('gridGap', {})
 
     addUtilities(
       [
         { '.css-grid': { display: 'grid' } },
         { '.css-grid-dense': { gridAutoFlow: 'dense' } },
-        ..._.map(theme('spacing'), (size, name) => ({
+        ..._.map(gridGaps, (size, name) => ({
           [`.${e(`grid-gap-${name}`)}`]: { gridGap: size },
         })),
         ...grids.map(columns => ({
