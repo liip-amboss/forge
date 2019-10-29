@@ -196,6 +196,21 @@ module.exports = {
       none: 'none',
     },
     container: {},
+    customForms: theme => ({
+      default: {
+        'input, textarea, multiselect, select': {
+          width: '100%',
+          '&:focus': {
+            boxShadow: theme('boxShadow.default'),
+            borderColor: theme('colors.gray.400'),
+          },
+          '&:disabled': {
+            backgroundColor: theme('colors.gray.200'),
+            cursor: theme('cursor.not-allowed'),
+          },
+        },
+      },
+    }),
     cursor: {
       auto: 'auto',
       default: 'default',

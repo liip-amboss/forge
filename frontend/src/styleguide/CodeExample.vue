@@ -1,7 +1,5 @@
 <template>
-  <pre
-    class="mt-2 py-1 px-2 text-sm whitespace-normal border rounded bg-gray-100"
-  >
+  <pre class="mt-2 p-1 text-sm whitespace-pre-line border rounded bg-gray-100">
     {{ code }}
   </pre>
 </template>
