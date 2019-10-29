@@ -13,8 +13,13 @@
         <styleguide-icons />
       </styleguide-section>
 
+      <styleguide-section title="Form elements">
+        <styleguide-form-elements />
+      </styleguide-section>
+
       <styleguide-section title="Button">
         <button class="btn">A button</button>
+        <!-- <input class="btn" type="submit" value="A button" /> -->
       </styleguide-section>
 
       <styleguide-section title="Forge Toggle">
@@ -41,8 +46,8 @@
 <script>
 import StyleguideSection from '@/styleguide/Section';
 import SectionSub from '@/styleguide/SectionSub';
-
 import StyleguideTypography from '@/styleguide/Typography';
+import StyleguideFormElements from '@/styleguide/FormElements';
 import StyleguideIcons from '@/styleguide/Icons';
 import ForgeToggle from '@/components/Toggle';
 
@@ -52,6 +57,7 @@ export default {
     SectionSub,
     StyleguideTypography,
     StyleguideIcons,
+    StyleguideFormElements,
     ForgeToggle,
   },
 };
