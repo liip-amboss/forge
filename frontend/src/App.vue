@@ -1,21 +1,22 @@
 <template>
   <div id="app">
-    <header class="py-6 bg-gray-200">
+    <header class="py-6 bg-gray-100">
       <div class="container">
-        <div class="flex justify-center">
-          <router-link to="/">Home</router-link> |
-          <router-link to="/about">About</router-link>
+        <div class="flex justify-between">
+          <router-link class="no-underline font-semibold text-lg" to="/">
+            Forge
+          </router-link>
+          <router-link
+            class="no-underline font-semibold text-lg"
+            to="/styleguide"
+          >
+            Styleguide
+          </router-link>
         </div>
       </div>
     </header>
 
-    <div class="css-grid grid-columns-2">
-      <p>one</p>
-      <p>two</p>
-      <p>three</p>
-    </div>
-
-    <main class="mt-12">
+    <main>
       <router-view />
     </main>
   </div>

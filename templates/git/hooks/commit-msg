@@ -1,0 +1,6 @@
+#!/bin/bash
+COMMIT_MSG=$(grep '^[[:blank:]]*[^[:blank:]#]' "$1")
+if [[ "$COMMIT_MSG" == "" ]]; then
+    exit 1
+fi
+docker run --rm -v "$(pwd)":/app gtramontina/commitlint:6.1.3 --edit -g /opt/npm.global/@commitlint/config-conventional/index.js

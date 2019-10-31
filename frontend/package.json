@@ -1,5 +1,5 @@
 {
-  "name": "vue-starter",
+  "name": "forge",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -15,6 +15,8 @@
     "postcss-import": "^12.0.1",
     "postcss-preset-env": "^6.7.0",
     "tailwindcss": "^1.1.2",
+    "tailwindcss-transitions": "^2.1.0",
+    "tailwindcss-typography": "^2.2.0",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
     "vuex": "^3.0.1"
@@ -36,6 +38,10 @@
     "node-sass": "^4.9.0",
     "prettier": "^1.18.2",
     "sass-loader": "^7.1.0",
+    "svgo": "^1.1.0",
+    "svgo-loader": "^2.1.0",
+    "vue-axe": "^1.0.7",
+    "vue-cli-plugin-svg-sprite": "^1.0.0",
     "vue-template-compiler": "^2.6.10"
   }
 }
