@@ -1,6 +1,13 @@
 <template>
   <label :class="['block', { 'cursor-not-allowed': disabled }, classLabel]">
-    <span :class="[{ 'is-disabled': disabled }, classLabel]">
+    <span
+      :class="[
+        { 'is-disabled': disabled },
+        { block: block },
+        { 'mr-4': !block },
+        classLabel,
+      ]"
+    >
       {{ label }}
     </span>
     <input
@@ -23,6 +30,10 @@ export default {
     type: {
       type: String,
       default: 'text',
+    },
+    block: {
+      type: Boolean,
+      default: false,
     },
     disabled: {
       type: Boolean,

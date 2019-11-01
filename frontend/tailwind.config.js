@@ -199,7 +199,6 @@ module.exports = {
     customForms: theme => ({
       default: {
         'input, textarea, multiselect, select': {
-          width: '100%',
           '&:focus': {
             boxShadow: theme('boxShadow.default'),
             borderColor: theme('colors.gray.400'),

@@ -1,19 +1,28 @@
 <template>
   <div>
-    <h3 class="mb-3 text-lg font-semibold text-gray-700">Input</h3>
+    <h3 class="mb-4 text-base font-bold text-gray-700">Input</h3>
     <forge-input placeholder="Max" label="First name" />
     <code-example code='<forge-input placeholder="Max" label="First name" />' />
 
-    <div class="mt-6">
-      <forge-input
-        placeholder="Your email"
-        label="Please provide your email address"
-        disabled
-      />
+    <section-sub title="Input block">
+      <forge-input placeholder="Max" label="First name" block />
       <code-example
-        code='<forge-input placeholder="Your email" label="Please provide your email address" disabled />'
+        code='<forge-input placeholder="Max" label="First name" block/>'
       />
-    </div>
+    </section-sub>
+
+    <section-sub title="Input disabled">
+      <div class="mt-6">
+        <forge-input
+          placeholder="Your email"
+          label="Please provide your email address"
+          disabled
+        />
+        <code-example
+          code='<forge-input placeholder="Your email" label="Please provide your email address" disabled />'
+        />
+      </div>
+    </section-sub>
 
     <section-sub title="Textarea">
       <textarea class="form-textarea" rows="5"></textarea>

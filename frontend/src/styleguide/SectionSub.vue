@@ -1,6 +1,8 @@
 <template>
-  <article class="mt-8">
-    <h3 class="mb-3 text-lg font-semibold text-gray-700">{{ title }}</h3>
+  <article class="my-12">
+    <h3 class="mb-4 text-sm font-bold uppercase text-gray-700">
+      {{ title }}
+    </h3>
     <slot />
   </article>
 </template>
