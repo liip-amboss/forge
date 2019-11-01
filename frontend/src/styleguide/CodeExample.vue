@@ -1,10 +1,16 @@
 <template>
-  <pre class="mt-2 p-1 text-sm whitespace-pre-line border rounded bg-gray-100">
+  <vue-markdown class="mt-2 text-sm">
+    ```html
     {{ code }}
-  </pre>
+    ```
+  </vue-markdown>
 </template>
 
 <script>
+import VueMarkdown from 'vue-markdown';
+import 'prismjs';
+import 'prismjs/themes/prism-coy.css';
+
 export default {
   props: {
     code: {
@@ -12,5 +18,11 @@ export default {
       required: true,
     },
   },
+
+  components: {
+    VueMarkdown,
+  },
 };
 </script>
+
+<style lang="scss" scoped></style>

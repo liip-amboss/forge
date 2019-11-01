@@ -7,7 +7,7 @@
     <section-sub title="Input block">
       <forge-input placeholder="Max" label="First name" block />
       <code-example
-        code='<forge-input placeholder="Max" label="First name" block/>'
+        code='<forge-input placeholder="Max" label="First name" block />'
       />
     </section-sub>
 

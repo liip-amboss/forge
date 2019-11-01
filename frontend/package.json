@@ -15,10 +15,12 @@
     "core-js": "^2.6.5",
     "postcss-import": "^12.0.1",
     "postcss-preset-env": "^6.7.0",
+    "prismjs": "^1.17.1",
     "tailwindcss": "^1.1.2",
     "tailwindcss-transitions": "^2.1.0",
     "tailwindcss-typography": "^2.2.0",
     "vue": "^2.6.10",
+    "vue-markdown": "^2.2.4",
     "vue-router": "^3.0.3",
     "vuex": "^3.0.1"
   },
