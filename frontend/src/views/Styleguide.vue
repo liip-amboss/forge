@@ -22,6 +22,10 @@
         <!-- <input class="btn" type="submit" value="A button" /> -->
       </styleguide-section>
 
+      <styleguide-section title="Tooltip and Popover">
+        <section-tooltip />
+      </styleguide-section>
+
       <styleguide-section title="Forge Toggle">
         <forge-toggle>
           Inline Toggle
@@ -49,6 +53,7 @@ import SectionSub from '@/styleguide/SectionSub';
 import StyleguideTypography from '@/styleguide/Typography';
 import StyleguideFormElements from '@/styleguide/FormElements';
 import StyleguideIcons from '@/styleguide/Icons';
+import SectionTooltip from '@/styleguide/SectionTooltip';
 import ForgeToggle from '@/components/Toggle';
 
 export default {
@@ -58,6 +63,7 @@ export default {
     StyleguideTypography,
     StyleguideIcons,
     StyleguideFormElements,
+    SectionTooltip,
     ForgeToggle,
   },
 };

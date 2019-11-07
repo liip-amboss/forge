@@ -7,6 +7,7 @@ import store from './store';
 import './assets/css/main.postcss';
 
 // Plugins
+import './plugins/vTooltip';
 import './plugins/vueAxe';
 
 Vue.config.productionTip = false;

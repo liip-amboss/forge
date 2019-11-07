@@ -1,0 +1,125 @@
+/*----------------------------------------*\
+  Tooltip
+\*----------------------------------------*/
+
+.tooltip {
+  --bg-color: theme(colors.black);
+  --text-color: theme(colors.white);
+  --arrow-size: theme(spacing.1);
+}
+
+.tooltip {
+  @apply z-30;
+  display: block !important;
+}
+
+.tooltip-inner {
+  @apply py-1 px-3;
+  @apply rounded;
+
+  background: var(--bg-color);
+  color: var(--text-color);
+}
+
+.tooltip-arrow {
+  @apply w-0 h-0;
+  @apply absolute z-10;
+  margin: var(--arrow-size);
+  border-style: solid;
+  border-color: var(--bg-color);
+}
+
+/**
+* Popover
+* The popover component inheritates styles from the tooltip
+*/
+
+.popover-inner,
+.popover-arrow {
+  --bg-color: theme(colors.green.700);
+}
+
+.popover-inner {
+  @apply px-5 py-2;
+}
+
+.popover-arrow {
+  --arrow-size: theme(spacing.2);
+}
+
+/**
+* Visibility
+*/
+.tooltip[aria-hidden='true'] {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity .15s;
+}
+
+.tooltip[aria-hidden='false'] {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity .15s;
+}
+
+
+/**
+* Arrow placement and look
+*/
+
+
+.tooltip[x-placement^="top"] {
+  margin-bottom: var(--arrow-size);
+}
+
+.tooltip[x-placement^="top"] .tooltip-arrow {
+  @apply my-0;
+  bottom: calc(var(--arrow-size) * -1 );
+  left: calc(50% - var(--arrow-size));
+  border-width: var(--arrow-size) var(--arrow-size) 0 var(--arrow-size);
+  border-left-color: transparent !important;
+  border-right-color: transparent !important;
+  border-bottom-color: transparent !important;
+}
+
+.tooltip[x-placement^="bottom"] {
+  margin-top: var(--arrow-size);
+}
+
+.tooltip[x-placement^="bottom"] .tooltip-arrow {
+  @apply my-0;
+  top: calc(var(--arrow-size) * -1 );
+  left: calc(50% - var(--arrow-size));
+  border-width: 0 var(--arrow-size) var(--arrow-size) var(--arrow-size);
+  border-left-color: transparent !important;
+  border-right-color: transparent !important;
+  border-top-color: transparent !important;
+}
+
+.tooltip[x-placement^="right"] {
+  margin-left: var(--arrow-size);
+}
+
+.tooltip[x-placement^="right"] .tooltip-arrow {
+  @apply mx-0;
+  left: calc(var(--arrow-size) * -1 );
+  top: calc(50% - var(--arrow-size));
+  border-width: var(--arrow-size) var(--arrow-size) var(--arrow-size) 0;
+  border-left-color: transparent !important;
+  border-top-color: transparent !important;
+  border-bottom-color: transparent !important;
+}
+
+.tooltip[x-placement^="left"] {
+  margin-right: var(--arrow-size);
+}
+
+.tooltip[x-placement^="left"] .tooltip-arrow {
+  @apply mx-0;
+  right: calc(var(--arrow-size) * -1 );
+  top: calc(50% - var(--arrow-size));
+  border-width: var(--arrow-size) 0 var(--arrow-size) var(--arrow-size);
+  border-top-color: transparent !important;
+  border-right-color: transparent !important;
+  border-bottom-color: transparent !important;
+}
