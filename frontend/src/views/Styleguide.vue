@@ -26,6 +26,10 @@
         <section-tooltip />
       </styleguide-section>
 
+      <styleguide-section title="Utility classes for your conveinience">
+        <section-utils />
+      </styleguide-section>
+
       <styleguide-section title="Forge Toggle">
         <forge-toggle>
           Inline Toggle
@@ -48,6 +52,7 @@
 </template>
 
 <script>
+import SectionUtils from '@/styleguide/SectionUtils.vue';
 import StyleguideSection from '@/styleguide/Section';
 import SectionSub from '@/styleguide/SectionSub';
 import StyleguideTypography from '@/styleguide/Typography';
@@ -65,6 +70,7 @@ export default {
     StyleguideFormElements,
     SectionTooltip,
     ForgeToggle,
+    SectionUtils,
   },
 };
 </script>
