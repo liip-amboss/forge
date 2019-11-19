@@ -1,6 +1,5 @@
 <template>
   <article class="my-12">
-    nice utils here
     <div class="flex flex-wrap">
       <div
         class="p-4 mr-4 bg-gray-700 text-gray-200 transition-bg transition-delay-250 hover:bg-gray-900"

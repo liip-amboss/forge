@@ -26,7 +26,7 @@
         <section-tooltip />
       </styleguide-section>
 
-      <styleguide-section title="Utility classes for your conveinience">
+      <styleguide-section title="Utility classes">
         <section-utils />
       </styleguide-section>
 
