@@ -26,8 +26,8 @@
         <section-tooltip />
       </styleguide-section>
 
-      <styleguide-section title="Utility classes">
-        <section-utils />
+      <styleguide-section title="Transitions">
+        <section-transitions />
       </styleguide-section>
 
       <styleguide-section title="Forge Toggle">
@@ -52,13 +52,13 @@
 </template>
 
 <script>
-import SectionUtils from '@/styleguide/SectionUtils.vue';
 import StyleguideSection from '@/styleguide/Section';
 import SectionSub from '@/styleguide/SectionSub';
 import StyleguideTypography from '@/styleguide/Typography';
 import StyleguideFormElements from '@/styleguide/FormElements';
 import StyleguideIcons from '@/styleguide/Icons';
 import SectionTooltip from '@/styleguide/SectionTooltip';
+import SectionTransitions from '@/styleguide/SectionTransitions.vue';
 import ForgeToggle from '@/components/Toggle';
 
 export default {
@@ -70,7 +70,7 @@ export default {
     StyleguideFormElements,
     SectionTooltip,
     ForgeToggle,
-    SectionUtils,
+    SectionTransitions,
   },
 };
 </script>
