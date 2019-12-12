@@ -19,4 +19,11 @@ module.exports = {
     'jest-watch-typeahead/filename',
     'jest-watch-typeahead/testname',
   ],
+  collectCoverage: true,
+  collectCoverageFrom: [
+    '**/*.{vue}',
+    '!**/node_modules/**',
+    '!**/styleguide/**',
+    '!**/views/**',
+  ],
 };

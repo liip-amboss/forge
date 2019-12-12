@@ -44,4 +44,16 @@ describe('Toggle component', () => {
       'My slotty stuff'
     );
   });
+
+  it('Expands on click', () => {
+    // Check if toggle is not expanded
+    expect(wrapper.findAll('div').length).toEqual(1);
+
+    // Expand toggle with click
+    const button = wrapper.find('button');
+    button.element.click();
+
+    // Check if toggle is expanded
+    expect(wrapper.findAll('div').length).toEqual(2);
+  });
 });
