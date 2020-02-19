@@ -30,7 +30,8 @@ module.exports = {
             children: [
               "/frontend/components/modal",
               "/frontend/components/simple-table",
-              "/frontend/components/notification"
+              "/frontend/components/notification",
+              "/frontend/components/select"
             ]
           }
         ]
