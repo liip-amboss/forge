@@ -39,7 +39,7 @@ export default {
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 
 <docs>
-`Basic Dropdown
+Basic Dropdown
 
 ```[import](../examples/BasicDropdown.vue)
 
