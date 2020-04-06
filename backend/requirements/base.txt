@@ -4,8 +4,8 @@
 #
 #    pip-compile requirements/base.in
 #
-django-environ==0.4.5
-django==2.2.6
-psycopg2-binary==2.8.3
+django-environ==0.4.5     # via -r base.in
+django==2.2.10            # via -r base.in
+psycopg2-binary==2.8.3    # via -r base.in
 pytz==2019.3              # via django
 sqlparse==0.3.0           # via django

@@ -4,12 +4,11 @@
 #
 #    pip-compile requirements/dev.in
 #
-appnope==0.1.0            # via ipython
 backcall==0.1.0           # via ipython
 decorator==4.4.0          # via ipython, traitlets
-django-environ==0.4.5
-django==2.2.6
-ipdb==0.12.2
+django-environ==0.4.5     # via -r base.in
+django==2.2.10            # via -r base.in
+ipdb==0.12.2              # via -r dev.in
 ipython-genutils==0.2.0   # via traitlets
 ipython==7.8.0            # via ipdb
 jedi==0.15.1              # via ipython
@@ -17,7 +16,7 @@ parso==0.5.1              # via jedi
 pexpect==4.7.0            # via ipython
 pickleshare==0.7.5        # via ipython
 prompt-toolkit==2.0.10    # via ipython
-psycopg2-binary==2.8.3
+psycopg2-binary==2.8.3    # via -r base.in
 ptyprocess==0.6.0         # via pexpect
 pygments==2.4.2           # via ipython
 pytz==2019.3              # via django
@@ -27,4 +26,4 @@ traitlets==4.3.3          # via ipython
 wcwidth==0.1.7            # via prompt-toolkit
 
 # The following packages are considered to be unsafe in a requirements file:
-# setuptools==41.4.0        # via ipdb, ipython
+# setuptools
