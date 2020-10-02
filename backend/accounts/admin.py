@@ -11,7 +11,11 @@ class UserAdmin(BaseUserAdmin):
     ordering = ('email',)
     list_display = ('email', 'first_name', 'last_name', 'is_active')
     search_fields = ['first_name', 'last_name', 'email']
-
+    add_fieldsets = (
+        ('Account', {
+            'fields': ('email', 'password1', 'password2',)
+        }),
+    )
     fieldsets = (
         ('Account', {
             'fields': ('email', 'password', 'first_name', 'last_name')
