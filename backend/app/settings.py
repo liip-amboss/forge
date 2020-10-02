@@ -26,7 +26,7 @@ if os.path.exists(ENV_PATH):
 #################
 # PATH SETTINGS #
 #################
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_URLCONF = 'app.urls'
 WSGI_APPLICATION = 'app.wsgi.application'
 
