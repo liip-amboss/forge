@@ -21,21 +21,21 @@
         </validation-text>
       </forge-input>
 
-      <forge-input
+      <forge-password
         v-model.trim.lazy="$v.password.$model"
         class="w-full mt-4"
         class-input="w-full"
         :value="password"
         :label="$t('login.password')"
-        type="password"
+        :placeholder="$t('login.password')"
         is-block
         required
         @blur="$v.password.$touch"
       >
         <validation-text v-if="$v.password.$error" class="mt-1">
-          {{ $t('login.passwordRequired') }}
+          Password is required
         </validation-text>
-      </forge-input>
+      </forge-password>
 
       <div class="flex items-center justify-between mt-6">
         <button
@@ -52,6 +52,7 @@
 
 <script>
 import ForgeInput from '@/components/Input.vue';
+import ForgePassword from '@/components/Password.vue';
 import ValidationText from '@/components/ValidationText.vue';
 import { mapActions } from 'vuex';
 import { required } from 'vuelidate/lib/validators';
@@ -60,6 +61,7 @@ import { login } from '@/services/auth.js';
 export default {
   components: {
     ForgeInput,
+    ForgePassword,
     ValidationText,
   },
   data() {
