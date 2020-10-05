@@ -38,6 +38,24 @@ const theme = {
   },
 };
 
+const transpileDependencies = [
+  'regexpu-core',
+  'strip-ansi',
+  'ansi-regex',
+  'ansi-styles',
+  'react-dev-utils',
+  'chalk',
+  'unicode-match-property-ecmascript',
+  'unicode-match-property-value-ecmascript',
+  'acorn-jsx',
+  '@znck[\\\\/]prop-types',
+  'camelcase',
+  'tailwindcss',
+  '@tailwindcss/custom-forms',
+  'tailwindcss-transitions',
+  'tailwindcss-typography',
+];
+
 module.exports = {
   title: 'Forge Style Guide',
   components: ['src/components/**/[A-Z]*.vue', 'src/styleguide/**/[A-Z]*.vue'],
@@ -46,6 +64,9 @@ module.exports = {
   exampleMode: 'expand',
   usageMode: 'expand',
   copyCodeButton: true,
+  compilerConfig: {
+    target: { ie: 11 },
+  },
   webpackConfig: Object.assign(
     {},
     {
@@ -56,7 +77,39 @@ module.exports = {
             exclude: /node_modules/,
             loader: 'postcss-loader',
           },
+          {
+            test: /\.js$/,
+            exclude: modulePath =>
+              (/node_modules/.test(modulePath) ||
+                /packages[\\/]vue-styleguidist[\\/]lib/.test(modulePath)) &&
+              !transpileDependencies.some(mod =>
+                new RegExp(`node_modules[\\\\/]${mod}[\\\\/]`).test(modulePath)
+              ),
+            use: {
+              loader: 'babel-loader',
+              options: {
+                sourceType: 'unambiguous',
+                presets: [
+                  [
+                    '@babel/preset-env',
+                    {
+                      useBuiltIns: 'usage',
+                      corejs: 3,
+                      targets: {
+                        ie: '11',
+                      },
+                    },
+                  ],
+                ],
+                comments: false,
+              },
+            },
+          },
         ],
+      },
+      devServer: {
+        // We need this because otherwise Webpack prohibits the connection
+        public: `${process.env.STYLEGUIDE_URL}`,
       },
     }
   ),
@@ -87,6 +140,7 @@ module.exports = {
     path.join(__dirname, 'src/plugins/notifications.js'),
     path.join(__dirname, 'src/plugins/vuePortal.js'),
     path.join(__dirname, 'src/globals/svgIcon.js'),
+    path.join(__dirname, 'node_modules/svgxuse'),
   ],
   theme,
   styles: {

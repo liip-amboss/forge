@@ -1,0 +1,8 @@
+django
+django-environ
+psycopg2-binary
+djangorestframework
+djangorestframework-simplejwt
+djangorestframework-camel-case
+django-cors-headers
+whitenoise

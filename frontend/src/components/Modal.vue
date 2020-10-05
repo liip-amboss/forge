@@ -135,6 +135,9 @@ export default {
       if (opened) {
         this.saveLastActiveFocus();
         this.bodyLock();
+      } else {
+        this.refocusLastActive();
+        this.bodyUnlock();
       }
     },
   },
@@ -145,6 +148,7 @@ export default {
 
   beforeDestroy() {
     window.removeEventListener('keyup', this.handleKeyEvent);
+    this.bodyUnlock();
   },
 
   methods: {

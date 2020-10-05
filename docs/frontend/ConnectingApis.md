@@ -80,6 +80,7 @@ Now, as long as the data always looks like this everything is fine, our tests (i
 Having models to map the data helps us here, a model can look like this:
 ```javascript
 export function Alien(data) {
+  if(!data) return null
   let model = {};
   model.alienType = data.type || -1;
   model.eyeAmount = data.numberOfEyes || null;
@@ -93,7 +94,9 @@ export function Alien(data) {
 }
 ```
 In this case we can always go sure that we have a name to display, even if it is "No Name defined". We also know for sure that if our planet has no name we will have the planet set to `null` which we can use for easier checks in the template like this:
-`<h2 v-if='alien.planet'>{{alien.planet.planetName}}</h2>`
+```vue
+<h2 v-if='alien && alien.planet'>{{alien.planet.planetName}}</h2>
+```
 Adding this model to your service will look like this:
 ```javascript
 import { secretCIAStuff } from '@/services/api';

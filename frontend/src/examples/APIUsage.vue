@@ -19,11 +19,7 @@ export default {
   async mounted() {
     try {
       let cardData = await getMagicCard();
-      this.card = {};
-      this.card.name = cardData.name;
-      this.card.image = cardData.image;
-      this.card.rareLevel = cardData.rareLevel;
-      this.card.painter = cardData.painter;
+      this.card = cardData;
     } catch (error) {
       // notify
     }
