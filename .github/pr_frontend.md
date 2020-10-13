@@ -1,4 +1,0 @@
-- [ ] Changes are updated on a relevant `/docs` page
-- [ ] Changes are visible on the styleguide page
-- [ ] No issues or warnings are visible in browser console
-- [ ] The changes have been tested on IE11

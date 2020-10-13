@@ -1,16 +1,16 @@
 <template>
-  <div class="container pt-12 pb-24">
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div class="container py-24 container--sm">
+    <login />
   </div>
 </template>
 
 <script>
-import HelloWorld from '@/components/HelloWorld.vue';
+import Login from '@/components/Login.vue';
 
 export default {
   name: 'Home',
   components: {
-    HelloWorld,
+    Login,
   },
 };
 </script>

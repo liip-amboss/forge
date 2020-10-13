@@ -6,3 +6,10 @@ To add a new icon a new svg icon file needs be located in the `frontend/src/asse
 - [vue-cli-plugin-svg-sprite](https://github.com/swisnl/vue-cli-plugin-svg-sprite)
 - [svgo](https://github.com/svg/svgo)
 - [svgo-loader](https://github.com/rpominov/svgo-loader)
+
+## Installation
+
+To install these packages to a new project, simple invoke
+`vue add svg-sprite`
+
+It will install all the necessary tools automatically. See [github](https://github.com/JetBrains/svg-sprite-loader#runtime-configuration) for instructions how to use it.

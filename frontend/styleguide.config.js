@@ -109,6 +109,10 @@ module.exports = {
           },
         ],
       },
+      devServer: {
+        // We need this because otherwise Webpack prohibits the connection
+        public: `${process.env.STYLEGUIDE_URL}`,
+      },
     }
   ),
 

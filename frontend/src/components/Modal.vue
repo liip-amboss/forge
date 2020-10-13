@@ -154,6 +154,10 @@ export default {
         this.saveLastActiveFocus();
         this.bodyLock();
         this.activateFocusTrap();
+      } else {
+        this.refocusLastActive();
+        this.bodyUnlock();
+        this.deactivateFocusTrap();
       }
     },
   },
@@ -164,6 +168,7 @@ export default {
 
   beforeDestroy() {
     window.removeEventListener('keyup', this.handleKeyEvent);
+    this.bodyUnlock();
   },
 
   methods: {
@@ -181,9 +186,7 @@ export default {
       this.$emit('closeModal');
       this.refocusLastActive();
       this.bodyUnlock();
-      if (this.focusTrap != null) {
-        this.focusTrap.deactivate();
-      }
+      this.deactivateFocusTrap();
     },
     refocusLastActive() {
       if (this.initiallyFocusedElement instanceof HTMLElement) {
@@ -201,6 +204,11 @@ export default {
         });
         this.focusTrap.activate();
       });
+    },
+    deactivateFocusTrap() {
+      if (this.focusTrap != null) {
+        this.focusTrap.deactivate();
+      }
     },
     handleKeyEvent(event) {
       if (event.code === 'Escape' && this.isOpen) {
