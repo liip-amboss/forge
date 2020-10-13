@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db
+  namespace: forge-database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - image: postgres:alpine
+        imagePullPolicy: IfNotPresent
+        name: postgres
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "100m"
+        envFrom:
+        - configMapRef:
+            name: env-file
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: db-volume-claim
+        env:
+        - name: POSTGRES_PASSWORD
+          value: postgres
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        ports:
+        - containerPort: 5432
+      restartPolicy: Always
+      volumes:
+      - name: db-volume-claim
+        persistentVolumeClaim:
+          claimName: db-volume-claim
+status: {}
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: db-volume-claim
+  namespace: forge-database
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1G
+  storageClassName: longhorn
+status: {}

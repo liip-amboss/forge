@@ -1,0 +1,28 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+- ../base
+
+resources:
+- counselor-frontend-deployment.yaml
+- counselor-frontend-service.yml
+
+namespace: bag-counselor
+
+images:
+- name: docker.gitlab.liip.ch/bag/safezone/counselor_frontend_prod
+  newName: registry.begasoft.ch/wp-bag-safezone/counselor_frontend_prod
+  newTag: "0.0.2"
+
+#Replace Let's encrypt issuer
+patchesStrategicMerge:
+- |-
+  apiVersion: networking.k8s.io/v1beta1
+  kind: Ingress
+  metadata:
+    name: counselor-ingress
+    namespace: bag-counselor
+    annotations:
+      kubernetes.io/tls-acme: "true"
+      cert-manager.io/cluster-issuer: letsencrypt-prod

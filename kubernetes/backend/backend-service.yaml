@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: backend
+  namespace: forge-backend
+spec:
+  type: ClusterIP
+  selector:
+    app: backend
+  ports:
+  - name: http
+    protocol: TCP
+    port: 8000
+    targetPort: 8000

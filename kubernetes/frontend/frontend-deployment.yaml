@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: forge-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - image: IMAGE
+        imagePullPolicy: IfNotPresent
+        name: frontend
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "100m"
+        ports:
+        - containerPort: 80
+        tty: true
+        envFrom:
+        - configMapRef:
+            name: env-file
+      restartPolicy: Always
+      imagePullSecrets:
+      - name: registry-credentials
+status: {}
+
+---
+
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: forge-ingress
+  namespace: forge-frontend
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  rules:
+  - http:
+  - host: frontend.forge.ch
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: forge-frontend
+          servicePort: 80
+  tls:
+  - hosts:
+    - frontend.forge.ch
+    secretName: forge-tls
