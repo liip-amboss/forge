@@ -5,14 +5,32 @@
 #    pip-compile requirements/base.in
 #
 asgiref==3.2.7            # via django
+certifi==2020.6.20        # via requests
+chardet==3.0.4            # via requests
+coreapi==2.3.3            # via drf-yasg
+coreschema==0.0.4         # via coreapi, drf-yasg
 django-cors-headers==3.3.0  # via -r requirements/base.in
 django-environ==0.4.5     # via -r requirements/base.in
-django==3.0.7             # via -r requirements/base.in, django-cors-headers, djangorestframework, djangorestframework-simplejwt
+django==3.0.7             # via -r requirements/base.in, django-cors-headers, djangorestframework, djangorestframework-simplejwt, drf-yasg
 djangorestframework-camel-case==1.1.2  # via -r requirements/base.in
 djangorestframework-simplejwt==4.4.0  # via -r requirements/base.in
-djangorestframework==3.11.0  # via -r requirements/base.in, djangorestframework-simplejwt
+djangorestframework==3.11.0  # via -r requirements/base.in, djangorestframework-simplejwt, drf-yasg
+drf-yasg==1.20.0          # via -r requirements/base.in
+idna==2.10                # via requests
+inflection==0.5.1         # via drf-yasg
+itypes==1.2.0             # via coreapi
+jinja2==2.11.2            # via coreschema
+markupsafe==1.1.1         # via jinja2
+packaging==20.4           # via drf-yasg
 psycopg2-binary==2.8.5    # via -r requirements/base.in
 pyjwt==1.7.1              # via djangorestframework-simplejwt
+pyparsing==2.4.7          # via packaging
 pytz==2020.1              # via django
+requests==2.24.0          # via coreapi
+ruamel.yaml.clib==0.2.2   # via ruamel.yaml
+ruamel.yaml==0.16.12      # via drf-yasg
+six==1.15.0               # via packaging
 sqlparse==0.3.1           # via django
+uritemplate==3.0.1        # via coreapi, drf-yasg
+urllib3==1.25.11          # via requests
 whitenoise==5.1.0         # via -r requirements/base.in
