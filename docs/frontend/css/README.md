@@ -1,5 +1,0 @@
-# CSS setup
-
-## PostCSS
-
-## Tailwind

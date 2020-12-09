@@ -2,10 +2,46 @@
   ELEMENTS
 \*----------------------------------------*/
 
+html,
+body {
+  height: 100%;
+}
+
 html {
+  @apply overflow-y-scroll;
   @apply font-sans;
 }
 
 a {
-  @apply text-red-500 underline
+  @apply text-gray-700 underline;
+  @apply transition-250;
+
+  &:hover,
+  &:focus {
+    @apply text-gray-600;
+  }
+}
+
+h1 {
+  @apply text-h1;
+}
+
+h2 {
+  @apply text-h2;
+}
+
+h3 {
+  @apply text-h3;
+}
+
+h4 {
+  @apply text-h4;
+}
+
+h5 {
+  @apply text-h5;
+}
+
+h6 {
+  @apply text-h6;
 }

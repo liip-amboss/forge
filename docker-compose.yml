@@ -1,0 +1,110 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:alpine
+    volumes:
+      - ./backend/.data/postgres_dev:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    networks:
+      - default
+      - pontsun
+
+  backend:
+    build: .
+    command: sh -c 'while true; do ./manage.py runserver 0.0.0.0:8000; sleep 1; done'
+    volumes:
+      - ./backend/.venv:/venv
+      - ./backend:/code
+    environment:
+        - INITIAL
+    env_file:
+      - .env
+    depends_on:
+      - db
+    stdin_open: true
+    tty: true
+    labels:
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:${BACKEND_URL}"
+      - 'traefik.docker.network=pontsun'
+    networks:
+      - default
+      - pontsun
+    ports:
+      - 8000
+
+  frontend:
+    build: ./frontend
+    command: sh -c "npm install && npm run serve"
+    volumes:
+      - ./frontend:/code
+    env_file:
+      - .env
+    stdin_open: true
+    tty: true
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.frontend.rule=Host:${FRONTEND_URL}'
+      - 'traefik.docker.network=pontsun'
+    networks:
+      - default
+      - pontsun
+    ports:
+      - 8080
+  docs:
+    build: ./docs
+    command: sh -c "npm install && npm run start"
+    volumes:
+      - ./docs:/code
+    stdin_open: true
+    tty: true
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.frontend.rule=Host:${DOCS_URL}'
+      - 'traefik.docker.network=pontsun'
+    networks:
+      - default
+      - pontsun
+    ports:
+      - 8081
+
+  styleguide:
+    build: ./frontend
+    command: sh -c "npm install && npm run serve:styleguide"
+    volumes:
+      - ./frontend:/code
+    stdin_open: true
+    tty: true
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.frontend.rule=Host:${STYLEGUIDE_URL}'
+      - 'traefik.docker.network=pontsun'
+    networks:
+      - default
+      - pontsun
+    ports:
+      - 6060
+
+  pgadmin:
+    image: dpage/pgadmin4
+    volumes:
+      - ./config/servers.pgadmin.json:/pgadmin4/servers.json
+    env_file:
+      - .env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:${PGADMIN_URL}"
+      - 'traefik.docker.network=pontsun'
+    networks:
+      - default
+      - pontsun
+    ports:
+      - 80
+
+networks:
+  default:
+  pontsun:
+    external:
+      name: pontsun

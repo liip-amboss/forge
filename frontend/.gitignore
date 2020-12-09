@@ -4,6 +4,7 @@ node_modules
 
 /tests/e2e/reports/
 selenium-debug.log
+/coverage/
 
 # local env files
 .env.local

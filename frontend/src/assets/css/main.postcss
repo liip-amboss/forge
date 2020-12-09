@@ -2,35 +2,48 @@
   MAIN
 \*----------------------------------------*/
 
-
-/**
-* Tailwind
-*/
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-
-
 /**
 * Settings
 */
-@import "settings/variables.postcss";
-
+/* purgecss start ignore */
+@import 'settings/variables.postcss';
+/* purgecss end ignore */
 
 /**
 * Base
 */
-@import "base/elements.postcss";
-
+/* purgecss start ignore */
+@import 'tailwindcss/base';
+@import 'base/elements.postcss';
+@import 'base/table.postcss';
+/* purgecss end ignore */
 
 /**
 * Objects
 */
-@import "objects/container.postcss";
-@import "objects/grid.postcss";
-
+/* purgecss start ignore */
+@import 'objects/container.postcss';
+@import 'objects/grid.postcss';
+/* purgecss end ignore */
 
 /**
 * Components
 */
-@import "components/button.postcss";
+
+/* purgecss start ignore */
+@import 'tailwindcss/components';
+@import 'components/button.postcss';
+@import 'components/icon.postcss';
+@import 'components/modal.postcss';
+@import 'components/notification.postcss';
+@import 'components/toggle.postcss';
+@import 'components/tooltip.postcss';
+/* purgecss end ignore */
+
+/**
+* Utilities
+*/
+@import 'tailwindcss/utilities';
+@import "tailwindcss/utilities";
+
+@import "loading.postcss";

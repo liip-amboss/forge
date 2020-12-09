@@ -1,0 +1,12 @@
+before_install:
+- cd frontend
+language: node_js
+script: 
+    - npm run lint -- --max-warnings 0
+    - npm run test
+node_js:
+- 12
+notification:
+  slack:
+    rooms:
+      secure: ayr/RRjceO5B0d0PrxTe5YJcgKy3s0x36MIZ7IcBrUhkOcTlm3yeiPaTREGbpc4AppuMIBREzklGpFnotFFFRIbWm38YQTcb/Pwt/eCZd4fdDmxjUZg1hhqojOZr6fwrpddi2ZrkQ7DC916LvGoRNTo3+de8RKEcAce66h2Q/fAztktNKRkDosCVobdFk0A2lCINEZiGE6TKoQY/mBPQYvVmwI+jlD45G4QzZns4M2VdpcHHvJ1svbOk+A6d9rZ7GK+T8acLyk7M+QGTgnMwtm1SRMiu38N9AYS6+t1khrAL2EYFZdTRGfv669Co/M469J1g1wYENxsZuN4WM8Xg4xV7J2S1Y+VCnblQkJFi1KJxm3YQ1xSuS6AVVodclG3KwaahzQFW23LPycsfMRing9wPP9qFX95Y8vuSwYznvlGQKri7uPXhXCZLx5foVh1wJrZeQADqDVkJGVKT73Pp5roILDHXkNDmxI4ZjWrGv2yKm13Zlgqr5jIbDFxmmGc2pEjcBEZMhCc+chM1D2i21lKRHiWu1d0S97Z6vxL9sTHVTHZ0DphjzdF0am6r/CstKnCd3ZOIqeaSsF1y3m1MnW0WBqvXBJuw55ZEF5V0rQnda1wdrYhitons+slKUbTb14P4impoxlthNU+LdfIgHfvYj36QIq/BgMJ86VU5sC4=

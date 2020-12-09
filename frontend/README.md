@@ -1,36 +1,49 @@
-# vue-starter
+# Forge Frontend
 
 ## Project setup
 ```
-yarn install
+npm install
 ```
 
 ### Compiles and hot-reloads for development
 ```
-yarn run serve
+npm start
 ```
 
 ### Compiles and minifies for production
 ```
-yarn run build
+npm run build
 ```
 
 ### Run your tests
 ```
-yarn run test
+npm run test
 ```
 
 ### Lints and fixes files
 ```
-yarn run lint
+npm run lint
 ```
 
 ### Run your end-to-end tests
 ```
-yarn run test:e2e
+npm run test:e2e
 ```
 
 ### Run your unit tests
 ```
-yarn run test:unit
+npm run test:unit
+```
+
+## Styleguide
+
+### Compiles and hot-realoads for development
+```
+npm run serve:styleguide
+```
+ Should be runing not on `http://localhost:6060/`
+
+### Compiles and minifies for production
+```
+npm run build:styleguide
 ```
