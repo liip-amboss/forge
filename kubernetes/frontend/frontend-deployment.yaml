@@ -33,8 +33,6 @@ spec:
         - configMapRef:
             name: env-file
       restartPolicy: Always
-      imagePullSecrets:
-      - name: registry-credentials
 status: {}
 
 ---

@@ -59,5 +59,4 @@ spec:
   resources:
     requests:
       storage: 1G
-  storageClassName: longhorn
 status: {}

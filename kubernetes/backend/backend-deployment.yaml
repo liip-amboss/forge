@@ -37,8 +37,6 @@ spec:
         - containerPort: 8000
       restartPolicy: Always
       serviceAccountName: ""
-      imagePullSecrets:
-       - name: registry-credentials
       volumes:
       - name: backend-volume-claim
         persistentVolumeClaim:
@@ -58,7 +56,6 @@ spec:
   resources:
     requests:
       storage: 1G
-  storageClassName: longhorn
 status: {}
 
 ---

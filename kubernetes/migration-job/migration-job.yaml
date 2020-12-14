@@ -21,7 +21,5 @@ spec:
           envFrom:
           - configMapRef:
               name: env-file
-      imagePullSecrets:
-      - name: registry-credentials
       restartPolicy: Never
   backoffLimit: 5

@@ -5,15 +5,15 @@ bases:
 - ../base
 
 resources:
-- counselor-frontend-deployment.yaml
-- counselor-frontend-service.yml
+- frontend-deployment.yaml
+- frontend-service.yml
 
-namespace: bag-counselor
+namespace: forge-frontend
 
 images:
-- name: docker.gitlab.liip.ch/bag/safezone/counselor_frontend_prod
-  newName: registry.begasoft.ch/wp-bag-safezone/counselor_frontend_prod
-  newTag: "0.0.2"
+- name: IMAGE
+  newName: IMAGE
+  newTag: TAG
 
 #Replace Let's encrypt issuer
 patchesStrategicMerge:
@@ -21,8 +21,8 @@ patchesStrategicMerge:
   apiVersion: networking.k8s.io/v1beta1
   kind: Ingress
   metadata:
-    name: counselor-ingress
-    namespace: bag-counselor
+    name: frontend-ingress
+    namespace: forge-frontend
     annotations:
       kubernetes.io/tls-acme: "true"
-      cert-manager.io/cluster-issuer: letsencrypt-prod
+      cert-manager.io/cluster-issuer: letsencrypt
