@@ -1,15 +1,6 @@
 <template>
   <label :class="['block', { 'cursor-not-allowed': disabled }, labelClass]">
-    <span
-      :class="[
-        { 'text-gray-500': disabled },
-        { block: isBlock },
-        { 'mr-4': !isBlock },
-        { 'mb-1': isBlock },
-        { 'is-required': required },
-        labelClass,
-      ]"
-    >
+    <span :class="classes">
       {{ label }}
     </span>
     <!-- this is where usually a input goes to -->
@@ -42,7 +33,7 @@ export default {
      * Optional classes for the label
      */
     labelClass: {
-      type: String,
+      type: [String, Array, Object],
       default: '',
     },
     /**
@@ -51,6 +42,33 @@ export default {
     required: {
       type: Boolean,
       default: false,
+    },
+  },
+  computed: {
+    classes() {
+      const baseClasses = [
+        { 'text-gray-500': this.disabled },
+        { block: this.isBlock },
+        { 'mr-4': !this.isBlock },
+        { 'mb-1': this.isBlock },
+        { 'is-required': this.required },
+      ];
+
+      if (typeof this.labelClass == 'string') {
+        return baseClasses.push(this.labelClass);
+      }
+
+      if (Array.isArray(this.labelClass)) {
+        return baseClasses.concat(this.labelClass);
+      }
+
+      if (typeof this.labelClass == 'object') {
+        for (const key in this.labelClass) {
+          baseClasses.push({ key: this.labelClass[key] });
+        }
+      }
+
+      return baseClasses;
     },
   },
 };
