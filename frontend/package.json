@@ -17,6 +17,7 @@
     "axios": "^0.19.2",
     "babel-polyfill": "^6.26.0",
     "core-js": "^3.4.4",
+    "focus-trap": "^5.1.0",
     "portal-vue": "^2.1.7",
     "postcss-import": "^12.0.1",
     "postcss-preset-env": "^6.7.0",
