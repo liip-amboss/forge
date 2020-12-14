@@ -12,3 +12,7 @@ spec:
     protocol: TCP
     port: 8000
     targetPort: 8000
+  - name: media
+    protocol: TCP
+    port: 80
+    targetPort: 80

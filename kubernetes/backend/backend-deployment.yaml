@@ -35,10 +35,25 @@ spec:
           name: backend-volume-claim
         ports:
         - containerPort: 8000
+      - image: nginx
+        name: nginx
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "64Mi"
+            cpu: "50m"
+        tty: true
+        volumeMounts:
+        - name: shared-data
+          mountPath: /usr/share/nginx/html/media
+        ports:
+        - containerPort: 80
       restartPolicy: Always
       serviceAccountName: ""
       volumes:
-      - name: backend-volume-claim
+      - name: shared-data
         persistentVolumeClaim:
           claimName: backend-volume-claim
 status: {}
