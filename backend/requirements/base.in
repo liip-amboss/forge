@@ -6,3 +6,4 @@ djangorestframework-simplejwt
 djangorestframework-camel-case
 django-cors-headers
 whitenoise
+drf-yasg
