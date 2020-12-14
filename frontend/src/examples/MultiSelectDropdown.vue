@@ -9,6 +9,7 @@
 <script>
 import ForgeSelect from '@/components/Select.vue';
 export default {
+  name: 'MultiselectDropdownExample',
   components: {
     ForgeSelect,
   },
