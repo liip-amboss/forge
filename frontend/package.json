@@ -23,6 +23,7 @@
     "postcss-preset-env": "^6.7.0",
     "prismjs": "^1.19.0",
     "svgxuse": "^1.2.6",
+    "tabbable": "^5.1.4",
     "tailwindcss": "^1.2.0-canary.5",
     "tailwindcss-transitions": "^2.1.0",
     "tailwindcss-typography": "^2.2.0",
