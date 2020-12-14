@@ -1,0 +1,28 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+- ../base
+
+resources:
+- backend-deployment.yml
+- backend-service.yml
+
+namespace: forge-backend
+
+images:
+- name: IMAGE
+  newName: IMAGE
+  newTag: TAG
+
+#Replace Let's encrypt issuer
+patchesStrategicMerge:
+- |-
+  apiVersion: networking.k8s.io/v1beta1
+  kind: Ingress
+  metadata:
+    name: backend-ingress
+    namespace: forge-backend
+    annotations:
+      kubernetes.io/tls-acme: "true"
+      cert-manager.io/cluster-issuer: letsencrypt
