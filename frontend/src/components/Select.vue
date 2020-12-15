@@ -18,9 +18,8 @@ export default {
 <docs>
 This is a wrapper for the multiselect package. It provides the possibility
 to add default configurations, for instance a translated placeholder.
-The component is supposed to be adjusted for the project.
-
-Examples of usage:
+The component is supposed to be adjusted for the project. See the docs
+for further info.
 
 Basic Dropdown
 
