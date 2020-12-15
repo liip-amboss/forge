@@ -31,7 +31,8 @@ module.exports = {
               "/frontend/components/modal",
               "/frontend/components/simple-table",
               "/frontend/components/notification",
-              "/frontend/components/select"
+              "/frontend/components/select",
+              "/frontend/components/Multiselect"
             ]
           }
         ]
