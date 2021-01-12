@@ -78,7 +78,8 @@ if database_url:
     }
 
 INSTALLED_APPS = [
-    "accounts.apps.AccountsConfig",
+    'drf_yasg',
+    'accounts.apps.AccountsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

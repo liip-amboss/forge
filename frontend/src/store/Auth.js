@@ -65,20 +65,15 @@ export default {
   },
   actions: {
     setToken({ commit }, token) {
-      sessionStorage.setItem('token', token);
       commit('setToken', token);
     },
     setRefreshToken({ commit }, token) {
-      sessionStorage.setItem('refreshToken', token);
       commit('setRefreshToken', token);
     },
     setUserName({ commit }, { firstName, lastName }) {
-      sessionStorage.setItem('firstName', firstName);
-      sessionStorage.setItem('lastName', lastName);
       commit('setUserName', { firstName, lastName });
     },
     removeAuth({ commit }) {
-      sessionStorage.clear();
       commit('removeAuth');
     },
   },

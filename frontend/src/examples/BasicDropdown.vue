@@ -8,6 +8,7 @@
 <script>
 import ForgeSelect from '@/components/Select.vue';
 export default {
+  name: 'BasicSelectExample',
   components: {
     ForgeSelect,
   },

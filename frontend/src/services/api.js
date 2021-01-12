@@ -16,7 +16,11 @@ const loginInterceptor = config => {
   return config;
 };
 
-axios.interceptors.response.use(
+const userApi = axios.create({
+  baseURL: `${process.env.VUE_APP_API_URL}`,
+});
+
+userApi.interceptors.response.use(
   response => {
     // Return a successful response back to the calling service
     return response;
@@ -28,7 +32,7 @@ axios.interceptors.response.use(
     }
 
     // Logout user if token refresh didn't work or user is disabled
-    if (error.config.url.contains('token/refresh')) {
+    if (error.config.url.includes('token/refresh')) {
       // will error
       store.dispatch('Auth/removeAuth');
       router.push({ name: 'root' });
@@ -51,10 +55,6 @@ axios.interceptors.response.use(
       });
   }
 );
-
-const userApi = axios.create({
-  baseURL: `${process.env.VUE_APP_API_URL}`,
-});
 
 userApi.interceptors.request.use(loginInterceptor);
 
