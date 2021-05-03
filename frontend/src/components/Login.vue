@@ -6,20 +6,17 @@
         {{ errorMessage }}
       </span>
 
-      <forge-input
-        v-model.trim="$v.email.$model"
-        class="mt-4"
-        class-input="w-full"
-        :value="email"
-        label="E-Mail"
-        is-block
-        required
-        @blur="$v.email.$touch"
-      >
+      <label-field label="E-Mail" is-block class="mt-4">
+        <input
+          v-model.trim="$v.email.$model"
+          required
+          class="w-full form-input"
+          @blur="$v.email.$touch"
+        />
         <validation-text v-if="$v.email.$error" class="mt-1">
           {{ $t('login.emailRequired') }}
         </validation-text>
-      </forge-input>
+      </label-field>
 
       <forge-password
         v-model.trim.lazy="$v.password.$model"
@@ -51,7 +48,7 @@
 </template>
 
 <script>
-import ForgeInput from '@/components/Input.vue';
+import LabelField from '@/components/LabelField.vue';
 import ForgePassword from '@/components/Password.vue';
 import ValidationText from '@/components/ValidationText.vue';
 import { mapActions } from 'vuex';
@@ -60,7 +57,7 @@ import { login } from '@/services/auth.js';
 
 export default {
   components: {
-    ForgeInput,
+    LabelField,
     ForgePassword,
     ValidationText,
   },
