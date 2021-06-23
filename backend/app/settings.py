@@ -54,6 +54,7 @@ LANGUAGES = (
     ('de', _('German')),
 )
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 #####################
 # SECURITY SETTINGS #
 #####################
