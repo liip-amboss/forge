@@ -4,53 +4,119 @@
 #
 #    pip-compile requirements/dev.in
 #
-asgiref==3.2.7            # via django
-backcall==0.1.0           # via ipython
-certifi==2020.6.20        # via requests
-chardet==3.0.4            # via requests
-coreapi==2.3.3            # via drf-yasg
-coreschema==0.0.4         # via coreapi, drf-yasg
-decorator==4.4.2          # via ipython, traitlets
-django-cors-headers==3.3.0  # via -r requirements/base.in
-django-environ==0.4.5     # via -r requirements/base.in
-django==3.0.7             # via -r requirements/base.in, django-cors-headers, djangorestframework, djangorestframework-simplejwt, drf-yasg
-djangorestframework-camel-case==1.1.2  # via -r requirements/base.in
-djangorestframework-simplejwt==4.4.0  # via -r requirements/base.in
-djangorestframework==3.11.0  # via -r requirements/base.in, djangorestframework-simplejwt, drf-yasg
-drf-yasg==1.20.0          # via -r requirements/base.in
-idna==2.10                # via requests
-importlib-metadata==1.6.0  # via markdown
-inflection==0.5.1         # via drf-yasg
-ipdb==0.13.2              # via -r requirements/dev.in
-ipython-genutils==0.2.0   # via traitlets
-ipython==7.15.0           # via ipdb
-itypes==1.2.0             # via coreapi
-jedi==0.17.0              # via ipython
-jinja2==2.11.2            # via coreschema
-markdown==3.2.2           # via -r requirements/dev.in
-markupsafe==1.1.1         # via jinja2
-packaging==20.4           # via drf-yasg
-parso==0.7.0              # via jedi
-pexpect==4.8.0            # via ipython
-pickleshare==0.7.5        # via ipython
-prompt-toolkit==3.0.5     # via ipython
-psycopg2-binary==2.8.5    # via -r requirements/base.in
-ptyprocess==0.6.0         # via pexpect
-pygments==2.6.1           # via ipython
-pyjwt==1.7.1              # via djangorestframework-simplejwt
-pyparsing==2.4.7          # via packaging
-pytz==2020.1              # via django
-requests==2.24.0          # via coreapi
-ruamel.yaml.clib==0.2.2   # via ruamel.yaml
-ruamel.yaml==0.16.12      # via drf-yasg
-six==1.15.0               # via packaging, traitlets
-sqlparse==0.3.1           # via django
-traitlets==4.3.3          # via ipython
-uritemplate==3.0.1        # via coreapi, drf-yasg
-urllib3==1.25.11          # via requests
-wcwidth==0.2.3            # via prompt-toolkit
-whitenoise==5.1.0         # via -r requirements/base.in
-zipp==3.1.0               # via importlib-metadata
+asgiref==3.3.4
+    # via django
+backcall==0.2.0
+    # via ipython
+certifi==2021.5.30
+    # via requests
+chardet==4.0.0
+    # via requests
+coreapi==2.3.3
+    # via drf-yasg
+coreschema==0.0.4
+    # via
+    #   coreapi
+    #   drf-yasg
+decorator==5.0.9
+    # via
+    #   ipdb
+    #   ipython
+django-cors-headers==3.7.0
+    # via -r requirements/base.in
+django-environ==0.4.5
+    # via -r requirements/base.in
+django-phonenumber-field==5.2.0
+    # via -r requirements/base.in
+django==3.2.4
+    # via
+    #   -r requirements/base.in
+    #   django-cors-headers
+    #   django-phonenumber-field
+    #   djangorestframework
+    #   djangorestframework-simplejwt
+    #   drf-yasg
+djangorestframework-camel-case==1.2.0
+    # via -r requirements/base.in
+djangorestframework-simplejwt==4.7.1
+    # via -r requirements/base.in
+djangorestframework==3.12.4
+    # via
+    #   -r requirements/base.in
+    #   djangorestframework-simplejwt
+    #   drf-yasg
+drf-yasg==1.20.0
+    # via -r requirements/base.in
+idna==2.10
+    # via requests
+inflection==0.5.1
+    # via drf-yasg
+ipdb==0.13.9
+    # via -r requirements/dev.in
+ipython-genutils==0.2.0
+    # via traitlets
+ipython==7.24.1
+    # via ipdb
+itypes==1.2.0
+    # via coreapi
+jedi==0.18.0
+    # via ipython
+jinja2==3.0.1
+    # via coreschema
+markdown==3.3.4
+    # via -r requirements/dev.in
+markupsafe==2.0.1
+    # via jinja2
+matplotlib-inline==0.1.2
+    # via ipython
+packaging==20.9
+    # via drf-yasg
+parso==0.8.2
+    # via jedi
+pexpect==4.8.0
+    # via ipython
+phonenumbers==8.12.25
+    # via -r requirements/base.in
+pickleshare==0.7.5
+    # via ipython
+prompt-toolkit==3.0.19
+    # via ipython
+psycopg2-binary==2.9.1
+    # via -r requirements/base.in
+ptyprocess==0.7.0
+    # via pexpect
+pygments==2.9.0
+    # via ipython
+pyjwt==2.1.0
+    # via djangorestframework-simplejwt
+pyparsing==2.4.7
+    # via packaging
+pytz==2021.1
+    # via django
+requests==2.25.1
+    # via coreapi
+ruamel.yaml.clib==0.2.2
+    # via ruamel.yaml
+ruamel.yaml==0.17.9
+    # via drf-yasg
+sqlparse==0.4.1
+    # via django
+toml==0.10.2
+    # via ipdb
+traitlets==5.0.5
+    # via
+    #   ipython
+    #   matplotlib-inline
+uritemplate==3.0.1
+    # via
+    #   coreapi
+    #   drf-yasg
+urllib3==1.26.5
+    # via requests
+wcwidth==0.2.5
+    # via prompt-toolkit
+whitenoise==5.2.0
+    # via -r requirements/base.in
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools

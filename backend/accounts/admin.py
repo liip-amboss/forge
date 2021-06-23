@@ -18,7 +18,7 @@ class UserAdmin(BaseUserAdmin):
     )
     fieldsets = (
         ('Account', {
-            'fields': ('email', 'password', 'first_name', 'last_name')
+            'fields': ('email', 'password', 'first_name', 'last_name', 'phone_number')
         }),
         ('Intern', {
             'fields': ('is_active', 'is_staff', 'is_superuser')

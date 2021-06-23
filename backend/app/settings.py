@@ -54,6 +54,7 @@ LANGUAGES = (
     ('de', _('German')),
 )
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 #####################
 # SECURITY SETTINGS #
 #####################
@@ -87,7 +88,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'corsheaders'
+    'corsheaders',
+    'phonenumber_field',
 ]
 
 MIDDLEWARE = [
@@ -135,6 +137,11 @@ REST_FRAMEWORK = {
         'djangorestframework_camel_case.parser.CamelCaseJSONParser',
     ),
 }
+
+################
+# PHONE        #
+################
+PHONENUMBER_DEFAULT_REGION = 'CH'
 
 ##################
 # SECURITY       #
