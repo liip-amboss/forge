@@ -3,12 +3,12 @@ from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 
 
-
 class EmailUserManager(BaseUserManager):
     """
     A custom user manager to deal with email as unique identifier for auth
     instead of username.
     """
+
     def _create_user(self, email, password, **extra_fields):
         """
         Creates and saves a User with the given email and password.

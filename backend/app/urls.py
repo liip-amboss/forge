@@ -19,9 +19,7 @@ from django.conf import settings
 from django.conf.urls import url
 from django.conf.urls.static import static
 from django.urls import include, re_path
-from django.views.generic import TemplateView
 from django.views.generic.base import RedirectView
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
@@ -35,23 +33,23 @@ schema_view = get_schema_view(
         title='Forge API',
         default_version='0.0.1',
         description='This document contains the api documentation for the '
-                    'Forge project. <br /><br />'
+        'Forge project. <br /><br />',
     ),
     patterns=api_url_patterns,
     public=True,
 )
 
-urlpatterns = api_url_patterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + [
-    url(r'^redoc/$', schema_view.with_ui('redoc'), name='schema-redoc'),
-    path('admin/', admin.site.urls),
-    re_path(r'^.*', RedirectView.as_view(url='/admin/'), name='admin-redirect')
-]
+urlpatterns = (
+    api_url_patterns
+    + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    + [
+        url(r'^redoc/$', schema_view.with_ui('redoc'), name='schema-redoc'),
+        path('admin/', admin.site.urls),
+        re_path(r'^.*', RedirectView.as_view(url='/admin/'), name='admin-redirect'),
+    ]
+)
 
 if settings.DEBUG:
-    urlpatterns = (
-        [
-            path('api-auth/', include('rest_framework.urls',
-                                      namespace='rest_framework')),
-        ]
-        + urlpatterns
-    )
+    urlpatterns = [
+        path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    ] + urlpatterns
