@@ -1,12 +1,12 @@
-const Home = () => import('@/views/Home.vue');
+const Login = () => import('@/views/Login.vue');
 const LoadingView = () => import('@/views/LoadingView.vue');
 const Welcome = () => import('@/views/Welcome.vue');
 
 export default [
   {
     path: '/',
-    name: 'home',
-    component: Home,
+    name: 'login',
+    component: Login,
   },
   {
     path: '/welcome',

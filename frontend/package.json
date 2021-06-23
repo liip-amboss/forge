@@ -29,7 +29,7 @@
     "tailwindcss-typography": "^2.2.0",
     "v-tooltip": "^2.0.3",
     "vue": "^2.6.11",
-    "vue-i18n": "^8.18.2",
+    "vue-i18n": "^8.24.5",
     "vue-markdown": "^2.2.4",
     "vue-multiselect": "^2.1.6",
     "vue-notification": "^1.3.20",

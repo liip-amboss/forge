@@ -29,6 +29,9 @@ if (
 // Global components
 import './globals/svgIcon';
 
+// Import our layouts
+import '@/layouts';
+
 Vue.config.productionTip = false;
 
 new Vue({
