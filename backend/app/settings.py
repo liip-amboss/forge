@@ -51,10 +51,9 @@ USE_L10N = True
 USE_TZ = True
 
 LANGUAGE_CODE = 'de'
-LANGUAGES = (
-    ('de', _('German')),
-)
+LANGUAGES = (('de', _('German')),)
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 #####################
 # SECURITY SETTINGS #
 #####################
@@ -62,7 +61,9 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env.bool('DEBUG')
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'
+    },
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
@@ -88,7 +89,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'corsheaders'
+    'corsheaders',
+    'phonenumber_field',
 ]
 
 MIDDLEWARE = [
@@ -136,6 +138,11 @@ REST_FRAMEWORK = {
         'djangorestframework_camel_case.parser.CamelCaseJSONParser',
     ),
 }
+
+################
+# PHONE        #
+################
+PHONENUMBER_DEFAULT_REGION = 'CH'
 
 ##################
 # SECURITY       #

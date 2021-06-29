@@ -36,7 +36,9 @@ services:
       - 8000
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.local
     command: sh -c "npm install && npm run serve"
     volumes:
       - ./frontend:/code
@@ -54,7 +56,9 @@ services:
     ports:
       - 8080
   docs:
-    build: ./docs
+    build:
+      context: ./docs
+      dockerfile: Dockerfile.local
     command: sh -c "npm install && npm run start"
     volumes:
       - ./docs:/code

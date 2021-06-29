@@ -1,3 +1,8 @@
-FROM node:13.6.0-alpine3.11
-
+FROM node:lts-alpine as build-stage
 WORKDIR /code
+COPY package*.json ./
+RUN npm install
+COPY . /code
+
+EXPOSE 8081
+CMD ["npm", "run", "start"]

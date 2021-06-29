@@ -1,1 +1,11 @@
 -r base.in
+
+flake8
+pytest
+pytest-cov
+pytest-django
+pytest-env
+factory_boy
+pytest_factoryboy
+django_extensions
+pytest-mock

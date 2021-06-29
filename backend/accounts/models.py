@@ -1,11 +1,14 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
+from phonenumber_field.modelfields import PhoneNumberField
+
 
 class EmailUserManager(BaseUserManager):
     """
     A custom user manager to deal with email as unique identifier for auth
     instead of username.
     """
+
     def _create_user(self, email, password, **extra_fields):
         """
         Creates and saves a User with the given email and password.
@@ -34,6 +37,7 @@ class EmailUserManager(BaseUserManager):
             raise ValueError('Superuser must have is_superuser=True.')
         return self._create_user(email, password, **extra_fields)
 
+
 class User(AbstractUser):
     # we always use a mail address to login, not an username
     USERNAME_FIELD = 'email'
@@ -41,6 +45,7 @@ class User(AbstractUser):
 
     # override username, as it is not used and therefor shouldn't be unique
     username = models.CharField(blank=True, max_length=255)
+    phone_number = PhoneNumberField(blank=True)
 
     REQUIRED_FIELDS = ('first_name', 'last_name')
     objects = EmailUserManager()
