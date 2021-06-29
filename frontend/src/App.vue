@@ -44,7 +44,7 @@ export default {
   },
   mounted() {
     setLanguage('de');
-  }
+  },
 };
 </script>
 
