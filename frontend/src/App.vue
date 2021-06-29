@@ -5,14 +5,9 @@
         <div class="container">
           <div class="flex justify-between">
             <router-link class="text-lg font-semibold no-underline" to="/">
-              Forge
+              {{ $t('general.projectName') }}
             </router-link>
-            <router-link
-              class="text-lg font-semibold no-underline"
-              to="/loading"
-            >
-              Loading
-            </router-link>
+            <div v-if="isLoggedIn">{{ getName }}</div>
           </div>
         </div>
       </header>
@@ -23,7 +18,7 @@
 
     <footer class="py-6 bg-gray-100 app-footer">
       <div class="container">
-        <p class="text-lg font-semibold">App footer</p>
+        <p class="text-lg font-semibold">{{ $t('general.footerText') }}</p>
       </div>
     </footer>
 
@@ -34,14 +29,22 @@
 <script>
 import Notification from '@/components/Notification';
 import { setLanguage } from '@/services/language.service';
+import { mapState, mapGetters } from 'vuex';
 
 export default {
   components: {
     Notification,
   },
+  computed: {
+    ...mapState('Auth', ['firstName', 'lastName', 'refreshToken']),
+    ...mapGetters('Auth', ['isLoggedIn']),
+    getName() {
+      return this.firstName + ' ' + this.lastName;
+    },
+  },
   mounted() {
     setLanguage('de');
-  },
+  }
 };
 </script>
 

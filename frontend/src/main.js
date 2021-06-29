@@ -1,9 +1,10 @@
-import 'babel-polyfill';
+import './polyfills';
 
 import Vue from 'vue';
 import App from './App.vue';
-import router from './router';
-import store from './store';
+import router from './router/';
+import i18n from './i18n';
+import store from './store/index';
 import './directives';
 
 // Styles
@@ -14,11 +15,16 @@ import 'svgxuse';
 
 // Plugins
 import './plugins/vTooltip';
-import './plugins/vueAxe';
 import './plugins/vuePortal';
 import './plugins/smartTable';
 import './plugins/vuelidate';
 import './plugins/notifications';
+if (
+  process.env.NODE_ENV === 'development' &&
+  process.env.VUE_APP_ENABLE_AXE === 'true'
+) {
+  require('./plugins/vueAxe');
+}
 
 // Global components
 import './globals/svgIcon';

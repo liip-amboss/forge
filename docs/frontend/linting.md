@@ -62,14 +62,16 @@ In order to have VSCode propery use these linting things, add these settings
 to your config:
 
 ```json
-// These are all my auto-save configs
-"editor.formatOnSave": true,
+// Turn off vs code formatting
+"editor.formatOnSave": false,
 // turn it off for JS and JSX, we will do this via eslint
 "[javascript]": {
   "editor.formatOnSave": false
 },
 // tell the ESLint plugin to run on save
-"eslint.autoFixOnSave": true
+"editor.codeActionsOnSave": {
+  "source.fixAll.eslint": true
+}
 ```
 
 A good ressource for more info concerning prettier + vscode is

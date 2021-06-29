@@ -1,0 +1,11 @@
+django
+django-environ
+psycopg2-binary
+phonenumbers
+django-phonenumber-field
+djangorestframework
+djangorestframework-simplejwt
+djangorestframework-camel-case
+django-cors-headers
+whitenoise
+drf-yasg

@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: forge-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - image: IMAGE
+        imagePullPolicy: IfNotPresent
+        name: backend
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "100m"
+        tty: true
+        envFrom:
+        - configMapRef:
+            name: env-file
+        volumeMounts:
+        - mountPath: /uploads
+          name: backend-volume-claim
+        ports:
+        - containerPort: 8000
+      - image: nginx
+        name: nginx
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "64Mi"
+            cpu: "50m"
+        tty: true
+        volumeMounts:
+        - name: shared-data
+          mountPath: /usr/share/nginx/html/media
+        ports:
+        - containerPort: 80
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+      - name: shared-data
+        persistentVolumeClaim:
+          claimName: backend-volume-claim
+status: {}
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: backend-volume-claim
+  namespace: forge-backend
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1G
+status: {}
+
+---
+
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: backend-ingress
+  namespace: forge-backend
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  rules:
+  - http:
+  - host: api.forge.ch
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: backend
+          servicePort: 8000
+  tls:
+  - hosts:
+    - api.forge.ch
+    secretName: bag-tls

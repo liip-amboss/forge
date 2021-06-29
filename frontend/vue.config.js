@@ -6,6 +6,12 @@ module.exports = {
       .loader('svgo-loader');
   },
   pluginOptions: {
+    i18n: {
+      locale: 'de',
+      fallbackLocale: 'de',
+      localeDir: 'locales',
+      enableInSFC: false,
+    },
     svgSprite: {
       dir: 'src/assets/icons',
       test: /\.(svg)(\?.*)?$/,
@@ -24,4 +30,10 @@ module.exports = {
     },
   },
   transpileDependencies: ['vuejs-smart-table'],
+  configureWebpack: {
+    devServer: {
+      // We need this because otherwise Webpack prohibits the connection
+      public: `${process.env.FRONTEND_URL}`,
+    },
+  },
 };
