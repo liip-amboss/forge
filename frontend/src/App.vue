@@ -28,6 +28,7 @@
 
 <script>
 import Notification from '@/components/Notification';
+import { setLanguage } from '@/services/language.service';
 import { mapState, mapGetters } from 'vuex';
 
 export default {
@@ -40,6 +41,9 @@ export default {
     getName() {
       return this.firstName + ' ' + this.lastName;
     },
+  },
+  mounted() {
+    setLanguage('de');
   },
 };
 </script>

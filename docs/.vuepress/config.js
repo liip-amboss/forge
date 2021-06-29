@@ -20,6 +20,7 @@ module.exports = {
           "/frontend/accessibilty",
           "/frontend/ConnectingApis",
           "/frontend/linting",
+          "/frontend/localization",
           "/frontend/purge",
           "/frontend/SVG",
           "/frontend/testing",
