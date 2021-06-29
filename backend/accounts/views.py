@@ -7,7 +7,9 @@ from drf_yasg.utils import swagger_auto_schema
 
 @method_decorator(
     name='post',
-    decorator=swagger_auto_schema(operation_summary='Retrieve JWT', tags={'JSON Web Token'})
+    decorator=swagger_auto_schema(
+        operation_summary='Retrieve JWT', tags={'JSON Web Token'}
+    ),
 )
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = serializers.CustomTokenObtainPairSerializer
@@ -15,10 +17,13 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
 @method_decorator(
     name='post',
-    decorator=swagger_auto_schema(operation_summary='Refresh JWT', tags={'JSON Web Token'})
+    decorator=swagger_auto_schema(
+        operation_summary='Refresh JWT', tags={'JSON Web Token'}
+    ),
 )
 class CustomTokenRefreshView(TokenRefreshView):
     """
     This view returns a valid access token, if a valid refresh token is given.
     """
+
     serializer_class = TokenRefreshSerializer

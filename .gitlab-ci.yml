@@ -1,6 +1,37 @@
+default:
+  image: python:3.8
+
 stages:
+  - test
   - build-staging
   - deploy-staging
+
+# this is for testing the backend
+test-and-lint-backend:
+  stage: test
+  variables:
+    POSTGRES_PASSWORD: unsafe
+  services:
+    - postgres:latest
+  script:
+    - cd backend
+    - pip install -r requirements/test.txt
+    - flake8
+    - pytest -c pytest-ci.ini
+  tags:
+    - docker
+
+# this is for testing the frontend
+test-frontend:
+  stage: test
+  image: node:13.6.0-alpine3.11
+  script:
+    - cd frontend
+    - "! grep -ir 'console.log' src/"
+    - npm install
+    - npm run test
+  tags:
+    - docker
 
 build-staging:
   stage: build-staging
