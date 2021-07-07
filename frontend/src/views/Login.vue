@@ -1,7 +1,7 @@
 <template>
-  <div class="container py-24 container--sm">
+  <EmptyLayout>
     <login />
-  </div>
+  </EmptyLayout>
 </template>
 
 <script>
