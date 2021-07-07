@@ -2,15 +2,15 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-	def validate(self, attrs):
-		data = super().validate(attrs)
-		user = self.user
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        user = self.user
 
-		# Add custom fields
-		data['id'] = user.pk
-		data['first_name'] = user.first_name
-		data['last_name'] = user.last_name
-		data['email'] = user.email
-		data['two_factor_active'] = user.two_factor_active
+        # Add custom fields
+        data['id'] = user.pk
+        data['first_name'] = user.first_name
+        data['last_name'] = user.last_name
+        data['email'] = user.email
+        data['two_factor_active'] = user.two_factor_active
 
-		return data
+        return data
