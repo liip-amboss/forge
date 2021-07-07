@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h2>{{ $t('login.title') }}</h2>
-    <form>
+    <form v-if="!show2FA">
+      <h2>{{ $t('login.title') }}</h2>
       <span v-if="errorMessage" class="block mt-4 text-red-600">
         {{ errorMessage }}
       </span>
@@ -44,6 +44,24 @@
         </button>
       </div>
     </form>
+    <form v-else class="max-w-lg">
+      <h2 class="mb-8">{{ $t('login.twoFactorTitle') }}</h2>
+      <span v-if="errorMessage" class="block mt-4 text-red-600">
+        {{ errorMessage }}
+      </span>
+      <p class="mb-6">
+        {{ $t('login.twoFactorText') }}
+      </p>
+
+      <input v-model="twoFactorToken" class="w-full mb-6 form-input" />
+      <button
+        class="px-12 btn btn--primary"
+        :disabled="nextDisabled"
+        @click.prevent="doLogin"
+      >
+        {{ $t('general.next') }}
+      </button>
+    </form>
   </div>
 </template>
 
@@ -66,6 +84,8 @@ export default {
       errorMessage: '',
       email: '',
       password: '',
+      show2FA: false,
+      twoFactorToken: '',
     };
   },
   validations: {
@@ -76,11 +96,31 @@ export default {
       required,
     },
   },
+  computed: {
+    nextDisabled() {
+      // The token has a length of 6
+      return this.twoFactorToken.length !== 6;
+    },
+  },
   methods: {
-    ...mapActions('Auth', ['setToken', 'setRefreshToken', 'setUserName']),
+    ...mapActions('Auth', [
+      'setToken',
+      'setRefreshToken',
+      'setUserName',
+      'setIsTwoFactorActive',
+    ]),
     async doLogin() {
       try {
-        const loginData = await login(this.email, this.password);
+        const response = await login(
+          this.email,
+          this.password,
+          this.twoFactorToken
+        );
+        if (response.status === 204) {
+          this.show2FA = true;
+          return;
+        }
+        const loginData = response.data;
         this.errorMessage = '';
         this.setToken(loginData.access);
         this.setRefreshToken(loginData.refresh);
@@ -88,9 +128,14 @@ export default {
           firstName: loginData.firstName,
           lastName: loginData.lastName,
         });
+        this.setIsTwoFactorActive(loginData.twoFactorActive);
         this.$router.push({ name: 'welcome' });
       } catch (e) {
-        this.errorMessage = this.$t('login.error');
+        if (e.response.data === 'twofactor') {
+          this.errorMessage = this.$t('login.twoFactorError');
+        } else {
+          this.errorMessage = this.$t('login.error');
+        }
       }
     },
   },

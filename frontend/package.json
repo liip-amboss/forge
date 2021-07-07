@@ -22,6 +22,7 @@
     "postcss-import": "^12.0.1",
     "postcss-preset-env": "^6.7.0",
     "prismjs": "^1.19.0",
+    "qrious": "^4.0.2",
     "svgxuse": "^1.2.6",
     "tabbable": "^5.1.4",
     "tailwindcss": "^1.2.0-canary.5",

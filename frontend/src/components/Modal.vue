@@ -30,9 +30,12 @@
           :class="classContainer"
         >
           <div id="modal-header" class="modal__header" :class="classHeader">
-            <slot name="header">
-              &nbsp;
-            </slot>
+            <div>
+              <slot name="header">
+                &nbsp;
+              </slot>
+            </div>
+
             <button
               class="modal__btn-close"
               :class="classBtnClose"
