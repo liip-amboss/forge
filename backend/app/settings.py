@@ -13,6 +13,7 @@ import os
 import environ
 from datetime import timedelta
 from django.utils.translation import ugettext_lazy as _
+import dj_email_url
 
 ########################
 # ENVIRONMENT SETTINGS #
@@ -166,3 +167,17 @@ AUTH_USER_MODEL = "accounts.User"
 # 2FA            #
 ##################
 TWOFACTOR_ISSUER = "Forge"
+
+####################
+# Email            #
+####################
+email_config = dj_email_url.parse(env('EMAIL_URL'))
+EMAIL_FILE_PATH = email_config.get('EMAIL_FILE_PATH', '')
+EMAIL_HOST_USER = email_config.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = email_config.get('EMAIL_HOST_PASSWORD', '')
+EMAIL_HOST = email_config.get('EMAIL_HOST', '')
+EMAIL_PORT = email_config.get('EMAIL_PORT', '')
+EMAIL_BACKEND = email_config.get('EMAIL_BACKEND', '')
+EMAIL_USE_TLS = email_config.get('EMAIL_USE_TLS', '')
+EMAIL_USE_SSL = email_config.get('EMAIL_USE_SSL', '')
+EMAIL_SENDER = env('EMAIL_SENDER', default='')
