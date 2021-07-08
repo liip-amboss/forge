@@ -47,7 +47,7 @@ userApi.interceptors.response.use(
         store.commit('Auth/setRefreshToken', token.refresh);
         // New request with new token
         const config = error.config;
-        config.headers['Authorization'] = `Bearer ${token.acess}`;
+        config.headers['Authorization'] = `Bearer ${token.access}`;
         return axios.request(config);
       })
       .catch(error => {
