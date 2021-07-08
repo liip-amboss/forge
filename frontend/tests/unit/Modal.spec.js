@@ -5,11 +5,15 @@ config.stubs['svg-icon'] = '<div />';
 config.stubs['mounting-portal'] = '<div><input /></div>';
 
 import Modal from '@/components/Modal';
+import createFocusTrap from 'focus-trap';
 
 // Mock addEventListener and removeEventListener to check if component is registering an event listener
 const map = {};
 window.addEventListener = jest.fn((event, cb) => (map[event] = cb));
 window.removeEventListener = jest.fn(event => delete map[event]);
+
+jest.mock('focus-trap', () => jest.fn(() => {}));
+createFocusTrap.mockImplementation(() => ({ activate: () => {} }));
 
 describe('Modal component', () => {
   let wrapper;
