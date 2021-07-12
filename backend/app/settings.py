@@ -163,6 +163,10 @@ SIMPLE_JWT = {
 ##################
 AUTH_USER_MODEL = "accounts.User"
 
+##################
+# 2FA            #
+##################
+TWOFACTOR_ISSUER = "Forge"
 
 ####################
 # Email            #
