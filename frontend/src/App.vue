@@ -7,6 +7,9 @@
             <router-link class="text-lg font-semibold no-underline" to="/">
               {{ $t('general.projectName') }}
             </router-link>
+            <router-link class="text-lg font-semibold no-underline" to="/grid">
+              Grid
+            </router-link>
             <div v-if="isLoggedIn">{{ getName }}</div>
           </div>
         </div>
