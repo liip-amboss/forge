@@ -61,7 +61,7 @@
     "svgo-loader": "^2.1.0",
     "tailwindcss": "^1.2.0",
     "vue-axe": "^1.0.7",
-    "vue-cli-plugin-styleguidist": "^4.24.1",
+    "vue-cli-plugin-styleguidist": "^4.40.0",
     "vue-cli-plugin-svg-sprite": "^1.0.0",
     "vue-template-compiler": "^2.6.11"
   }
