@@ -9,6 +9,7 @@ module.exports = {
   },
   rules: {
     'vue/component-name-in-template-casing': 0,
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
   },
   overrides: [
     {

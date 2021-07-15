@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "vuepress dev",
+    "start": "vuepress dev --no-cache",
     "build": "vuepress build"
   },
   "devDependencies": {

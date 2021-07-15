@@ -13,7 +13,8 @@ const addLoading = el => {
 const removeLoading = el => {
   el.classList.remove('loading-directive__container');
   el.querySelectorAll('.loading-directive').forEach(value => {
-    value.remove();
+    // value.remove is not supported in IE11 so we use removeChild on the parent element
+    value.parentNode.removeChild(value);
   });
 };
 

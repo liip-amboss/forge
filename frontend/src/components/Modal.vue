@@ -12,7 +12,10 @@
         v-if="isOpen"
         class="modal"
         :class="classModal"
+        role="dialog"
         :aria-hidden="isOpen ? 'false' : 'true'"
+        aria-labelledby="modal-header"
+        aria-describedby="modal-body"
         @keydown.esc="hideModal"
       >
         <div
@@ -21,21 +24,26 @@
           @click="hideModal"
         />
 
-        <div class="modal__container" :class="classContainer">
-          <div class="modal__header" :class="classHeader">
+        <div
+          id="modal-container"
+          class="modal__container"
+          :class="classContainer"
+        >
+          <div id="modal-header" class="modal__header" :class="classHeader">
             <slot name="header">
               &nbsp;
             </slot>
             <button
               class="modal__btn-close"
               :class="classBtnClose"
+              aria-label="Close Modal"
               @click="hideModal"
             >
-              <svg-icon name="close" class="svg-icon--sm" />
+              <svg-icon name="close" class="svg-icon--sm" focusable="false" />
             </button>
           </div>
 
-          <div class="modal__body" :class="classBody">
+          <div id="modal-body" class="modal__body" :class="classBody">
             <slot />
           </div>
 
@@ -49,6 +57,8 @@
 </template>
 
 <script>
+import createFocusTrap from 'focus-trap';
+
 export default {
   name: 'Modal',
   props: {
@@ -116,11 +126,19 @@ export default {
       type: String,
       default: 'body',
     },
+    /**
+     * Specifies the initial focus element. Defaults to the close button
+     */
+    focusElement: {
+      type: String,
+      default: '.modal__btn-close',
+    },
   },
 
   data() {
     return {
       initiallyFocusedElement: null,
+      focusTrap: null,
     };
   },
 
@@ -135,6 +153,11 @@ export default {
       if (opened) {
         this.saveLastActiveFocus();
         this.bodyLock();
+        this.activateFocusTrap();
+      } else {
+        this.refocusLastActive();
+        this.bodyUnlock();
+        this.deactivateFocusTrap();
       }
     },
   },
@@ -145,6 +168,7 @@ export default {
 
   beforeDestroy() {
     window.removeEventListener('keyup', this.handleKeyEvent);
+    this.bodyUnlock();
   },
 
   methods: {
@@ -162,6 +186,7 @@ export default {
       this.$emit('closeModal');
       this.refocusLastActive();
       this.bodyUnlock();
+      this.deactivateFocusTrap();
     },
     refocusLastActive() {
       if (this.initiallyFocusedElement instanceof HTMLElement) {
@@ -170,6 +195,20 @@ export default {
     },
     saveLastActiveFocus() {
       this.initiallyFocusedElement = document.activeElement;
+    },
+    activateFocusTrap() {
+      // We need next tick to be sure that the element is rendered
+      this.$nextTick(() => {
+        this.focusTrap = createFocusTrap('#modal-container', {
+          initialFocus: this.focusElement,
+        });
+        this.focusTrap.activate();
+      });
+    },
+    deactivateFocusTrap() {
+      if (this.focusTrap != null) {
+        this.focusTrap.deactivate();
+      }
     },
     handleKeyEvent(event) {
       if (event.code === 'Escape' && this.isOpen) {
@@ -186,8 +225,9 @@ let isOpen = false;
 
 <button @click="isOpen = true">Open modal</button>
 
-<Modal :isOpen="isOpen" @closeModal="isOpen = false">
+<Modal :isOpen="isOpen" @closeModal="isOpen = false" focusElement="#focused-input">
   <h4 slot="header">Header</h4>
+  <input class="form-input" id="focused-input" />
   <p>
     Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nisi autem
     vitae provident, molestiae officiis necessitatibus dolor esse debitis
