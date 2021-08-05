@@ -63,5 +63,4 @@ npx tailwind init --full
 Now you should have a tailwind.config.js in the root of your project ready. See [tailwind configurations](https://tailwindcss.com/docs/configuration/) for further details.
 
 ### Additional Tailwind Plugins
-- [tailwindcss-transitions](https://github.com/benface/tailwindcss-transitions)
 - [tailwindcss-typography](https://github.com/benface/tailwindcss-typography)
