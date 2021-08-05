@@ -2,6 +2,7 @@ module.exports = {
   prefix: '',
   important: false,
   separator: ':',
+  mode: 'jit',
   theme: {
     screens: {
       sm: '640px',
