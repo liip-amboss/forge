@@ -2,10 +2,12 @@
   <DefaultLayout>
     <div class="container py-24 container--sm">
       <h1>{{ $t('dashboard.title') }}</h1>
-      <button v-if="isTwoFactorActive" @click="deactivate2FA">
-        Disable TwoFactor
+      <button v-if="isTwoFactorActive" class="mr-4" @click="deactivate2FA">
+        {{ $t('twoFactor.disable') }}
       </button>
-      <button v-else @click="activate2FA">Enable TwoFactor</button>
+      <button v-else class="mr-4" @click="activate2FA">
+        {{ $t('twoFactor.enable') }}
+      </button>
       <modal
         :is-open="showTwoFactorWizard"
         class-body="two-factor-modal"

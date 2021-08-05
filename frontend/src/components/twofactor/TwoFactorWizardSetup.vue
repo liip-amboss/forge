@@ -1,6 +1,6 @@
 <template>
   <two-factor-wizard-skeleton>
-    <template v-slot:header>Einrichtung einer Authentication App</template>
+    <template v-slot:header>{{ $t('twoFactor.setup.title') }}</template>
 
     <ul class="list-decimal list-inside setup-list">
       <li>

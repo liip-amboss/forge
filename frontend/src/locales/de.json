@@ -22,11 +22,14 @@
   },
   "twoFactorAuthentication": "Zwei-Faktor-Überprüfung",
   "twoFactor": {
+    "enable": "Zwei-Faktor-Überprüfung aktivieren",
+    "disable": "Zwei-Faktor-Überprüfung deaktivieren",
     "introduction": {
       "title": "Zwei-Faktor-Überprüfung",
       "text": "Ein zweiter Schritt nach Eingabe Ihres Passwortes überprüft, dass Sie die Person sind, die sich gerade einloggt.\n\nDurch diese Aktivierung erhalten Sie Überprüfungscodes von einer Authentication App Ihrer Wahl. Das funktioniert auch, wenn Sie keine Internetverbindung haben."
     },
     "setup": {
+      "title": "Einrichtung einer Authentication App",
       "firstPoint": "Bitte laden Sie eine Authentication App ihrer Wahl vom {appStore} (wenn Sie ein iPhone benutzen) oder {googleStore} (wenn Sie ein Android Gerät haben) herunter. z.B. die Google Authenticator App",
       "appStore": "App Store",
       "googleStore": "Google Play Store",
