@@ -7,9 +7,9 @@
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint --no-fix",
-    "build:styleguide": "vue-cli-service styleguidist:build",
+    "build:styleguide": "FORGE_ENV=styleguide vue-cli-service styleguidist:build",
     "lint-fix": "vue-cli-service lint",
-    "serve:styleguide": "vue-cli-service styleguidist",
+    "serve:styleguide": "FORGE_ENV=styleguide vue-cli-service styleguidist",
     "start": "npm run serve",
     "test": "vue-cli-service test:unit"
   },

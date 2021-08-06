@@ -2,7 +2,7 @@ module.exports = {
   prefix: '',
   important: false,
   separator: ':',
-  mode: 'jit',
+  mode: process.env.FORGE_ENV === 'styleguide' ? '' : 'jit',
   theme: {
     screens: {
       sm: '640px',
