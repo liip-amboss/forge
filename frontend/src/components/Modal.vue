@@ -30,9 +30,7 @@
           :class="classContainer"
         >
           <div id="modal-header" class="modal__header" :class="classHeader">
-            <slot name="header">
-              &nbsp;
-            </slot>
+            <slot name="header"> &nbsp; </slot>
             <button
               class="modal__btn-close"
               :class="classBtnClose"
@@ -57,7 +55,7 @@
 </template>
 
 <script>
-import createFocusTrap from 'focus-trap';
+import * as focusTrap from 'focus-trap';
 
 export default {
   name: 'Modal',
@@ -199,7 +197,7 @@ export default {
     activateFocusTrap() {
       // We need next tick to be sure that the element is rendered
       this.$nextTick(() => {
-        this.focusTrap = createFocusTrap('#modal-container', {
+        this.focusTrap = focusTrap.createFocusTrap('#modal-container', {
           initialFocus: this.focusElement,
         });
         this.focusTrap.activate();
