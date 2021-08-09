@@ -23,9 +23,17 @@ from django.views.generic.base import RedirectView
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
+from rest_framework import routers
+
+from accounts.urls import router as accounts_router
+
+router = routers.DefaultRouter()
+
+router.registry.extend(accounts_router.registry)
 
 api_url_patterns = [
     path('api/v1/account/', include('accounts.urls')),
+    path('api/v1/', include(router.urls))
 ]
 
 schema_view = get_schema_view(

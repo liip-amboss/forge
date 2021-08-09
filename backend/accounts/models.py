@@ -47,5 +47,7 @@ class User(AbstractUser):
     username = models.CharField(blank=True, max_length=255)
     phone_number = PhoneNumberField(blank=True)
 
+    image = models.ImageField(upload_to='uploads/', blank=True, null=True)
+
     REQUIRED_FIELDS = ('first_name', 'last_name')
     objects = EmailUserManager()
