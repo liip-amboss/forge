@@ -1,2 +1,4 @@
 cookiecutter==1.16.0
 fire==0.4.0
+pycryptodome==3.10.1
+doctl==0.2.3
