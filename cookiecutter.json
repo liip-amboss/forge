@@ -4,7 +4,7 @@
   "project_short_description": "Testing out using cookiecutter to generate new forge apps",
   "_copy_without_render": [
     "*.html",
-    "*frontend",
-    "*.md"
+    "*.md",
+    "*.vue"
   ]
 }
