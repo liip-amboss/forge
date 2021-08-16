@@ -108,8 +108,8 @@ class Builder:
         Generates project with given name from cookiecutter template
         """
         gl = gitlab.Gitlab.from_config('liip', ['/etc/python-gitlab.cfg'])
-        group_id = gl.groups.list(search='amboss')[0].id
-        project = gl.projects.create({'name': project_name, 'namespace_id': group_id})
+        amboss_group_id = gl.groups.list(search='amboss', top_level_only=True)[0].id
+        project = gl.projects.create({'name': project_name, 'namespace_id': amboss_group_id})
         project.variables.create({'key': 'STAGING_DOMAIN', 'value': f'{project_name}-dev.bedev.liip.ch'})
         project.variables.create({'key': 'STAGING_SSH_PRIVATE_KEY', 'value': deploy_ssh_key})
         project.deploytokens.create({
