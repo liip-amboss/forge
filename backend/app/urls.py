@@ -48,8 +48,8 @@ urlpatterns = (
     ]
 )
 
-# Only add redoc if we are in debug mode or the ENABLE_REDOC_ONLY_IN_DEBUG is False
-if (settings.DEBUG and settings.ENABLE_REDOC_ONLY_IN_DEBUG) or not settings.ENABLE_REDOC_ONLY_IN_DEBUG:
+# Only add redoc if redoc is enabled
+if settings.ENABLE_REDOC:
     urlpatterns = (
             [
                 url(r'^redoc/$', schema_view.with_ui('redoc'), name='schema-redoc'),
