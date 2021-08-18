@@ -177,3 +177,20 @@ EMAIL_BACKEND = email_config.get('EMAIL_BACKEND', '')
 EMAIL_USE_TLS = email_config.get('EMAIL_USE_TLS', '')
 EMAIL_USE_SSL = email_config.get('EMAIL_USE_SSL', '')
 EMAIL_SENDER = env('EMAIL_SENDER', default='')
+
+#################
+# documentation #
+#################
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'in': 'header',
+            'description': 'The api uses JSON Web Tokens to grant access to the '
+                           'endpoints which need permissions. Check the '
+                           'JSON Web Token section for more information.',
+            'name': 'Authorization',
+            'type': 'apiKey',
+        },
+    }
+}
+ENABLE_REDOC_ONLY_IN_DEBUG = True
