@@ -52,7 +52,6 @@ const transpileDependencies = [
   'camelcase',
   'tailwindcss',
   '@tailwindcss/custom-forms',
-  'tailwindcss-transitions',
   'tailwindcss-typography',
   'focus-trap',
   'vue-axe',

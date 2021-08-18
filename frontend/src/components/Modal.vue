@@ -1,8 +1,8 @@
 <template>
   <mounting-portal v-if="isOpen" append :mount-to="mountPoint">
     <transition
-      enter-active-class="transition-opacity transition-ease-out"
-      leave-active-class="transition-opacity transition-ease-in"
+      enter-active-class="transition-opacity ease-ease-out"
+      leave-active-class="transition-opacity ease-ease-in"
       enter-class="opacity-0"
       enter-to-class="opacity-100"
       leave-class="opacity-100"
