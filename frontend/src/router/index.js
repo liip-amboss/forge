@@ -26,7 +26,7 @@ const checkPermissions = to => {
 
 router.beforeEach((to, from, next) => {
   const goToLogin = () => {
-    return next({ name: 'home' });
+    return next({ name: 'login' });
   };
 
   if (!checkPermissions(to)) {

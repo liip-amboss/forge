@@ -101,7 +101,7 @@ export default {
           firstName: loginData.firstName,
           lastName: loginData.lastName,
         });
-        this.$router.push({ name: 'welcome' });
+        this.$router.push({ name: 'dashboard' });
       } catch (e) {
         this.errorMessage = this.$t('login.error');
       }
