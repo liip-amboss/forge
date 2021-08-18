@@ -22,7 +22,7 @@ class Activate2FA(APIView):
     """
 
     def post(self, request, *args, **kwargs):
-        if not request.user:
+        if not request.user.is_authenticated:
             return Response(status=401)
 
         code = request.data['code']
@@ -53,7 +53,7 @@ class Deactivate2FA(APIView):
     """
 
     def post(self, request, *args, **kwargs):
-        if not request.user:
+        if not request.user.is_authenticated:
             return Response(status=401)
 
         request.user.two_factor_active = False
@@ -78,7 +78,7 @@ class Get2FAUrl(APIView):
     """
 
     def get(self, request, *args, **kwargs):
-        if not request.user:
+        if not request.user.is_authenticated:
             return Response(status=401)
 
         secret = pyotp.random_base32()
