@@ -75,7 +75,9 @@ services:
       - 8081
 
   styleguide:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.local
     command: sh -c "npm install && npm run serve:styleguide"
     volumes:
       - ./frontend:/code

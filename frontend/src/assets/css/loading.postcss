@@ -1,15 +1,11 @@
-.loading-directive__container {
-  @apply relative;
-  overflow: hidden;
-}
-
-.loading-directive {
-  @apply absolute;
+.loading {
+  @apply fixed;
   @apply inset-0;
   @apply min-h-32;
   @apply z-50;
+  overflow: hidden;
 
-  background-color: rgba(255, 255, 255, .8);
+  background-color: rgba(0, 0, 0, .75);
 
   /*
   This div is to center the loader relative to the
@@ -36,7 +32,7 @@
     & svg {
       @apply h-16 w-16;
       @apply absolute;
-      @apply text-gray-700 fill-current;
+      @apply text-white fill-current;
 
       animation: rotate 2s infinite ease-in-out;
     }

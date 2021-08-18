@@ -1,5 +1,4 @@
 const Login = () => import('@/views/Login.vue');
-const LoadingView = () => import('@/views/LoadingView.vue');
 const Dashboard = () => import('@/views/Dashboard.vue');
 
 export default [
@@ -15,10 +14,5 @@ export default [
     meta: {
       requiresAuth: true,
     },
-  },
-  {
-    path: '/loading',
-    name: 'loading',
-    component: LoadingView,
   },
 ];
