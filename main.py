@@ -1,3 +1,5 @@
+import secrets
+
 import fire
 import logging
 import doctl
@@ -38,7 +40,7 @@ class Builder:
         droplet_id = droplet[0]['id']
         server_ip = self.get_droplet_ip(droplet_id)
         self.create_domain(project_name=project_name, ip_address=server_ip)
-        project_dir = self.create_project_folder()
+        project_dir = self.create_project_folder(project_name=project_name)
         git_ssh_url = self.create_gitlab_repo(project_name=project_name, deploy_ssh_key=deploy_key['private'])
         self.push_project(git_url=git_ssh_url, project_dir=project_dir)
 
@@ -49,7 +51,7 @@ class Builder:
         :param ip_address: ip of droplet to connect to domain
         """
         doctl.compute.domain.create(
-            domain=f'{project_name}-dev.bedev.liip.ch',
+            domain=f'{project_name.lower().replace(" ", "")}-dev.bedev.liip.ch',
             ip_address=ip_address
         )
 
@@ -96,11 +98,16 @@ class Builder:
 
         return droplet[0]['networks']['v4'][1]['ip_address']
 
-    def create_project_folder(self):
+    def create_project_folder(self, project_name):
         """
         Generates project with given name from cookiecutter template
         """
-        project_dir = cookiecutter('.', output_dir='../')
+        project_context = {
+            "project_name": project_name,
+            "django_secret_key_local": secrets.token_hex(100),
+            "django_secret_key_staging": secrets.token_hex(100),
+        }
+        project_dir = cookiecutter('.', output_dir='../', extra_context=project_context)
         return project_dir
 
     def create_gitlab_repo(self, project_name, deploy_ssh_key):
@@ -126,7 +133,8 @@ class Builder:
         repo.git.add(all=True)
         repo.index.commit("initial commit")
         remote = repo.create_remote('origin', url=git_url)
-        remote.push(refspec='{}:{}'.format('master', 'origin/master'))
+        remote.push(refspec='{}:{}'.format('master', 'master'))
+        remote.push(refspec='{}:{}'.format('master', 'develop'))
 
 
 if __name__ == "__main__":

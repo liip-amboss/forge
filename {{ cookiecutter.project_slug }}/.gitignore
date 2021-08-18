@@ -1,6 +1,6 @@
 ##### BASE IGNORES #####
 .idea/
-*.env
+*.env.*
 
 ##### FORONTEND IGNORES #####
 frontend/node_modules
