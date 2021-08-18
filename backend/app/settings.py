@@ -193,4 +193,4 @@ SWAGGER_SETTINGS = {
         },
     }
 }
-ENABLE_REDOC_ONLY_IN_DEBUG = True
+ENABLE_REDOC = env.bool("ENABLE_REDOC", default=True)
