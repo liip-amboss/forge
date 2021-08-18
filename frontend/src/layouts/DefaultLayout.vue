@@ -1,7 +1,7 @@
 <template>
   <div class="app-master">
     <div class="app-content">
-      <header class="py-6 bg-black text-white">
+      <header class="py-6 text-white bg-black">
         <div class="container">
           <div class="flex justify-between">
             <router-link class="text-lg font-semibold no-underline" to="/">
@@ -41,7 +41,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style>
 .app-logo {
   max-height: 50px;
 }

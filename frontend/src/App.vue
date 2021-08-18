@@ -7,10 +7,14 @@
 
 <script>
 import Notification from '@/components/Notification';
+import { setLanguage } from '@/services/language.service';
 
 export default {
   components: {
     Notification,
+  },
+  mounted() {
+    setLanguage('de');
   },
 };
 </script>
@@ -20,9 +24,5 @@ export default {
   min-height: 100%;
   display: grid;
   grid-template-rows: 1fr auto;
-}
-.app-footer {
-  grid-row-start: 2;
-  grid-row-end: 3;
 }
 </style>

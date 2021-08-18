@@ -34,7 +34,7 @@ import Modal from '@/components/Modal';
 import TwoFactorWizard from '@/components/twofactor/TwoFactorWizard';
 
 export default {
-  name: 'Home',
+  name: 'Dashboard',
   components: {
     Modal,
     TwoFactorWizard,

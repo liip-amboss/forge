@@ -140,7 +140,7 @@ export default {
           lastName: loginData.lastName,
         });
         this.setIsTwoFactorActive(loginData.twoFactorActive);
-        this.$router.push({ name: 'welcome' });
+        this.$router.push({ name: 'dashboard' });
       } catch (e) {
         if (e.response.data === 'twofactor') {
           this.errorMessage = this.$t('login.twoFactorError');
