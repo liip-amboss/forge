@@ -43,11 +43,19 @@ urlpatterns = (
     api_url_patterns
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     + [
-        url(r'^redoc/$', schema_view.with_ui('redoc'), name='schema-redoc'),
         path('admin/', admin.site.urls),
         re_path(r'^.*', RedirectView.as_view(url='/admin/'), name='admin-redirect'),
     ]
 )
+
+# Only add redoc if we are in debug mode or the ENABLE_REDOC_ONLY_IN_DEBUG is False
+if (settings.DEBUG and settings.ENABLE_REDOC_ONLY_IN_DEBUG) or not settings.ENABLE_REDOC_ONLY_IN_DEBUG:
+    urlpatterns = (
+            [
+                url(r'^redoc/$', schema_view.with_ui('redoc'), name='schema-redoc'),
+            ]
+            + urlpatterns
+    )
 
 if settings.DEBUG:
     urlpatterns = [
