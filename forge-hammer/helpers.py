@@ -1,6 +1,7 @@
 from cryptography.hazmat.primitives import serialization as crypto_serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.backends import default_backend as crypto_default_backend
+from git import Repo
 
 
 def generate_deploy_ssh_key():
@@ -23,3 +24,15 @@ def generate_deploy_ssh_key():
     )
 
     return {'public': public_key.decode('utf-8'), 'private': private_key.decode('utf-8')}
+
+
+def initialise_repo(git_url: str, project_dir: str):
+    """
+    Creates a git repo from the given folder and pushes it to the given git url.
+    """
+    repo = Repo.init(project_dir)
+    repo.git.add(all=True)
+    repo.index.commit("initial commit")
+    remote = repo.create_remote('origin', url=git_url)
+    remote.push(refspec='{}:{}'.format('master', 'master'))
+    remote.push(refspec='{}:{}'.format('master', 'develop'))

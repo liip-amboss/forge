@@ -5,7 +5,7 @@
   "django_secret_key_local": "",
   "django_secret_key_staging": "",
   "docker_registry_url": "docker.gitlab.liip.ch",
-  "docker_registry_path": "amboss/{{ cookiecutter.project_name }}",
+  "docker_registry_path": "amboss/{{ cookiecutter.project_slug }}",
   "_copy_without_render": [
     "*.html",
     "*.md",

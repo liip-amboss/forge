@@ -1,5 +1,4 @@
 cookiecutter==1.16.0
 fire==0.4.0
-doctl==0.2.3
 python-gitlab==2.10.0
 GitPython==3.1.18

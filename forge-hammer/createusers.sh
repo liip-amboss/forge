@@ -6,8 +6,8 @@ adduser --gecos "" --disabled-password liip
 # Copy root ssh keys to new users
 mkdir -p /home/manager/.ssh
 mkdir -p /home/liip/.ssh
-cp .ssh/authorized_keys /home/manager/.ssh/
-cp .ssh/authorized_keys /home/liip/.ssh/
+cp /root/.ssh/authorized_keys /home/manager/.ssh/
+cp /root/.ssh/authorized_keys /home/liip/.ssh/
 chmod 0600 /home/manager/.ssh/authorized_keys; chown -R manager:manager /home/manager/.ssh/
 chmod 0600 /home/liip/.ssh/authorized_keys; chown -R liip:liip /home/liip/.ssh/
 # Allow manager to run sudo commands without password
