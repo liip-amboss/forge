@@ -1,18 +1,17 @@
 <template>
   <PasswordFormLayout>
-    <login />
+    <password-reset />
   </PasswordFormLayout>
 </template>
 
 <script>
-import Login from '@/components/Login.vue';
+import PasswordReset from '@/components/PasswordReset.vue';
 import PasswordFormLayout from '@/layouts/PasswordFormLayout';
 
 export default {
-  name: 'LoginView',
   components: {
+    PasswordReset,
     PasswordFormLayout,
-    Login,
   },
 };
 </script>
