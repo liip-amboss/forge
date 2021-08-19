@@ -1,17 +1,17 @@
 <template>
   <PasswordFormLayout>
-    <login />
+    <forgot-password />
   </PasswordFormLayout>
 </template>
 
 <script>
-import Login from '@/components/Login.vue';
+import ForgotPassword from '@/components/ForgotPassword.vue';
 import PasswordFormLayout from '@/layouts/PasswordFormLayout';
 
 export default {
   components: {
+    ForgotPassword,
     PasswordFormLayout,
-    Login,
   },
 };
 </script>

@@ -7,4 +7,7 @@ urlpatterns = [
     path(
         'token/refresh/', views.CustomTokenRefreshView.as_view(), name='token_refresh'
     ),
+    path('reset-password/email/', views.ResetPasswordEmail.as_view(), name='reset-email'),
+    path('reset-password/check-token/', views.CheckToken.as_view(), name='check-token'),
+    path('reset-password/reset/', views.ResetPassword.as_view(), name='reset'),
 ]
