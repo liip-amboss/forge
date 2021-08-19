@@ -1,17 +1,37 @@
-import doctl
+import subprocess
 
 
 def create_droplet(name: str, size: str, ssh_keys: list):
-    return doctl.compute.droplet.create(
-        name=name,
-        image='docker-20-04',
-        size=size,
-        region='fra1',
-        enable_monitoring=True,
-        enable_private_networking=False,
-        ssh_keys=ssh_keys,
-        wait=True
+    """
+    Create Droplet and return its IP
+    :param name: Name of droplet
+    :param size: Droplet size
+    :param ssh_keys: List of SSH key fingerprints to be added to the root user authorised keys.
+    Keys must be added to DO first.
+    """
+    command = ['doctl', 'compute', 'droplet', 'create']
+    args = [
+        name,
+        f'--size={size}',
+        f'--ssh-keys={",".join(ssh_keys)}',
+        '--image=docker-20-04',
+        '--region=fra1',
+        '--enable-monitoring=True',
+        '--enable-private-networking=False',
+        '--wait=True',
+        '--user-data-file=createusers.sh',
+        '--format=PublicIPv4'
+    ]
+    command.extend(args)
+
+    process = subprocess.run(
+        command,
+        universal_newlines=True,
+        stdout=subprocess.PIPE
     )
+    droplet_ip = process.stdout.splitlines()[1]
+
+    return droplet_ip
 
 
 def create_domain(domain: str, ip_address):
@@ -20,10 +40,14 @@ def create_domain(domain: str, ip_address):
     :param project_name: Name of project
     :param ip_address: ip of droplet to connect to domain
     """
-    doctl.compute.domain.create(
-        domain=domain,
-        ip_address=ip_address
-    )
+    command = ['doctl', 'compute', 'domain', 'create']
+    args = [
+        domain,
+        f'--ip-address={ip_address}',
+    ]
+    command.extend(args)
+
+    return subprocess.run(command)
 
 
 def add_ssh_key(key_name: str, public_key: str):
@@ -32,19 +56,19 @@ def add_ssh_key(key_name: str, public_key: str):
     :param project_prefix: Prefix of project
     :param public_key: Public key to be added to DO
     """
-    response = doctl.compute.ssh_key.create(
-        key_name=key_name,
-        public_key=public_key,
+    command = ['doctl', 'compute', 'ssh-key', 'create']
+    args = [
+        key_name,
+        f'--public-key={public_key}',
+        '--format=FingerPrint',
+    ]
+    command.extend(args)
+    process = subprocess.run(
+        command,
+        universal_newlines=True,
+        stdout=subprocess.PIPE
     )
+    fingerprint = process.stdout.splitlines()[1]
 
-    return response[0]['fingerprint']
+    return fingerprint
 
-
-def get_droplet_ip_from_id(droplet_id: int):
-    """
-    Return IP of given droplet ID
-    :param droplet_id: Name of project
-    """
-    droplet = doctl.compute.droplet.get(str(droplet_id))
-
-    return droplet[0]['networks']['v4'][1]['ip_address']
