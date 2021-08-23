@@ -1,0 +1,38 @@
+# Build a docker image for frontend, backend and docs suffixed with the environment name
+# and push it to the gitlab container repository of this project
+.build-definition: &build-definition
+  image: docker:19.03.8
+  tags:
+    - docker-privileged
+  variables:
+    DOCKER_DRIVER: overlay2
+  services:
+    - docker:18.09-dind
+  before_script:
+    - docker info
+  script:
+    - docker build --build-arg build_env=build-${ENVIRONMENT} -t ${CI_REGISTRY}/${CI_PROJECT_PATH}:backend_${ENVIRONMENT} backend/
+    - docker build --build-arg build_env=build-${ENVIRONMENT} -t ${CI_REGISTRY}/${CI_PROJECT_PATH}:docs_${ENVIRONMENT} docs/
+    - docker build --build-arg build_env=build-${ENVIRONMENT} -t ${CI_REGISTRY}/${CI_PROJECT_PATH}:frontend_${ENVIRONMENT} frontend/
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN ${CI_REGISTRY}
+    - docker push ${CI_REGISTRY}/${CI_PROJECT_PATH}:backend_${ENVIRONMENT}
+    - docker push ${CI_REGISTRY}/${CI_PROJECT_PATH}:docs_${ENVIRONMENT}
+    - docker push ${CI_REGISTRY}/${CI_PROJECT_PATH}:frontend_${ENVIRONMENT}
+
+# Copy deploy folder to given target server and run deploy.sh.
+# Deploy SSH key is injected into gitlab docker runner.
+.deploy-definition: &deploy-definition
+  image: alpine:latest
+  tags:
+    - docker-privileged
+  before_script:
+    - apk add --no-cache rsync
+    - 'which ssh-agent || ( apk add --no-cache openssh-client )'
+    - eval $(ssh-agent -s)
+    - echo "$DEPLOYMENT_SSH_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - ssh manager@${DEPLOYMENT_TARGET_HOST} "mkdir -p ~/srv/app/deploy"
+    - rsync -r ./deploy/* manager@${DEPLOYMENT_TARGET_HOST}:~/srv/app/
+    - ssh manager@${DEPLOYMENT_TARGET_HOST} "cd ~/srv/app/; ./scripts/deploy.sh ${CI_DEPLOY_USER} ${CI_DEPLOY_PASSWORD} ${CI_REGISTRY} ${CI_PROJECT_PATH} ${ENVIRONMENT}"
