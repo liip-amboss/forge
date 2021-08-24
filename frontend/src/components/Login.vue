@@ -28,7 +28,7 @@
         @blur="$v.password.$touch"
       >
         <validation-text v-if="$v.password.$error" class="mt-1">
-          Password is required
+          {{ $t('login.passwordRequired') }}
         </validation-text>
       </forge-password>
       <div class="flex items-center justify-between mt-6">

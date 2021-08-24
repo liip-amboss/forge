@@ -38,7 +38,6 @@ export default {
     token: {
       type: String,
       required: true,
-      readonly: true,
     },
   },
   data() {

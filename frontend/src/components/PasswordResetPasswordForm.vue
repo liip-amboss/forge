@@ -11,10 +11,7 @@
         :placeholder="$t('resetPassword.password')"
         is-block
         required
-        @blur="
-          $v.password.$touch;
-          passwordError = '';
-        "
+        @blur="onPasswordBlur"
       />
       <validation-text v-if="$v.password.$error" class="error-text">
         {{ $t('resetPassword.passwordRequired') }}
@@ -125,6 +122,10 @@ export default {
     },
     redirectToForgotPassword() {
       this.$emit('redirect');
+    },
+    onPasswordBlur() {
+      this.password.$touch;
+      this.passwordError = '';
     },
   },
 };
