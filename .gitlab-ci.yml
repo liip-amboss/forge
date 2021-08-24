@@ -5,6 +5,7 @@ default:
 
 stages:
   - test
+  - netlify
   - build-staging
   - deploy-staging
 
@@ -32,6 +33,30 @@ test-frontend:
     - npm run test
   tags:
     - docker
+
+netlify-forge-docs:
+  stage: netlify
+  tags:
+    - docker-privileged
+  image: node:lts-alpine3.14
+  script:
+    - NPM_CONFIG_PREFIX=/home/node/.npm-global
+    - PATH=$PATH:/home/node/.npm-global/bin
+    - npm i -g --unsafe-perm netlify-cli
+    - cd docs && npm install && npm run build
+    - netlify deploy --site $NETLIFY_SITE_ID_DOCS --auth $NETLIFY_AUTH_TOKEN --prod
+
+netlify-forge-styleguide:
+  image: node:lts-alpine3.14
+  tags:
+    - docker-privileged
+  stage: netlify
+  script:
+    - NPM_CONFIG_PREFIX=/home/node/.npm-global
+    - PATH=$PATH:/home/node/.npm-global/bin
+    - npm i -g --unsafe-perm netlify-cli
+    - cd frontend && npm install && npm run build:styleguide
+    - netlify deploy --site $NETLIFY_SITE_ID_STYLEGUIDE --auth $NETLIFY_AUTH_TOKEN --prod
 
 build-staging:
   stage: build-staging
