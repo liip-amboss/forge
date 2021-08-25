@@ -1,17 +1,18 @@
-const Login = () => import('@/views/Login.vue');
+const Home = () => import('@/views/Home.vue');
 const LoadingView = () => import('@/views/LoadingView.vue');
-const Dashboard = () => import('@/views/Dashboard.vue');
+const Welcome = () => import('@/views/Welcome.vue');
+const GridExample = () => import('@/views/GridExample.vue');
 
 export default [
   {
     path: '/',
-    name: 'login',
-    component: Login,
+    name: 'home',
+    component: Home,
   },
   {
-    path: '/dashboard',
-    name: 'dashboard',
-    component: Dashboard,
+    path: '/welcome',
+    name: 'welcome',
+    component: Welcome,
     meta: {
       requiresAuth: true,
     },
@@ -20,5 +21,10 @@ export default [
     path: '/loading',
     name: 'loading',
     component: LoadingView,
+  },
+  {
+    path: '/grid',
+    name: 'grid',
+    component: GridExample,
   },
 ];
