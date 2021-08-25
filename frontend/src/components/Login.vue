@@ -110,7 +110,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="postcss">
 .logo {
   background-color: #000;
 }
