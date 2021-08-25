@@ -1,0 +1,4 @@
+[build]
+  base = "frontend"
+  publish = "styleguide"
+  command = "npm run build:styleguide"

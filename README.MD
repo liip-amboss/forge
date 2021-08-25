@@ -4,7 +4,7 @@ Forge is a easy to use combination of the most modern frameworks to create custo
 web-applications.
 The frontend is based on vue.js and tailwind while the backend is based on django.
 All components run in docker containers, so there is no need to install anything
-else than docker to use forge.
+else than docker to use forge. However, to run forge locally you will need [pontsun](https://github.com/liip/pontsun).
 
 ## Quickstart
 Please read the setup instructions on https://amboss-forge-docs.netlify.com
