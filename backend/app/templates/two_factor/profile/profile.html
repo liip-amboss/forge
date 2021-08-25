@@ -1,0 +1,8 @@
+{% extends "two_factor/_base_focus.html" %}
+{% load i18n %}
+
+{% block content %}
+<h1>{% block title %}{% trans "Account Security" %}{% endblock %}</h1>
+<p>{% trans "You can only change your settings in Django Admin" %}</p>
+<a href="{% url 'admin:login' %}" class="btn btn-primary">{% trans "To Django Admin" %}</a>
+{% endblock %}

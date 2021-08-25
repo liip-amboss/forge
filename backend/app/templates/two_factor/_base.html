@@ -1,0 +1,18 @@
+{% load i18n %}
+{% load i18n static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{% block title %}{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="{% static "admin/two_factor/css/login.css" %}">
+  <link rel="stylesheet" type="text/css" href="{% static "admin/two_factor/css/bootstrap.min.css" %}">
+</head>
+<body>
+  {% block content_wrapper %}
+    <div class="container">
+      {% block content %}{% endblock %}
+    </div>
+  {% endblock %}
+</body>
+</html>

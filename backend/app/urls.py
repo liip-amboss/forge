@@ -24,6 +24,15 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
 
+# if 2FA was not deliberately disabled, we force 2FA logins here
+auth_urls = []
+if not settings.DISABLE_2FA:
+    from two_factor.urls import urlpatterns as tf_urls
+    from accounts.two_factor import AdminSiteOTPRequiredMixinRedirSetup
+    admin.site.__class__ = AdminSiteOTPRequiredMixinRedirSetup
+    auth_urls = [path('', include(tf_urls))]
+
+
 api_url_patterns = [
     path('api/v1/account/', include('accounts.urls')),
 ]
@@ -40,11 +49,11 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = (
+    auth_urls +
     api_url_patterns
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     + [
         path('admin/', admin.site.urls),
-        re_path(r'^.*', RedirectView.as_view(url='/admin/'), name='admin-redirect'),
     ]
 )
 
