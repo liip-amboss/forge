@@ -1,4 +1,4 @@
-r"""
+"""
  _     ___ ___ ____    _____ ___  ____   ____ _____
 | |   |_ _|_ _|  _ \  |  ___/ _ \|  _ \ / ___| ____|
 | |    | | | || |_) | | |_ | | | | |_) | |  _|  _|
@@ -12,7 +12,7 @@ Django settings for liip forge project.
 import os
 import environ
 from datetime import timedelta
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import ugettext_lazy as _
 import dj_email_url
 
 ########################

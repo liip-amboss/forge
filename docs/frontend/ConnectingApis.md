@@ -50,7 +50,7 @@ export {secretCIAStuff};
 This will check the store for login credentials and add them to the call if they exist
 
 ## Connecting your base service
-Using this base-service allows you to more easily handle your requests, so your service `getSecretCIAData` would now look like this:
+Using this base-service now allows you to easier handle your requests, so your service `getSecretCIAData` would now look like this:
 ```javascript
 import { secretCIAStuff } from '@/services/api';
 const getSecretCIAData = async function() {
