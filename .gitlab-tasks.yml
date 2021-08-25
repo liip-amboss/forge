@@ -36,3 +36,15 @@
     - ssh manager@${DEPLOYMENT_TARGET_HOST} "mkdir -p ~/srv/app/deploy"
     - rsync -r ./deploy/* manager@${DEPLOYMENT_TARGET_HOST}:~/srv/app/
     - ssh manager@${DEPLOYMENT_TARGET_HOST} "cd ~/srv/app/; ./scripts/deploy.sh ${CI_DEPLOY_USER} ${CI_DEPLOY_PASSWORD} ${CI_REGISTRY} ${CI_PROJECT_PATH} ${ENVIRONMENT}"
+
+.netlify-deploy: &netlify-deploy
+  image: node:lts-alpine3.14
+  tags:
+    - docker-privileged
+  stage: netlify
+  script:
+    - NPM_CONFIG_PREFIX=/home/node/.npm-global
+    - PATH=$PATH:/home/node/.npm-global/bin
+    - npm i -g --unsafe-perm netlify-cli
+    - eval ${BUILD_COMMAND}
+    - netlify deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_AUTH_TOKEN `if [ "$CI_COMMIT_BRANCH" == "master" ]; then --prod; fi`
