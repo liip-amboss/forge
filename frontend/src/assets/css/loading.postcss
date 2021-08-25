@@ -1,5 +1,17 @@
+.loading-directive__container {
+  @apply relative;
+  overflow: hidden;
+}
+
+.loading-directive {
+  @apply absolute;
+}
+
 .loading {
   @apply fixed;
+}
+
+.loading, .loading-directive {
   @apply inset-0;
   @apply min-h-32;
   @apply z-50;

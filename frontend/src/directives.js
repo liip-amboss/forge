@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import loadingSVG from '@/assets/icons/loading.svg';
+import loadingSVG from '@/assets/icons/loading-2.svg';
 
 const addLoading = el => {
   el.classList.add('loading-directive__container');
