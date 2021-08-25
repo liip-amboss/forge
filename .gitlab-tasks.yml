@@ -47,4 +47,9 @@
     - PATH=$PATH:/home/node/.npm-global/bin
     - npm i -g --unsafe-perm netlify-cli
     - eval ${BUILD_COMMAND}
-    - netlify deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_AUTH_TOKEN `if [ "$CI_COMMIT_BRANCH" == "master" ]; then --prod; fi`
+    - >
+      if [ "$CI_COMMIT_BRANCH" == "master" ]; then
+        netlify deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_AUTH_TOKEN --prod
+      else
+        netlify deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_AUTH_TOKEN
+      fi
