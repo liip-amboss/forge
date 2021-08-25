@@ -13,3 +13,6 @@ docs/.vuepress/dist/*
 *.pyc
 backend/.data
 backend/.venv
+
+# Local Netlify folder
+.netlify
