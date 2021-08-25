@@ -1,7 +1,7 @@
 ##### BASE IGNORES #####
 .idea/
 *.env
-
+awdaw
 ##### FORONTEND IGNORES #####
 frontend/node_modules
 node_modules
