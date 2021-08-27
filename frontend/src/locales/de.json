@@ -10,7 +10,32 @@
     "password":"Passwort",
     "emailRequired":"Die E-Mail-Adresse ist ein Pflichtfeld",
     "passwordRequired":"Geben Sie bitte Ihr Passwort ein",
+    "forgotPassword":"Passwort vergessen?",
     "submitButtonText":"Anmelden"
+  },
+  "forgotPassword": {
+    "title": "Passwort vergessen",
+    "text": "Wir können wir Ihnen einen Link zum Zurücksetzen des Passwortes schicken. Bitte geben Sie die E-Mail-Adresse ein, die Sie in ihrem Konto eingetragen haben:",
+    "emailRequired": "Die E-Mail-Adresse ist ein Pflichtfeld",
+    "submitButtonText": "Link anfordern",
+    "backToLogin": "Zurück zur Anmeldung"
+  },
+  "resetPassword": {
+    "title": "Passwort zurücksetzen",
+    "text": "Bitte geben Sie zur Bestätigung Ihre E-Mail Adresse an:",
+    "emailRequired": "Die E-Mail-Adresse ist ein Pflichtfeld",
+    "submitButtonText": "Mail Adresse bestätigen",
+    "password": "Passwort",
+    "passwordConfirm": "Passwort bestätigen",
+    "passwordRequired": "Bitte geben Sie ein Passwort ein.",
+    "passwordsNotMatching": "Die beiden Passwörter stimmen nicht überein",
+    "changePassword": "Passwort ändern"
+  },
+  "notifications": {
+    "forgotPasswordError": "Es ist ein Fehler bei der \"Passwort-vergessen-Funktion\" aufgetreten.",
+    "forgotPasswordSuccess": "Falls ein Benutzer mit dieser E-Mail existiert, wurde eine E-Mail mit Informationen zum Zurücksetzen des Passwortes verschickt.",
+    "checkResetTokenError": "Dieser Link ist ungültig. Bitte fordern Sie einen neuen an.",
+    "resetPasswordSuccess": "Das Passwort wurde erfolgreich geändert."
   },
   "dashboard": {
     "title":"Dashboard"
