@@ -9,7 +9,8 @@
       <input
         v-model.trim="$v.email.$model"
         required
-        class="w-full form-input" @blur="$v.email.$touch"
+        class="w-full form-input"
+        @blur="$v.email.$touch"
       />
       <validation-text v-if="$v.email.$error" class="mt-1">
         {{ $t('forgotPassword.emailRequired') }}
@@ -62,7 +63,6 @@ export default {
         this.$notify({
           type: 'success',
           text: this.$t('notifications.forgotPasswordSuccess').toString(),
-          duration: 10000,
         });
         await this.$router.push({ name: 'login' });
       } catch (e) {
