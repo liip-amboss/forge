@@ -211,3 +211,5 @@ SWAGGER_SETTINGS = {
     }
 }
 ENABLE_REDOC = env.bool("ENABLE_REDOC", default=True)
+
+FRONTEND_URL = env("FRONTEND_URL", default='')

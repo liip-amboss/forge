@@ -1,12 +1,14 @@
+include: '.gitlab-tasks.yml'
+
 default:
   image: python:3.8
 
 stages:
   - test
+  - netlify
   - build-staging
   - deploy-staging
 
-# this is for testing the backend
 test-and-lint-backend:
   stage: test
   variables:
@@ -21,7 +23,6 @@ test-and-lint-backend:
   tags:
     - docker
 
-# this is for testing the frontend
 test-frontend:
   stage: test
   image: node:13.6.0-alpine3.11
@@ -33,36 +34,38 @@ test-frontend:
   tags:
     - docker
 
+netlify-forge-docs:
+  extends:
+    - .netlify-deploy
+  variables:
+    BUILD_COMMAND: "cd docs && npm install && npm run build"
+    NETLIFY_SITE_ID: $NETLIFY_SITE_ID_DOCS
+
+netlify-forge-styleguide:
+  extends:
+    - .netlify-deploy
+  variables:
+    BUILD_COMMAND: "cd frontend && npm install && npm run build:styleguide"
+    NETLIFY_SITE_ID: $NETLIFY_SITE_ID_STYLEGUIDE
+
 build-staging:
   stage: build-staging
-  image: docker:19.03.8
+  extends:
+    - .build-definition
   only:
       - develop
   variables:
-    DOCKER_DRIVER: overlay2
-  services:
-    - docker:18.09-dind
-  before_script:
-    - docker info
-  script:
-    - docker build --build-arg build_env=build-staging -t ${CI_REGISTRY}/${CI_PROJECT_PATH}:backend_staging backend/
-    - docker build --build-arg build_env=build-staging -t ${CI_REGISTRY}/${CI_PROJECT_PATH}:docs_staging docs/
-    - docker build --build-arg build_env=build-staging -t ${CI_REGISTRY}/${CI_PROJECT_PATH}:frontend_staging frontend/
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN ${CI_REGISTRY}
-    - docker push ${CI_REGISTRY}/${CI_PROJECT_PATH}:backend_staging
-    - docker push ${CI_REGISTRY}/${CI_PROJECT_PATH}:docs_staging
-    - docker push ${CI_REGISTRY}/${CI_PROJECT_PATH}:frontend_staging
-  tags:
-    - docker-privileged
+    ENVIRONMENT: staging
 
 deploy-staging:
   stage: deploy-staging
+  extends:
+    - .deploy-definition
+  only:
+    - develop
   environment:
     name: staging
-  script:
-    - scp -r ./deploy/ ${STAGING_USER}@${STAGING_DOMAIN}:/srv/app/
-    - ssh ${STAGING_USER}@$STAGING_DOMAIN "cd /srv/app/deploy/scripts/; ./deploy.sh ${CI_DEPLOY_USER} ${CI_DEPLOY_PASSWORD} ${CI_REGISTRY} ${CI_PROJECT_PATH} staging"
-  tags:
-    - shell
-  only:
-  - develop
+  variables:
+    DEPLOYMENT_TARGET_HOST: $STAGING_DOMAIN
+    DEPLOYMENT_SSH_KEY: $STAGING_SSH_PRIVATE_KEY
+    ENVIRONMENT: staging

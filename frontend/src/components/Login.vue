@@ -69,7 +69,11 @@
           </div>
         </div>
       </div>
-    </div>
+    </form>
+    <br />
+    <router-link class="text-blue-primary" :to="{ name: 'forgot-password' }">
+      {{ $t('login.forgotPassword') }}
+    </router-link>
   </div>
 </template>
 
@@ -152,23 +156,3 @@ export default {
   },
 };
 </script>
-
-<style lang="postcss" scoped>
-.logo {
-  background-color: #000;
-  img {
-    height: 100px;
-  }
-  &::after {
-    display: block;
-    content: '';
-    position: absolute;
-    border-style: solid;
-    border-width: 25px 25px 0 0;
-    border-color: #000 transparent transparent transparent;
-  }
-}
-.login {
-  background-color: #fff;
-}
-</style>
