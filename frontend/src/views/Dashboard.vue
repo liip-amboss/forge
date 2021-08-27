@@ -2,12 +2,6 @@
   <DefaultLayout>
     <div class="container py-24 container--sm">
       <h1>{{ $t('dashboard.title') }}</h1>
-      <button v-if="isTwoFactorActive" class="mr-4" @click="deactivate2FA">
-        {{ $t('twoFactor.disable') }}
-      </button>
-      <button v-else class="mr-4" @click="activate2FA">
-        {{ $t('twoFactor.enable') }}
-      </button>
       <modal
         :is-open="showTwoFactorWizard"
         class-body="two-factor-modal"
@@ -20,9 +14,6 @@
           @close="closeTwoFactorWizard"
         />
       </modal>
-      <button @click="logout">
-        {{ $t('general.logout') }}
-      </button>
     </div>
   </DefaultLayout>
 </template>
@@ -49,10 +40,6 @@ export default {
   },
   methods: {
     ...mapActions('Auth', ['setIsTwoFactorActive']),
-    logout() {
-      this.$store.dispatch('Auth/removeAuth');
-      this.$router.push({ name: 'login' });
-    },
     activate2FA() {
       this.showTwoFactorWizard = true;
     },

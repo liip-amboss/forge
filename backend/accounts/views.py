@@ -1,5 +1,6 @@
 import pyotp as pyotp
 from django.http import HttpResponseBadRequest
+from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
@@ -30,7 +31,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
         user = authenticate(**authenticate_kwargs)
 
         if not user:
-            return HttpResponseBadRequest()
+            raise AuthenticationFailed('No active account found')
 
         if not user.two_factor_active:
             return super(CustomTokenObtainPairView, self).post(request, *args, **kwargs)
@@ -38,7 +39,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             verified = pyotp.TOTP(user.two_factor_secret).verify(request.data['token'])
             if verified:
                 return super(CustomTokenObtainPairView, self).post(request, *args, **kwargs)
-            return HttpResponseBadRequest('twofactor')
+            raise AuthenticationFailed('otp token is not verified')
 
         return Response(status=204)
 

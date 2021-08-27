@@ -10,3 +10,5 @@ django-cors-headers
 whitenoise
 drf-yasg
 dj_email_url
+pyotp
+django-two-factor-auth
