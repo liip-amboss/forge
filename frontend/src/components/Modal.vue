@@ -31,9 +31,7 @@
         >
           <div id="modal-header" class="modal__header" :class="classHeader">
             <div>
-              <slot name="header">
-                &nbsp;
-              </slot>
+              <slot name="header"> &nbsp; </slot>
             </div>
 
             <button

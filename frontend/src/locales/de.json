@@ -15,7 +15,8 @@
     "submitButtonText": "Anmelden",
     "twoFactorError": "Der Zwei-Faktor Code ist nicht korrekt. Versuchen Sie es nochmals.",
     "twoFactorTitle": "Zwei-Faktor-Überprüfung",
-    "twoFactorText": "Bestätigungscode über Ihre Authenticator App anfordern und hier eingeben:"
+    "twoFactorText": "Bestätigungscode über Ihre Authenticator App anfordern und hier eingeben:",
+    "forgotPassword": "Passwort vergessen?"
   },
   "forgotPassword": {
     "title": "Passwort vergessen",
@@ -39,7 +40,12 @@
     "forgotPasswordError": "Es ist ein Fehler bei der \"Passwort-vergessen-Funktion\" aufgetreten.",
     "forgotPasswordSuccess": "Falls ein Benutzer mit dieser E-Mail existiert, wurde eine E-Mail mit Informationen zum Zurücksetzen des Passwortes verschickt.",
     "checkResetTokenError": "Dieser Link ist ungültig. Bitte fordern Sie einen neuen an.",
-    "resetPasswordSuccess": "Das Passwort wurde erfolgreich geändert."
+    "resetPasswordSuccess": "Das Passwort wurde erfolgreich geändert.",
+    "activate2FAError": "Es ist ein Fehler beim Aktivieren von der Zwei-Faktor Überprüfung aufgetreten.",
+    "activate2FASuccess": "Zwei-Faktor-Überprüfung erfolgreich aktiviert.",
+    "deactivate2FAError": "Es ist ein Fehler beim Deaktivieren von der Zwei-Faktor Überprüfung aufgetreten.",
+    "deactivate2FASuccess": "Zwei-Faktor-Überprüfung erfolgreich deaktiviert.",
+    "verifyTokenError": "Der Verifizierungscode ist nicht korrekt."
   },
   "dashboard": {
     "title": "Dashboard"
@@ -84,11 +90,9 @@
       "finish": "Fertig"
     }
   },
-  "notifications": {
-    "activate2FAError": "Es ist ein Fehler beim Aktivieren von der Zwei-Faktor Überprüfung aufgetreten.",
-    "activate2FASuccess": "Zwei-Faktor-Überprüfung erfolgreich aktiviert.",
-    "deactivate2FAError": "Es ist ein Fehler beim Deaktivieren von der Zwei-Faktor Überprüfung aufgetreten.",
-    "deactivate2FASuccess": "Zwei-Faktor-Überprüfung erfolgreich deaktiviert.",
-    "verifyTokenError": "Der Verifizierungscode ist nicht korrekt."
+  "profile": {
+    "title": "Konto-Einstellungen",
+    "titleData": "Persönliche Informationen",
+    "title2FA": "Zwei-Faktor-Authentifizierung"
   }
 }

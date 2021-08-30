@@ -1,8 +1,8 @@
 <template>
-    <div>
+  <div>
     <div class="container">
       <div class="flex flex-wrap">
-        <div class="w-full md:w-2/3 lg:w-1/2 ml-auto mr-auto">
+        <div class="w-full ml-auto mr-auto md:w-2/3 lg:w-1/2">
           <div class="w-1/2 mt-16 logo">
             <img :src="logoPath" class="px-8 py-4" alt="logo" />
           </div>
@@ -25,7 +25,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="postcss">
 .logo {
   background-color: #000;
 }
