@@ -113,7 +113,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, "templates")
+            os.path.join(BASE_DIR, 'templates')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -179,7 +179,7 @@ if not DISABLE_2FA:
 ##################
 # 2FA            #
 ##################
-TWOFACTOR_ISSUER = "Forge"
+TWOFACTOR_ISSUER = env('TWOFACTOR_ISSUER', default='Forge')
 
 ####################
 # Email            #
@@ -210,6 +210,6 @@ SWAGGER_SETTINGS = {
         },
     }
 }
-ENABLE_REDOC = env.bool("ENABLE_REDOC", default=True)
+ENABLE_REDOC = env.bool('ENABLE_REDOC', default=True)
 
-FRONTEND_URL = env("FRONTEND_URL", default='')
+FRONTEND_URL = env('FRONTEND_URL', default='')
