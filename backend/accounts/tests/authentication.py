@@ -33,7 +33,7 @@ def test_login_inactive_user(user_factory, api_client):
     }
 
     response = api_client.post(url, data)
-    assert response.status_code == 400
+    assert response.status_code == 401
 
 
 def test_login_two_factor(user_factory, api_client):
@@ -82,4 +82,4 @@ def test_login_two_factor_with_invalid_token(user_factory, api_client):
     }
 
     response = api_client.post(url, data)
-    assert response.status_code == 400
+    assert response.status_code == 401

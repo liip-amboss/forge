@@ -1,5 +1,5 @@
 import pytest
-from app.tests.api_client import ForgeApiClient
+from tests.api_client import ForgeApiClient
 from pytest_factoryboy import register
 from accounts import factories as account_factories
 
