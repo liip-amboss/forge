@@ -18,8 +18,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls import url
 from django.conf.urls.static import static
-from django.urls import include, re_path
-from django.views.generic.base import RedirectView
+from django.urls import include
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
@@ -52,7 +51,6 @@ urlpatterns = (
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     + [
         path('admin/', admin.site.urls),
-        re_path(r'^.*', RedirectView.as_view(url='/admin/'), name='admin-redirect'),
     ]
 )
 
