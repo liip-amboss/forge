@@ -1,7 +1,5 @@
 import pyotp as pyotp
-from django.http import HttpResponseBadRequest
 from rest_framework.exceptions import AuthenticationFailed
-from rest_framework.response import Response
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
