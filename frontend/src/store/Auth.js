@@ -9,6 +9,7 @@ export default {
     refreshToken: sessionStorage.getItem('refreshToken') || null,
     firstName: sessionStorage.getItem('firstName') || null,
     lastName: sessionStorage.getItem('lastName') || null,
+    isTwoFactorActive: sessionStorage.getItem('twoFactorActive') || false,
   },
 
   getters: {
@@ -50,6 +51,7 @@ export default {
       state.refreshToken = null;
       state.firstName = null;
       state.lastName = null;
+      state.isTwoFactorActive = false;
       sessionStorage.clear();
     },
 
@@ -62,6 +64,15 @@ export default {
       state.firstName = firstName;
       state.lastName = lastName;
     },
+
+    /**
+     * Set the two factor active value
+     * @param {*} state Module state
+     * @param {*} twoFactorActive twoFactorActive value
+     */
+    setIsTwoFactorActive(state, twoFactorActive) {
+      state.isTwoFactorActive = twoFactorActive;
+    },
   },
   actions: {
     setToken({ commit }, token) {
@@ -72,6 +83,9 @@ export default {
     },
     setUserName({ commit }, { firstName, lastName }) {
       commit('setUserName', { firstName, lastName });
+    },
+    setIsTwoFactorActive({ commit }, twoFactorActive) {
+      commit('setIsTwoFactorActive', twoFactorActive);
     },
     removeAuth({ commit }) {
       commit('removeAuth');

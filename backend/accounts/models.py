@@ -52,6 +52,9 @@ class User(AbstractUser):
     username = models.CharField(blank=True, max_length=255)
     phone_number = PhoneNumberField(blank=True)
 
+    # two factor is not mandatory
+    two_factor_active = models.BooleanField(default=False)
+    two_factor_secret = models.CharField(max_length=32, null=True)
     reset_token = models.CharField(blank=True, null=True, max_length=64)
     reset_salt = models.CharField(blank=True, null=True, max_length=64)
 

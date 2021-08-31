@@ -1,6 +1,7 @@
 const Login = () => import('@/views/Login.vue');
 const LoadingView = () => import('@/views/LoadingView.vue');
 const Dashboard = () => import('@/views/Dashboard.vue');
+const Profile = () => import('@/views/Profile.vue');
 const ForgotPassword = () => import('@/views/ForgotPassword.vue');
 const PasswordReset = () => import('@/views/PasswordReset.vue');
 
@@ -22,6 +23,11 @@ export default [
     path: '/loading',
     name: 'loading',
     component: LoadingView,
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: Profile,
   },
   {
     path: '/forgot-password',

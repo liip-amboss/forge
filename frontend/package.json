@@ -14,6 +14,7 @@
     "test": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "@tailwindcss/forms": "^0.3.3",
     "axios": "^0.21.1",
     "babel-polyfill": "^6.26.0",
     "core-js": "^3.16.0",
@@ -22,7 +23,8 @@
     "postcss": "^8.3.6",
     "postcss-import": "^12.0.1",
     "postcss-preset-env": "^6.7.0",
-    "prismjs": "^1.24.1",
+    "prismjs": "^1.19.0",
+    "qrious": "^4.0.2",
     "svgxuse": "^1.2.6",
     "tabbable": "^5.2.0",
     "tailwindcss-transitions": "^2.1.0",

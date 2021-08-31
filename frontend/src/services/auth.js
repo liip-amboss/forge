@@ -5,15 +5,14 @@ import { userApi } from './api';
  *
  * @return User Info
  */
-const login = async (email, password) => {
+const login = async (email, password, twoFactorToken) => {
   const response = await userApi.post('account/token/', {
     email: email,
     password: password,
+    token: twoFactorToken ? twoFactorToken : null,
   });
 
-  const result = response.data;
-
-  return result;
+  return response;
 };
 /**
  * Perform a refresh

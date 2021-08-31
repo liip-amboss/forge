@@ -11,5 +11,6 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         data['first_name'] = user.first_name
         data['last_name'] = user.last_name
         data['email'] = user.email
+        data['two_factor_active'] = user.two_factor_active
 
         return data

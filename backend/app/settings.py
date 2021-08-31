@@ -91,6 +91,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'phonenumber_field',
+    'django_otp',
+    'django_otp.plugins.otp_static',
+    'django_otp.plugins.otp_totp',
 ]
 
 MIDDLEWARE = [
@@ -100,6 +103,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_otp.middleware.OTPMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -108,7 +112,9 @@ MIDDLEWARE = [
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -161,8 +167,19 @@ SIMPLE_JWT = {
 ##################
 # AUTHENTICATION #
 ##################
-AUTH_USER_MODEL = "accounts.User"
+DISABLE_2FA = env.bool('DISABLE_2FA', default=False)
+AUTH_USER_MODEL = 'accounts.User'
 
+if not DISABLE_2FA:
+    LOGIN_URL = 'two_factor:login'
+    INSTALLED_APPS += [
+        'two_factor',
+    ]
+
+##################
+# 2FA            #
+##################
+TWOFACTOR_ISSUER = env('TWOFACTOR_ISSUER', default='Forge')
 
 ####################
 # Email            #
@@ -193,6 +210,6 @@ SWAGGER_SETTINGS = {
         },
     }
 }
-ENABLE_REDOC = env.bool("ENABLE_REDOC", default=True)
+ENABLE_REDOC = env.bool('ENABLE_REDOC', default=True)
 
-FRONTEND_URL = env("FRONTEND_URL", default='')
+FRONTEND_URL = env('FRONTEND_URL', default='')
