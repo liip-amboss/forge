@@ -17,7 +17,7 @@ class TestEmail(View):
 
         message = ForgeNotification()
         message.sender = 'be-dev@liip.ch'
-        message.recipient = [email,]
+        message.recipient = [email, ]
         message.subject = 'Forge Test Email'
         message.send()
 
