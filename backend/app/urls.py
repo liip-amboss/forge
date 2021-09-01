@@ -66,4 +66,5 @@ if settings.ENABLE_REDOC:
 if settings.DEBUG:
     urlpatterns = [
         path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+        path('notification/', include('notification.urls'))
     ] + urlpatterns

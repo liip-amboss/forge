@@ -39,6 +39,9 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
 
 LOCALE_PATHS = env.list('LOCALE_PATHS', default=['locale/'])
 
@@ -81,6 +84,7 @@ if database_url:
 
 INSTALLED_APPS = [
     'drf_yasg',
+    'notification.apps.NotificationConfig',
     'accounts.apps.AccountsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -122,6 +126,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'notification.context_processors.notification'
             ],
         },
     },
@@ -193,7 +198,9 @@ EMAIL_PORT = email_config.get('EMAIL_PORT', '')
 EMAIL_BACKEND = email_config.get('EMAIL_BACKEND', '')
 EMAIL_USE_TLS = email_config.get('EMAIL_USE_TLS', '')
 EMAIL_USE_SSL = email_config.get('EMAIL_USE_SSL', '')
+EMAIL_ADMIN = env('EMAIL_ADMIN', default='')
 EMAIL_SENDER = env('EMAIL_SENDER', default='')
+EMAIL_BASE_URL = env('EMAIL_BASE_URL', default='http://docker.forge.test')
 
 #################
 # documentation #

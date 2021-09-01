@@ -41,7 +41,7 @@ module.exports = {
       {
         title: "Backend",
         collapsable: false,
-        children: ["/backend/", "/backend/ide", "/backend/apps", "/backend/redoc"]
+        children: ["/backend/", "/backend/ide", "/backend/apps", "/backend/redoc", "/backend/notifications",]
       }
     ]
   }
