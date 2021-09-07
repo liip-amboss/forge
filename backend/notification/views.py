@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 from django.views import View
+from django.conf import settings
 
 from notification.mail import ForgeNotification
 
@@ -16,7 +17,7 @@ class TestEmail(View):
             return HttpResponse('Please pass your email address with the `email` get param!')
 
         message = ForgeNotification()
-        message.sender = 'be-dev@liip.ch'
+        message.sender = settings.EMAIL_SENDER
         message.recipient = [email, ]
         message.subject = 'Forge Test Email'
         message.send()
