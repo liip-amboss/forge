@@ -12,7 +12,7 @@ function loadLocaleMessages() {
   );
   const messages = {};
   // Loop through all the keys (file names)
-  locales.keys().forEach(key => {
+  locales.keys().forEach((key) => {
     // matched is used to get the language name from the filename (LANGUAGE.json)
     const matched = key.match(/([A-Za-z0-9-_]+)\./i);
     if (matched && matched.length > 1) {

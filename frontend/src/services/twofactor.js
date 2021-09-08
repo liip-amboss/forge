@@ -3,7 +3,7 @@ import { userApi } from './api';
 /**
  * Activate the two factor authentication
  */
-const activate2FA = async code => {
+const activate2FA = async (code) => {
   const response = await userApi.post(`account/activate-2fa/`, { code: code });
 
   return response.data;

@@ -1,9 +1,6 @@
 module.exports = {
-  chainWebpack: config => {
-    config.module
-      .rule('svg-sprite')
-      .use('svgo-loader')
-      .loader('svgo-loader');
+  chainWebpack: (config) => {
+    config.module.rule('svg-sprite').use('svgo-loader').loader('svgo-loader');
   },
   pluginOptions: {
     i18n: {

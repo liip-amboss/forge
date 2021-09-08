@@ -17,7 +17,7 @@ const router = new Router({
  *
  * @param {object} to The route to navigate to
  */
-const checkPermissions = to => {
+const checkPermissions = (to) => {
   if (to.meta.requiresAuth && !Store.getters['Auth/isLoggedIn']) {
     return false;
   }

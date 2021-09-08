@@ -80,10 +80,10 @@ module.exports = {
           },
           {
             test: /\.js$/,
-            exclude: modulePath =>
+            exclude: (modulePath) =>
               (/node_modules/.test(modulePath) ||
                 /packages[\\/]vue-styleguidist[\\/]lib/.test(modulePath)) &&
-              !transpileDependencies.some(mod =>
+              !transpileDependencies.some((mod) =>
                 new RegExp(`node_modules[\\\\/]${mod}[\\\\/]`).test(modulePath)
               ),
             use: {

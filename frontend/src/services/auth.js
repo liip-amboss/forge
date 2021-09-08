@@ -19,7 +19,7 @@ const login = async (email, password, twoFactorToken) => {
  *
  * @return User Info
  */
-const getRefreshtoken = async token => {
+const getRefreshtoken = async (token) => {
   const response = await userApi.post('account/token/refresh/', {
     refresh: token,
   });
@@ -29,7 +29,7 @@ const getRefreshtoken = async token => {
   return result;
 };
 
-const forgotPassword = async email => {
+const forgotPassword = async (email) => {
   const response = await userApi.post('account/reset-password/email/', {
     email: email,
   });
