@@ -7,6 +7,7 @@ class ForgeApiClient(APIClient):
     Decides if token is persisted between requests
     :type bool
     """
+
     persist_auth = False
 
     def authorize(self, user=None, persist_auth=False):

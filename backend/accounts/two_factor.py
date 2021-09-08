@@ -10,7 +10,9 @@ from two_factor.admin import AdminSiteOTPRequired, AdminSiteOTPRequiredMixin
 
 class AdminSiteOTPRequiredMixinRedirSetup(AdminSiteOTPRequired):
     def login(self, request, extra_context=None):
-        redirect_to = request.POST.get(REDIRECT_FIELD_NAME, request.GET.get(REDIRECT_FIELD_NAME))
+        redirect_to = request.POST.get(
+            REDIRECT_FIELD_NAME, request.GET.get(REDIRECT_FIELD_NAME)
+        )
         if super(AdminSiteOTPRequiredMixin, self).has_permission(request):
             if request.user.is_verified():
                 # already logged-in and verified by OTP
@@ -20,7 +22,9 @@ class AdminSiteOTPRequiredMixinRedirSetup(AdminSiteOTPRequired):
                 index_path = reverse('two_factor:setup', current_app=self.name)
             return HttpResponseRedirect(index_path)
 
-        if not redirect_to or not is_safe_url(url=redirect_to, allowed_hosts=[request.get_host()]):
+        if not redirect_to or not is_safe_url(
+            url=redirect_to, allowed_hosts=[request.get_host()]
+        ):
             redirect_to = resolve_url(settings.LOGIN_REDIRECT_URL)
 
         return redirect_to_login(redirect_to)

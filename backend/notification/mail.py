@@ -17,7 +17,7 @@ class ForgeNotification:
             subject=self.get_subject(),
             body=self.get_plain_message(),
             from_email=self.get_sender(),
-            to=self.get_recipient()
+            to=self.get_recipient(),
         )
         msg.attach_alternative(self.get_html_message(), "text/html")
         msg.send()

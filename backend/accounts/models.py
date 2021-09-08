@@ -63,7 +63,8 @@ class User(AbstractUser):
 
     def reset_password(self, save=False):
         self.reset_salt = ''.join(
-            random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(32)
+            random.SystemRandom().choice(string.ascii_uppercase + string.digits)
+            for _ in range(32)
         )
 
         token = token_generator.make_token(self)
