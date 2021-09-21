@@ -7,7 +7,7 @@ const mtgApi = axios.create({
   baseURL: `https://api.scryfall.com`,
 });
 
-const loginInterceptor = config => {
+const loginInterceptor = (config) => {
   if (store.getters['Auth/isLoggedIn']) {
     const token = store.state.Auth.token;
     config.headers.common['Authorization'] = `Bearer ${token}`;
@@ -21,11 +21,11 @@ const userApi = axios.create({
 });
 
 userApi.interceptors.response.use(
-  response => {
+  (response) => {
     // Return a successful response back to the calling service
     return response;
   },
-  error => {
+  (error) => {
     // Return any error which is not due to authentication back to the calling service
     if (error.response.status !== 401) {
       return Promise.reject(error);
@@ -41,7 +41,7 @@ userApi.interceptors.response.use(
 
     // Try request again with new token
     return getRefreshtoken(store.state.Auth.refreshToken)
-      .then(token => {
+      .then((token) => {
         // set token in store
         store.commit('Auth/setToken', token.access);
         store.commit('Auth/setRefreshToken', token.refresh);
@@ -50,7 +50,7 @@ userApi.interceptors.response.use(
         config.headers['Authorization'] = `Bearer ${token.access}`;
         return axios.request(config);
       })
-      .catch(error => {
+      .catch((error) => {
         Promise.reject(error);
       });
   }
