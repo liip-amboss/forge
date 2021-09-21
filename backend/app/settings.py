@@ -116,9 +116,7 @@ MIDDLEWARE = [
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            os.path.join(BASE_DIR, 'templates')
-        ],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,7 +124,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'notification.context_processors.notification'
+                'notification.context_processors.notification',
             ],
         },
     },
@@ -210,8 +208,8 @@ SWAGGER_SETTINGS = {
         'Bearer': {
             'in': 'header',
             'description': 'The api uses JSON Web Tokens to grant access to the '
-                           'endpoints which need permissions. Check the '
-                           'JSON Web Token section for more information.',
+            'endpoints which need permissions. Check the '
+            'JSON Web Token section for more information.',
             'name': 'Authorization',
             'type': 'apiKey',
         },

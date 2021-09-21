@@ -14,11 +14,15 @@ class TestEmail(View):
     def get(self, request, *args, **kwargs):
         email = request.GET.get('email', None)
         if not email:
-            return HttpResponse('Please pass your email address with the `email` get param!')
+            return HttpResponse(
+                'Please pass your email address with the `email` get param!'
+            )
 
         message = ForgeNotification()
         message.sender = settings.EMAIL_SENDER
-        message.recipient = [email, ]
+        message.recipient = [
+            email,
+        ]
         message.subject = 'Forge Test Email'
         message.send()
 

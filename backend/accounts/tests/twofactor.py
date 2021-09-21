@@ -15,7 +15,9 @@ def test_2fa_url(user_factory, api_client):
 
     content = response.json()
 
-    url = pyotp.totp.TOTP(content['secret']).provisioning_uri(name=user.email, issuer_name=settings.TWOFACTOR_ISSUER)
+    url = pyotp.totp.TOTP(content['secret']).provisioning_uri(
+        name=user.email, issuer_name=settings.TWOFACTOR_ISSUER
+    )
 
     assert content['secret'] == User.objects.get(id=user.id).two_factor_secret
     assert content['url'] == url
@@ -39,9 +41,7 @@ def test_activate_2fa(user_factory, api_client):
 
     twofactor_code = pyotp.TOTP(user.two_factor_secret).now()
 
-    data = {
-        'code': twofactor_code
-    }
+    data = {'code': twofactor_code}
 
     response = api_client.post(url, data)
 
@@ -59,9 +59,7 @@ def test_activate_2fa_wrong_code(user_factory, api_client):
 
     twofactor_code = 'Wrong code'
 
-    data = {
-        'code': twofactor_code
-    }
+    data = {'code': twofactor_code}
 
     response = api_client.post(url, data)
 

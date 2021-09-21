@@ -42,7 +42,9 @@ class CustomTokenObtainPairView(TokenObtainPairView):
         elif 'token' in request.data and request.data['token']:
             verified = pyotp.TOTP(user.two_factor_secret).verify(request.data['token'])
             if verified:
-                return super(CustomTokenObtainPairView, self).post(request, *args, **kwargs)
+                return super(CustomTokenObtainPairView, self).post(
+                    request, *args, **kwargs
+                )
             raise AuthenticationFailed('otp token is not verified')
 
         return Response(status=204)
@@ -64,7 +66,9 @@ class CustomTokenRefreshView(TokenRefreshView):
 
 @method_decorator(
     name='post',
-    decorator=swagger_auto_schema(operation_summary='Send reset password email', tags={'Reset password'})
+    decorator=swagger_auto_schema(
+        operation_summary='Send reset password email', tags={'Reset password'}
+    ),
 )
 class ResetPasswordEmail(APIView):
     """
@@ -86,7 +90,9 @@ class ResetPasswordEmail(APIView):
 
 @method_decorator(
     name='post',
-    decorator=swagger_auto_schema(operation_summary='Check if reset token is valid', tags={'Reset password'})
+    decorator=swagger_auto_schema(
+        operation_summary='Check if reset token is valid', tags={'Reset password'}
+    ),
 )
 class CheckToken(APIView):
     """
@@ -100,14 +106,18 @@ class CheckToken(APIView):
         token = request.data['token']
         email = request.data['email']
 
-        valid = check_token(User.objects.filter(reset_token=token, email=email).first(), token)
+        valid = check_token(
+            User.objects.filter(reset_token=token, email=email).first(), token
+        )
 
         return Response(status=200, data={'valid': valid})
 
 
 @method_decorator(
     name='post',
-    decorator=swagger_auto_schema(operation_summary='Reset the password', tags={'Reset password'})
+    decorator=swagger_auto_schema(
+        operation_summary='Reset the password', tags={'Reset password'}
+    ),
 )
 class ResetPassword(APIView):
     """

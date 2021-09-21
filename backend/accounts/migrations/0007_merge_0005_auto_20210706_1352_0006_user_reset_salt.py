@@ -10,5 +10,4 @@ class Migration(migrations.Migration):
         ('accounts', '0006_user_reset_salt'),
     ]
 
-    operations = [
-    ]
+    operations = []
