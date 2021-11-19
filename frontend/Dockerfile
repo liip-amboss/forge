@@ -1,4 +1,4 @@
-FROM node:lts-alpine as frontend-builder
+FROM node:14 as frontend-builder
 WORKDIR /code/src
 COPY src ./src
 COPY package*.json ./
