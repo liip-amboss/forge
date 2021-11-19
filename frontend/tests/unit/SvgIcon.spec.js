@@ -22,11 +22,6 @@ describe('SvgIcon component', () => {
   });
 
   it('has svg icon class', () => {
-    expect(
-      wrapper
-        .find('svg')
-        .classes()
-        .includes('svg-icon--testicon')
-    );
+    expect(wrapper.find('svg').classes().includes('svg-icon--testicon'));
   });
 });

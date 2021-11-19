@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import loadingSVG from '@/assets/icons/loading.svg';
 
-const addLoading = el => {
+const addLoading = (el) => {
   el.classList.add('loading-directive__container');
 
   el.insertAdjacentHTML(
@@ -10,9 +10,9 @@ const addLoading = el => {
   );
 };
 
-const removeLoading = el => {
+const removeLoading = (el) => {
   el.classList.remove('loading-directive__container');
-  el.querySelectorAll('.loading-directive').forEach(value => {
+  el.querySelectorAll('.loading-directive').forEach((value) => {
     // value.remove is not supported in IE11 so we use removeChild on the parent element
     value.parentNode.removeChild(value);
   });

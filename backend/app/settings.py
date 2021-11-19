@@ -39,6 +39,9 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
 
 LOCALE_PATHS = env.list('LOCALE_PATHS', default=['locale/'])
 
@@ -81,6 +84,7 @@ if database_url:
 
 INSTALLED_APPS = [
     'drf_yasg',
+    'notification.apps.NotificationConfig',
     'accounts.apps.AccountsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -91,6 +95,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'phonenumber_field',
+    'django_otp',
+    'django_otp.plugins.otp_static',
+    'django_otp.plugins.otp_totp',
 ]
 
 MIDDLEWARE = [
@@ -100,6 +107,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_otp.middleware.OTPMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -108,7 +116,7 @@ MIDDLEWARE = [
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -116,6 +124,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'notification.context_processors.notification',
             ],
         },
     },
@@ -161,8 +170,19 @@ SIMPLE_JWT = {
 ##################
 # AUTHENTICATION #
 ##################
-AUTH_USER_MODEL = "accounts.User"
+DISABLE_2FA = env.bool('DISABLE_2FA', default=False)
+AUTH_USER_MODEL = 'accounts.User'
 
+if not DISABLE_2FA:
+    LOGIN_URL = 'two_factor:login'
+    INSTALLED_APPS += [
+        'two_factor',
+    ]
+
+##################
+# 2FA            #
+##################
+TWOFACTOR_ISSUER = env('TWOFACTOR_ISSUER', default='Forge')
 
 ####################
 # Email            #
@@ -176,7 +196,9 @@ EMAIL_PORT = email_config.get('EMAIL_PORT', '')
 EMAIL_BACKEND = email_config.get('EMAIL_BACKEND', '')
 EMAIL_USE_TLS = email_config.get('EMAIL_USE_TLS', '')
 EMAIL_USE_SSL = email_config.get('EMAIL_USE_SSL', '')
+EMAIL_ADMIN = env('EMAIL_ADMIN', default='')
 EMAIL_SENDER = env('EMAIL_SENDER', default='')
+EMAIL_BASE_URL = env('EMAIL_BASE_URL', default='http://docker.forge.test')
 
 #################
 # documentation #
@@ -186,11 +208,13 @@ SWAGGER_SETTINGS = {
         'Bearer': {
             'in': 'header',
             'description': 'The api uses JSON Web Tokens to grant access to the '
-                           'endpoints which need permissions. Check the '
-                           'JSON Web Token section for more information.',
+            'endpoints which need permissions. Check the '
+            'JSON Web Token section for more information.',
             'name': 'Authorization',
             'type': 'apiKey',
         },
     }
 }
-ENABLE_REDOC = env.bool("ENABLE_REDOC", default=True)
+ENABLE_REDOC = env.bool('ENABLE_REDOC', default=True)
+
+FRONTEND_URL = env('FRONTEND_URL', default='')

@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 
 services:
   db:
@@ -18,7 +18,7 @@ services:
       - ./backend/.venv:/venv
       - ./backend:/code
     environment:
-        - INITIAL
+      - INITIAL
     env_file:
       - .env
     depends_on:
@@ -26,8 +26,8 @@ services:
     stdin_open: true
     tty: true
     labels:
-      - "traefik.enable=true"
-      - "traefik.frontend.rule=Host:${BACKEND_URL}"
+      - 'traefik.enable=true'
+      - 'traefik.frontend.rule=Host:${BACKEND_URL}'
       - 'traefik.docker.network=pontsun'
     networks:
       - default
@@ -75,7 +75,9 @@ services:
       - 8081
 
   styleguide:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.local
     command: sh -c "npm install && npm run serve:styleguide"
     volumes:
       - ./frontend:/code
@@ -98,8 +100,8 @@ services:
     env_file:
       - .env
     labels:
-      - "traefik.enable=true"
-      - "traefik.frontend.rule=Host:${PGADMIN_URL}"
+      - 'traefik.enable=true'
+      - 'traefik.frontend.rule=Host:${PGADMIN_URL}'
       - 'traefik.docker.network=pontsun'
     networks:
       - default

@@ -1,0 +1,15 @@
+{% extends "two_factor/_base.html" %}
+{% load i18n static %}
+
+{% block content_wrapper %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-7 offset-md-3">
+        <img src="{% static 'admin/two_factor/images/django-logo.png' %}" class="admin__logo" />
+          <div class="main-content">
+            {% block content %}{% endblock %}
+          </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

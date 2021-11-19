@@ -1,15 +1,17 @@
 <template>
-  <EmptyLayout>
+  <PasswordFormLayout>
     <login />
-  </EmptyLayout>
+  </PasswordFormLayout>
 </template>
 
 <script>
 import Login from '@/components/Login.vue';
+import PasswordFormLayout from '@/layouts/PasswordFormLayout';
 
 export default {
-  name: 'Login',
+  name: 'LoginView',
   components: {
+    PasswordFormLayout,
     Login,
   },
 };

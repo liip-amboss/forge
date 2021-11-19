@@ -1,6 +1,11 @@
+import random
+import string
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
+
+from accounts import helpers
+from accounts.tokens import token_generator
 
 
 class EmailUserManager(BaseUserManager):
@@ -47,5 +52,25 @@ class User(AbstractUser):
     username = models.CharField(blank=True, max_length=255)
     phone_number = PhoneNumberField(blank=True)
 
+    # two factor is not mandatory
+    two_factor_active = models.BooleanField(default=False)
+    two_factor_secret = models.CharField(max_length=32, null=True)
+    reset_token = models.CharField(blank=True, null=True, max_length=64)
+    reset_salt = models.CharField(blank=True, null=True, max_length=64)
+
     REQUIRED_FIELDS = ('first_name', 'last_name')
     objects = EmailUserManager()
+
+    def reset_password(self, save=False):
+        self.reset_salt = ''.join(
+            random.SystemRandom().choice(string.ascii_uppercase + string.digits)
+            for _ in range(32)
+        )
+
+        token = token_generator.make_token(self)
+        self.reset_token = token
+
+        helpers.send_initial_email(self.email, token)
+
+        if save:
+            self.save()

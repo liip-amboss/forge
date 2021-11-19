@@ -1,7 +1,7 @@
 import { mtgApi } from './api';
 import { MtgCard } from '../models/mtg-card.model';
 
-const getMagicCard = async function() {
+const getMagicCard = async function () {
   // you can add things like bearertokens or payloads here
   let config = { crossdomain: true };
   const response = await mtgApi.get('cards/random', config);
