@@ -38,7 +38,7 @@
     - ssh manager@${DEPLOYMENT_TARGET_HOST} "cd ~/srv/app/; ./scripts/deploy.sh ${CI_DEPLOY_USER} ${CI_DEPLOY_PASSWORD} ${CI_REGISTRY} ${CI_PROJECT_PATH} ${ENVIRONMENT}"
 
 .netlify-deploy: &netlify-deploy
-  image: node:lts-alpine3.14
+  image: node:14
   tags:
     - docker-privileged
   stage: netlify

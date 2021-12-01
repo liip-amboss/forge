@@ -17,7 +17,7 @@ echo "Starting the docker containers"
 docker-compose up -d
 
 echo "Migrating the backend"
-docker-compose exec -T backend python manage.py migrate_schemas
+docker-compose exec -T backend python manage.py migrate
 
 echo "Pruning the images"
 docker system prune -a -f

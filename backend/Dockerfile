@@ -16,7 +16,7 @@ RUN mkdir /uploads
 RUN chown 1000 /uploads
 
 WORKDIR /code
-RUN SECRET_KEY=none DEBUG=False python manage.py collectstatic --noinput
+RUN EMAIL_URL=email SECRET_KEY=none DEBUG=False python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
