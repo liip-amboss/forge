@@ -8,12 +8,12 @@ COPY postcss.config.js ./
 COPY tailwind.config.js ./
 COPY vue.config.js ./
 COPY prettier.config.js ./
+COPY styleguide.config.js ./
 COPY .env* ./
 RUN npm install
 RUN npm run build -- --mode dev
 
-
 FROM caddy:2.1.1-alpine
-COPY Caddyfile /etc/caddy/
+COPY Caddyfile.frontend /etc/caddy/Caddyfile
 
 COPY --from=frontend-builder /code/src/dist /usr/share/caddy/
