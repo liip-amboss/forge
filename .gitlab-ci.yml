@@ -1,29 +1,46 @@
-include: '.gitlab-tasks.yml'
+include: ".gitlab-tasks.yml"
+
+variables:
+  STAGING_BRANCH: "feature/pipeline-upgrade"
+  PROD_BRANCH: "master"
+  SKIP_DEPLOY: "False"
+  DOCKER_IMAGE: docker:19.03.8
+  DEPLOY_IMAGE: alpine:latest
+  DIND_SERVICE_IMAGE: docker:19.03-dind
 
 default:
   image: python:3.8
 
 stages:
   - test
-  - netlify
+  - prepare
   - build-staging
   - deploy-staging
+  - release
 
-test-and-lint-backend:
+# STAGE: test
+flake8:
   stage: test
+  extends:
+    - .pip-requirements
+  script:
+    - flake8
+  variables:
+    REQUIREMENTS_FILE: "requirements/test.txt"
+
+Pytest:
+  stage: test
+  extends:
+    - .pip-requirements
   variables:
     POSTGRES_PASSWORD: unsafe
+    REQUIREMENTS_FILE: "requirements/test.txt"
   services:
     - postgres:latest
   script:
-    - cd backend
-    - pip install -r requirements/test.txt
-    - flake8
     - pytest -c pytest-ci.ini
-  tags:
-    - docker
 
-test-frontend:
+Test Frontend:
   stage: test
   image: node:13.6.0-alpine3.11
   script:
@@ -34,38 +51,157 @@ test-frontend:
   tags:
     - docker
 
-netlify-forge-docs:
-  extends:
-    - .netlify-deploy
-  variables:
-    BUILD_COMMAND: "cd docs && npm install && npm run build"
-    NETLIFY_SITE_ID: $NETLIFY_SITE_ID_DOCS
+# STAGE: prepare
+# Create release tag and store as artifact
+Generate Release Tag:
+  stage: prepare
+  image: alpine:latest
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    - if: ($CI_COMMIT_BRANCH == $STAGING_BRANCH || $CI_COMMIT_BRANCH == $PROD_BRANCH)
+  needs: ["Pytest", "flake8", "Test Frontend"]
+  script:
+    - echo "RELEASE_TAG=$CI_COMMIT_SHORT_SHA" >> variables.env
+  artifacts:
+    reports:
+      dotenv: variables.env
+  tags:
+    - docker-privileged
 
-netlify-forge-styleguide:
-  extends:
-    - .netlify-deploy
-  variables:
-    BUILD_COMMAND: "cd frontend && npm install && npm run build:styleguide"
-    NETLIFY_SITE_ID: $NETLIFY_SITE_ID_STYLEGUIDE
-
-build-staging:
+# STAGE: build-staging
+# Containerize Vue frontend and push to gitlab container registry
+Build Staging Frontend:
   stage: build-staging
   extends:
-    - .build-definition
-  only:
-      - develop
+    - .docker-build
+  rules:
+    - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
+  needs:
+    - job: Generate Release Tag
+      artifacts: true
   variables:
     ENVIRONMENT: staging
+    APP: frontend
+    DOCKERFILE: Dockerfile.frontend
 
-deploy-staging:
+# Containerize Vue frontend styleguide and push to gitlab container registry
+Build Staging Frontend Styleguide:
+  stage: build-staging
+  extends:
+    - .docker-build
+  rules:
+    - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
+  needs:
+    - job: Generate Release Tag
+      artifacts: true
+  variables:
+    ENVIRONMENT: staging
+    APP: frontend
+    DOCKERFILE: Dockerfile.styleguide
+    IMAGE_TAG: ${CI_REGISTRY}/${CI_PROJECT_PATH}:styleguide_${ENVIRONMENT}
+
+# Containerize VuePress docs app and push to gitlab container registry
+Build Staging Forge Docs:
+  stage: build-staging
+  extends:
+    - .docker-build
+  rules:
+    - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
+  needs:
+    - job: Generate Release Tag
+      artifacts: true
+  variables:
+    ENVIRONMENT: staging
+    APP: docs
+
+# STAGE: build-staging
+# Containerize Django backend and push to gitlab container registry
+Build Staging Backend:
+  stage: build-staging
+  extends:
+    - .docker-build
+  rules:
+    - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
+  needs:
+    - job: Generate Release Tag
+      artifacts: true
+  variables:
+    ENVIRONMENT: staging
+    APP: backend
+
+# STAGE: deploy-staging
+# Deployment on staging server
+Deploy Staging:
   stage: deploy-staging
   extends:
-    - .deploy-definition
-  only:
-    - develop
-  environment:
-    name: staging
+    - .docker-deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
+  needs:
+    - job: Build Staging Backend
+    - job: Build Staging Frontend
+    - job: Build Staging Frontend Styleguide
+    - job: Build Staging Forge Docs
   variables:
-    DEPLOYMENT_TARGET_HOST: $STAGING_DOMAIN
-    DEPLOYMENT_SSH_KEY: $STAGING_SSH_PRIVATE_KEY
     ENVIRONMENT: staging
+    DOMAIN: ${STAGING_DOMAIN}
+    DEPLOYMENT_SSH_KEY: ${STAGING_SSH_PRIVATE_KEY}
+    SSH_PORT: 22
+
+# STAGE: release
+# Create new gitlab release
+Create Gitlab Release:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    - if: ($CI_COMMIT_BRANCH == $STAGING_BRANCH || $CI_COMMIT_BRANCH == $PROD_BRANCH)
+  needs:
+    - job: Deploy Staging
+      optional: true
+    - job: Generate Release Tag
+      artifacts: true
+  script:
+    - echo "running release-job for $RELEASE_TAG"
+  release:
+    name: 'Release $RELEASE_TAG'
+    description: 'Created using the release-cli'
+    tag_name: '$RELEASE_TAG'
+    ref: '$CI_COMMIT_SHA'
+  tags:
+    - docker-privileged
+
+# Create new sentry release and send sourcemaps
+Update Sentry:
+  stage: release
+  image: getsentry/sentry-cli
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    - if: ($CI_COMMIT_BRANCH == $STAGING_BRANCH || $CI_COMMIT_BRANCH == $PROD_BRANCH)
+  needs:
+    - job: Deploy Staging
+      optional: true
+    - job: Generate Release Tag
+      artifacts: true
+      optional: true
+    - job: Build Staging Frontend
+      artifacts: true
+      optional: true
+  script:
+    - export SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
+    - export SENTRY_ORG=$SENTRY_ORG
+    - export SENTRY_PROJECT=$SENTRY_PROJECT
+    - echo "Creating new sentry release with tag $RELEASE_TAG..."
+    - sentry-cli releases new $RELEASE_TAG
+    - echo "Uploading sourcemaps files to Sentry..."
+    - ls ${CI_PROJECT_DIR}/sourcemaps
+    - sentry-cli releases files $RELEASE_TAG upload-sourcemaps ${CI_PROJECT_DIR}/sourcemaps
+    - echo "Finalizing sentry release and setting commits..."
+    - sentry-cli releases finalize $RELEASE_TAG
+    - sentry-cli releases set-commits --auto $RELEASE_TAG
+    - echo "Finalized release, set commits and uploaded sourcemaps for release $RELEASE_TAG"
+  tags:
+    - docker

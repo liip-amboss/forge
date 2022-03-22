@@ -35,6 +35,13 @@ services:
     restart: unless-stopped
     tty: true
 
+  styleguide:
+    image: ${DOCKER_REGISTRY}:styleguide_staging
+    env_file:
+      - .env
+    restart: unless-stopped
+    tty: true
+
   caddy:
     image: abiosoft/caddy
     env_file:
