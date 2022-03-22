@@ -1,4 +1,5 @@
 FROM node:14 as frontend-builder
+ARG build_command=build
 WORKDIR /code/src
 COPY src ./src
 COPY package*.json ./
@@ -10,7 +11,7 @@ COPY vue.config.js ./
 COPY prettier.config.js ./
 COPY .env* ./
 RUN npm install
-RUN npm run build -- --mode dev
+RUN npm run $build_command -- --mode dev
 
 
 FROM caddy:2.1.1-alpine

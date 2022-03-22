@@ -15,4 +15,8 @@
         transparent
     }
 }
-
+{$STYLEGUIDE_URL} {
+    proxy / docs:8081 {
+        transparent
+    }
+}
