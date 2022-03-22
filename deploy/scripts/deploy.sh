@@ -5,13 +5,14 @@ reg_password=$2
 reg=$3
 project_path=$4
 docker_server_tag=$5
-cd /srv/app/deploy
+cd $HOME/srv/app/
 
 echo "Pulling the docker images"
 echo ${reg_password} | docker login -u ${reg_user} --password-stdin ${reg}
 docker pull ${reg}/${project_path}:backend_${docker_server_tag}
 docker pull ${reg}/${project_path}:frontend_${docker_server_tag}
 docker pull ${reg}/${project_path}:docs_${docker_server_tag}
+docker pull ${reg}/${project_path}:styleguide_${docker_server_tag}
 
 echo "Starting the docker containers"
 docker-compose up -d
