@@ -15,5 +15,5 @@ RUN npm run build:styleguide -- --mode dev
 
 FROM caddy:2.1.1-alpine
 COPY Caddyfile.styleguide /etc/caddy/
-
+EXPOSE 8082
 COPY --from=frontend-builder /code/src/styleguide  /usr/share/caddy/

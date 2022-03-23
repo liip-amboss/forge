@@ -1,25 +1,23 @@
 {
     acme_ca {$CAISSUER}
+    log {
+        level INFO
+        output stdout
+    }
 }
 {$BACKEND_URL} {
-    root /srv
-    proxy / backend:8000 {
-        transparent
-        except /static
+    @notStatic {
+        not path /static/*
     }
+    reverse_proxy @notStatic backend:8000
+    file_server /srv/static/*
 }
 {$FRONTEND_URL} {
-    proxy / frontend:8080 {
-        transparent
-    }
+    reverse_proxy frontend:8080
 }
 {$DOCS_URL} {
-    proxy / docs:8081 {
-        transparent
-    }
+    reverse_proxy docs:8081
 }
 {$STYLEGUIDE_URL} {
-    proxy / styleguide:8082 {
-        transparent
-    }
+    reverse_proxy styleguide:8082
 }

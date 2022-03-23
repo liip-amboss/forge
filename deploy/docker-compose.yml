@@ -43,7 +43,7 @@ services:
     tty: true
 
   caddy:
-    image: abiosoft/caddy
+    image: caddy
     env_file:
       - .env
     ports:
@@ -52,8 +52,10 @@ services:
     depends_on:
       - backend
     volumes:
-      - ./Caddyfile:/etc/Caddyfile
+      - ./Caddyfile:/etc/caddy/Caddyfile
       - static-content:/srv/static
+      - ./caddy-config:/config
+      - ./caddy-data:/data
     restart: unless-stopped
 
 volumes:

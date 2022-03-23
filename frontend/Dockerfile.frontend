@@ -15,5 +15,5 @@ RUN npm run build -- --mode dev
 
 FROM caddy:2.1.1-alpine
 COPY Caddyfile.frontend /etc/caddy/
-
+EXPOSE 8080
 COPY --from=frontend-builder /code/src/dist /usr/share/caddy/
