@@ -15,4 +15,8 @@
         transparent
     }
 }
-
+{$STYLEGUIDE_URL} {
+    proxy / styleguide:8082 {
+        transparent
+    }
+}

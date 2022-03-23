@@ -1,0 +1,19 @@
+FROM node:14 as frontend-builder
+WORKDIR /code/src
+COPY src ./src
+COPY package*.json ./
+COPY .eslintrc.js ./
+COPY babel.config.js ./
+COPY postcss.config.js ./
+COPY tailwind.config.js ./
+COPY vue.config.js ./
+COPY prettier.config.js ./
+COPY styleguide.config.js ./
+COPY .env* ./
+RUN npm install
+RUN npm run build:styleguide -- --mode dev
+
+FROM caddy:2.1.1-alpine
+COPY Caddyfile.styleguide /etc/caddy/Caddyfile
+
+COPY --from=frontend-builder /code/src/styleguide  /usr/share/caddy/
