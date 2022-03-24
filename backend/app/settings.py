@@ -14,6 +14,8 @@ import environ
 from datetime import timedelta
 from django.utils.translation import ugettext_lazy as _
 import dj_email_url
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 ########################
 # ENVIRONMENT SETTINGS #
@@ -23,6 +25,8 @@ ENV_PATH = os.path.join('..', '..', '.env')
 
 if os.path.exists(ENV_PATH):
     environ.Env.read_env(ENV_PATH)
+
+ENVIRONMENT = env('ENVIRONMENT', default='local')
 
 #################
 # PATH SETTINGS #
@@ -218,3 +222,18 @@ SWAGGER_SETTINGS = {
 ENABLE_REDOC = env.bool('ENABLE_REDOC', default=True)
 
 FRONTEND_URL = env('FRONTEND_URL', default='')
+
+########################
+#       SENTRY         #
+########################
+SENTRY_DSN = env('SENTRY_DSN', default=None)
+if SENTRY_DSN and ENVIRONMENT in ['staging', 'production']:
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        environment=ENVIRONMENT,
+        integrations=[DjangoIntegration()],
+        traces_sample_rate=1.0,  # Consider reducing this value in production.
+        send_default_pii=True,
+        # RELEASE_TAG is generated in the gitlab pipeline and passed to the dockerfile.
+        release=env('RELEASE_TAG', default="RELEASE_TAG_MISSING")
+    )
