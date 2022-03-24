@@ -12,7 +12,7 @@ services:
       - pontsun
 
   backend:
-    build: .
+    build: ./backend
     command: sh -c 'while true; do ./manage.py runserver 0.0.0.0:8000; sleep 1; done'
     volumes:
       - ./backend/.venv:/venv
@@ -39,7 +39,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile.local
-    command: sh -c "npm install && npm run serve"
+    command: sh -c "npm run serve"
     volumes:
       - ./frontend:/code
     env_file:
@@ -55,10 +55,10 @@ services:
       - pontsun
     ports:
       - 8080
+
   docs:
     build:
       context: ./docs
-      dockerfile: Dockerfile.local
     command: sh -c "npm install && npm run start"
     volumes:
       - ./docs:/code
@@ -78,7 +78,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile.local
-    command: sh -c "npm install && npm run serve:styleguide"
+    command: sh -c "npm run serve:styleguide"
     volumes:
       - ./frontend:/code
     stdin_open: true
