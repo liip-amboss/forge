@@ -1,4 +1,5 @@
 module.exports = {
+  productionSourceMap: process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging',
   chainWebpack: (config) => {
     config.module.rule('svg-sprite').use('svgo-loader').loader('svgo-loader');
   },
@@ -28,6 +29,7 @@ module.exports = {
   },
   transpileDependencies: ['vuejs-smart-table'],
   configureWebpack: {
+    devtool: 'source-map',
     devServer: {
       // We need this because otherwise Webpack prohibits the connection
       public: `${process.env.FRONTEND_URL}`,

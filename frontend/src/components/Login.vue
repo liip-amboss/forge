@@ -112,9 +112,6 @@ export default {
       'setIsTwoFactorActive',
     ]),
     async doLogin() {
-      console.log(process.env.VUE_APP_SENTRY_DSN)
-      console.log(process.env.NODE_ENV)
-      console.log(process.env.VUE_APP_RELEASE_TAG)
       undefinedFunction()
       try {
         const response = await login(
