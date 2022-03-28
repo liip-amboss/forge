@@ -26,7 +26,7 @@ ENV_PATH = os.path.join('..', '..', '.env')
 if os.path.exists(ENV_PATH):
     environ.Env.read_env(ENV_PATH)
 
-ENVIRONMENT = env('ENVIRONMENT', default='local')
+ENVIRONMENT = env('ENVIRONMENT', default='development')
 
 #################
 # PATH SETTINGS #
