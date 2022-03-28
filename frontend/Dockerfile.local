@@ -2,5 +2,14 @@ FROM node:14
 ARG release_tag=staging
 ENV VUE_APP_RELEASE_TAG=$release_tag
 WORKDIR /code/src
-COPY . .
+COPY src ./src
+COPY package*.json ./
+COPY .eslintrc.js ./
+COPY babel.config.js ./
+COPY postcss.config.js ./
+COPY tailwind.config.js ./
+COPY vue.config.js ./
+COPY prettier.config.js ./
+COPY styleguide.config.js ./
+COPY .env* ./
 
