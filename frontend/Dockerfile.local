@@ -1,3 +1,14 @@
-FROM node:latest
+FROM node:14
+WORKDIR /code/src
+COPY src ./src
+COPY package*.json ./
+COPY .eslintrc.js ./
+COPY babel.config.js ./
+COPY postcss.config.js ./
+COPY tailwind.config.js ./
+COPY vue.config.js ./
+COPY prettier.config.js ./
+COPY styleguide.config.js ./
+COPY .env* ./
+RUN npm install
 
-WORKDIR /code
