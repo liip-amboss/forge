@@ -5,6 +5,8 @@ import App from './App.vue';
 import router from './router/';
 import i18n from './i18n';
 import store from './store/index';
+import * as Sentry from "@sentry/vue";
+import { BrowserTracing } from "@sentry/tracing";
 import './directives';
 
 // Styles
@@ -33,6 +35,27 @@ import './globals/svgIcon';
 import '@/layouts';
 
 Vue.config.productionTip = false;
+
+const MONITORED_ENVIRONMENTS = ["staging", "production"];
+if (MONITORED_ENVIRONMENTS.includes(process.env.NODE_ENV)) {
+  Sentry.attachErrorHandler(Vue, {
+    logErrors: true
+  });
+
+  Sentry.init({
+    Vue,
+    environment: process.env.NODE_ENV,
+    dsn: process.env.VUE_APP_SENTRY_DSN,
+    integrations: [
+      new BrowserTracing({
+        routingInstrumentation: Sentry.vueRouterInstrumentation(router),
+        tracingOrigins: [process.env.VUE_APP_API_URL]
+      })
+    ],
+    tracesSampleRate: 1.0,
+    release: process.env.VUE_APP_RELEASE_TAG
+  });
+}
 
 new Vue({
   router,
