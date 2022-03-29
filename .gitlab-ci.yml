@@ -39,6 +39,14 @@ Pytest:
     - postgres:latest
   script:
     - pytest -c pytest-ci.ini
+    - pwd
+    - ls -la
+  artifacts:
+    paths:
+      - /builds/liip/forge/backend/coverage.xml
+    reports:
+      cobertura:
+        - /builds/liip/forge/backend/coverage.xml
 
 Test Frontend:
   stage: test
