@@ -53,7 +53,7 @@ Pytest:
 
 Test Frontend:
   stage: test
-  image: node:13.6.0-alpine3.11
+  image: node:14
   script:
     - cd frontend
     - "! grep -ir 'console.log' src/"
