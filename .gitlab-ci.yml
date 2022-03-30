@@ -39,7 +39,7 @@ Pytest:
   services:
     - postgres:latest
   script:
-    - pytest --cov-fail-under=$MIN_COVERAGE_BACKEND --junitxml=report.xml -c pytest-ci.ini
+    - pytest --cov-fail-under=$MIN_COVERAGE_BACKEND -c pytest-ci.ini
     - pwd
     - ls -la
   artifacts:
@@ -54,11 +54,13 @@ Pytest:
 Test Frontend:
   stage: test
   image: node:14
+  variables:
+    MIN_COVERAGE_FRONTEND: 15
   script:
     - cd frontend
     - "! grep -ir 'console.log' src/"
     - npm install
-    - npm run test
+    - npm run test -- --coverageThreshold='{"global":{"statements":"$MIN_COVERAGE_FRONTEND"}}'
   tags:
     - docker
   except:

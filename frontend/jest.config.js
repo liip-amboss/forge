@@ -8,6 +8,15 @@ module.exports = {
     '!**/styleguide/**',
     '!**/views/**',
   ],
-  coverageReporters: ["clover", "json", "lcov", "text", "cobertura"],
-  reporters: [ "default", "jest-junit" ]
+  coverageReporters: [
+    "clover",
+    "json",
+    "lcov",
+    "text",
+    "cobertura",
+  ],
+  reporters: [
+    "default",
+    "jest-junit",
+  ],
 };
