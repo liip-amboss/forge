@@ -63,6 +63,12 @@ Test Frontend:
     - docker
   except:
     - tags
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - $CI_PROJECT_DIR/frontend/junit.xml
+      cobertura: $CI_PROJECT_DIR/frontend/coverage/cobertura-coverage.xml
 
 # STAGE: prepare
 # Create release tag and store as artifact
