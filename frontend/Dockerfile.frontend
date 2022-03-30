@@ -1,4 +1,7 @@
 FROM node:14 as frontend-builder
+ARG release_tag=staging
+ARG env=production
+ENV VUE_APP_RELEASE_TAG=$release_tag
 WORKDIR /code/src
 COPY src ./src
 COPY package*.json ./
@@ -11,7 +14,7 @@ COPY prettier.config.js ./
 COPY styleguide.config.js ./
 COPY .env* ./
 RUN npm install
-RUN npm run build -- --mode dev
+RUN npm run build -- --mode $env
 
 FROM caddy:2.1.1-alpine
 COPY Caddyfile.frontend /etc/caddy/Caddyfile

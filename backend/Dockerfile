@@ -1,13 +1,13 @@
 # create backend container
 FROM python:3.8-buster AS backend-builder
-ARG build_env
+ARG env
 ADD requirements /requirements/
 RUN set -ex \
     && apt-get update \
     && apt-get install build-essential --no-install-recommends -y \
     && pip install uwsgi==2.0.17
 
-RUN if [ "$build_env" = "build-staging" ] ; then pip install -r requirements/dev.txt; else pip install -r requirements/base.txt; fi
+RUN if [ "$env" = "staging" ] ; then pip install -r requirements/dev.txt; else pip install -r requirements/base.txt; fi
 # for MEDIA_ROOT
 RUN mkdir /uploads
 RUN chown 1000 /uploads

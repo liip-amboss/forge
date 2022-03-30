@@ -25,6 +25,7 @@ module.exports = {
           "/frontend/SVG",
           "/frontend/testing",
           "/frontend/vuelidate",
+          "/frontend/SentryIntegration",
           {
             title: "Components",
             collapsable: false,
@@ -41,7 +42,14 @@ module.exports = {
       {
         title: "Backend",
         collapsable: false,
-        children: ["/backend/", "/backend/ide", "/backend/apps", "/backend/redoc", "/backend/notifications",]
+        children: [
+          "/backend/",
+          "/backend/ide",
+          "/backend/apps",
+          "/backend/redoc",
+          "/backend/notifications",
+          "/backend/SentryIntegration",
+        ]
       }
     ]
   }

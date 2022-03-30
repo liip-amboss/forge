@@ -39,7 +39,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile.local
-    command: sh -c "npm run serve"
+    command: sh -c "npm install && npm run serve"
     volumes:
       - ./frontend:/code
     env_file:
@@ -55,6 +55,25 @@ services:
       - pontsun
     ports:
       - 8080
+
+  styleguide:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.local
+    command: sh -c "npm install && npm run serve:styleguide"
+    volumes:
+      - ./frontend:/code
+    stdin_open: true
+    tty: true
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.frontend.rule=Host:${STYLEGUIDE_URL}'
+      - 'traefik.docker.network=pontsun'
+    networks:
+      - default
+      - pontsun
+    ports:
+      - 6060
 
   docs:
     build:
@@ -73,25 +92,6 @@ services:
       - pontsun
     ports:
       - 8081
-
-  styleguide:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.local
-    command: sh -c "npm run serve:styleguide"
-    volumes:
-      - ./frontend:/code
-    stdin_open: true
-    tty: true
-    labels:
-      - 'traefik.enable=true'
-      - 'traefik.frontend.rule=Host:${STYLEGUIDE_URL}'
-      - 'traefik.docker.network=pontsun'
-    networks:
-      - default
-      - pontsun
-    ports:
-      - 6060
 
   pgadmin:
     image: dpage/pgadmin4
