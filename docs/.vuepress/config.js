@@ -44,6 +44,7 @@ module.exports = {
         collapsable: false,
         children: [
           "/backend/",
+          "/backend/testing",
           "/backend/ide",
           "/backend/apps",
           "/backend/redoc",
