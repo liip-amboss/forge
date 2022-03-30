@@ -39,15 +39,17 @@ Pytest:
   services:
     - postgres:latest
   script:
-    - pytest --cov-fail-under=$MIN_COVERAGE_BACKEND -c pytest-ci.ini
+    - pytest --cov-fail-under=$MIN_COVERAGE_BACKEND --junitxml=report.xml -c pytest-ci.ini
     - pwd
     - ls -la
   artifacts:
+    when: always
     paths:
-      - /builds/liip/forge/backend/coverage.xml
+      - $CI_PROJECT_DIR/backend/coverage.xml
     reports:
+      junit: $CI_PROJECT_DIR/backend/report.xml
       cobertura:
-        - /builds/liip/forge/backend/coverage.xml
+        - $CI_PROJECT_DIR/backend/coverage.xml
 
 Test Frontend:
   stage: test
