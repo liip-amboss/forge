@@ -35,10 +35,11 @@ Pytest:
   variables:
     POSTGRES_PASSWORD: unsafe
     REQUIREMENTS_FILE: "requirements/test.txt"
+    MIN_COVERAGE_BACKEND: 70
   services:
     - postgres:latest
   script:
-    - pytest -c pytest-ci.ini
+    - pytest --cov-fail-under=$MIN_COVERAGE_BACKEND -c pytest-ci.ini
     - pwd
     - ls -la
   artifacts:
