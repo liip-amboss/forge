@@ -35,23 +35,42 @@ Pytest:
   variables:
     POSTGRES_PASSWORD: unsafe
     REQUIREMENTS_FILE: "requirements/test.txt"
+    MIN_COVERAGE_BACKEND: 70
   services:
     - postgres:latest
   script:
-    - pytest -c pytest-ci.ini
+    - pytest --cov-fail-under=$MIN_COVERAGE_BACKEND -c pytest-ci.ini
+    - pwd
+    - ls -la
+  artifacts:
+    when: always
+    paths:
+      - $CI_PROJECT_DIR/backend/coverage.xml
+    reports:
+      junit: $CI_PROJECT_DIR/backend/report.xml
+      cobertura:
+        - $CI_PROJECT_DIR/backend/coverage.xml
 
 Test Frontend:
   stage: test
-  image: node:13.6.0-alpine3.11
+  image: node:14
+  variables:
+    MIN_COVERAGE_FRONTEND: 15
   script:
     - cd frontend
     - "! grep -ir 'console.log' src/"
     - npm install
-    - npm run test
+    - npm run test -- --coverageThreshold='{"global":{"statements":"$MIN_COVERAGE_FRONTEND"}}'
   tags:
     - docker
   except:
     - tags
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - $CI_PROJECT_DIR/frontend/junit.xml
+      cobertura: $CI_PROJECT_DIR/frontend/coverage/cobertura-coverage.xml
 
 # STAGE: prepare
 # Create release tag and store as artifact
