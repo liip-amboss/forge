@@ -10,6 +10,7 @@
     IMAGE_TAG: ${CI_REGISTRY}/${CI_PROJECT_PATH}:${APP}_${ENVIRONMENT}
     RELEASE_TAG: $RELEASE_TAG
     DOCKERFILE: Dockerfile
+    DOCKER_BUILDKIT: 1
   services:
     - $DIND_SERVICE_IMAGE
   before_script:
@@ -18,7 +19,15 @@
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN ${CI_REGISTRY}
     - docker pull ${IMAGE_TAG} || true
     - echo "Building docker image from git tag $RELEASE_TAG with image tag ${IMAGE_TAG}"
-    - docker build --cache-from ${IMAGE_TAG} --build-arg env=${ENVIRONMENT} --build-arg release_tag=$RELEASE_TAG -t ${IMAGE_TAG} ${APP}/. -f ${APP}/${DOCKERFILE}
+    - > 
+      docker build 
+        --cache-from ${IMAGE_TAG} 
+        --build-arg BUILDKIT_INLINE_CACHE=1 
+        --build-arg env=${ENVIRONMENT} 
+        --build-arg release_tag=$RELEASE_TAG
+        -t ${IMAGE_TAG} 
+        ${APP}/. 
+        -f ${APP}/${DOCKERFILE}
     - docker push ${IMAGE_TAG}
     # Extract sourcemaps from docker image if frontend image
     - if [ "${DOCKERFILE}" == "Dockerfile.frontend" ]; then mkdir sourcemaps && docker cp $(docker create --rm ${IMAGE_TAG}):/usr/share/caddy/js/. sourcemaps ; fi
