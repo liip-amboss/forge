@@ -50,6 +50,34 @@
   tags:
     - docker-privileged
 
+# Pull forge helm chart and deploy to a k8s cluster.
+.k8s-deploy: &k8s-deploy
+  image:
+    name: alpine/helm
+    entrypoint: [""]
+  tags:
+    - docker-privileged
+  before_script:
+    - export KUBECONFIG=${KUBE_CONFIG_FILE}
+  script:
+    - echo $FRONTEND_DOMAIN
+    - echo $BACKEND_DOMAIN
+    - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.liip.ch/amboss/ambops/forge-helm-chart.git
+    - helm dependency update forge-helm-chart/charts/backend
+    - >
+      helm upgrade --install --namespace ${ENVIRONMENT_NAMESPACE}
+      --set "frontend.image.suffix=${IMAGE_SUFFIX}"
+      --set "backend.image.suffix=${IMAGE_SUFFIX}"
+      --set "frontend.ingress.hosts[0].host=$FRONTEND_DOMAIN"
+      --set "backend.ingress.hosts[0].host=$BACKEND_DOMAIN"
+      --set "frontend.ingress.tls[0].hosts[0]=$FRONTEND_DOMAIN"
+      --set "backend.ingress.tls[0].hosts[0]=$BACKEND_DOMAIN"
+      --set "configmap.data.FRONTEND_DOMAIN=$FRONTEND_DOMAIN"
+      --set "configmap.data.BACKEND_DOMAIN=$BACKEND_DOMAIN"
+      --set "configmap.data.ALLOWED_HOSTS=$BACKEND_DOMAIN"
+      --set "configmap.data.CORS_ORIGIN_WHITELIST=$BACKEND_DOMAIN"
+      --create-namespace ${ENVIRONMENT_NAMESPACE} forge-helm-chart
+
 # Install pip requirements using cache.
 # Requirements only reinstalled if requirements file changes
 .pip-requirements: &pip-requirements
