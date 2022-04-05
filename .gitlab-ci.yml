@@ -4,9 +4,9 @@ variables:
   STAGING_BRANCH: "master"
   PROD_BRANCH: "master"
   SKIP_DEPLOY: "False"
-  DOCKER_IMAGE: docker:19.03.8
+  DOCKER_IMAGE: docker:20.10.14
   DEPLOY_IMAGE: alpine:latest
-  DIND_SERVICE_IMAGE: docker:19.03-dind
+  DIND_SERVICE_IMAGE: docker:20.10.14-dind
 
 default:
   image: python:3.8
@@ -56,15 +56,20 @@ Test Frontend:
   image: node:14
   variables:
     MIN_COVERAGE_FRONTEND: 15
+  before_script:
+    - cd frontend && npm ci --cache .npm --prefer-offline
   script:
-    - cd frontend
-    - "! grep -ir 'console.log' src/"
-    - npm install
     - npm run test -- --coverageThreshold='{"global":{"statements":"$MIN_COVERAGE_FRONTEND"}}'
   tags:
     - docker
   except:
     - tags
+  cache:
+    key:
+      files:
+        - frontend/package-lock.json
+    paths:
+      - frontend/.npm/
   artifacts:
     when: always
     reports:

@@ -16,7 +16,7 @@ FROM python:3.8-buster
 ARG release_tag=staging
 ENV RELEASE_TAG=$release_tag
 ENV UWSGI_WSGI_FILE=/code/app/wsgi.py UWSGI_HTTP=:8000 UWSGI_MASTER=1 UWSGI_WORKERS=2 UWSGI_THREADS=8 UWSGI_UID=1000 UWSGI_GID=2000 UWSGI_LAZY_APPS=1 UWSGI_WSGI_ENV_BEHAVIOR=holy
-RUN EMAIL_URL=email SECRET_KEY=none DEBUG=False python manage.py collectstatic --noinput
+
 EXPOSE 8000
 
 RUN mkdir /code
@@ -24,10 +24,13 @@ RUN mkdir /code
 # copy site-packages with compiled binaries from backend-builder
 COPY --from=backend-builder /usr/local/lib/python3.8/site-packages /usr/local/lib/python3.8/site-packages
 COPY --from=backend-builder /usr/local/bin/uwsgi /usr/local/bin/uwsgi
+
 # copy code into container
 ADD . /code/
 
 WORKDIR /code
+
+RUN EMAIL_URL=email SECRET_KEY=none DEBUG=False python manage.py collectstatic --noinput
 
 ADD ./docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod a+x /docker-entrypoint.sh
