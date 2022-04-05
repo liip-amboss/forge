@@ -1,12 +1,13 @@
 include: ".gitlab-tasks.yml"
 
 variables:
-  STAGING_BRANCH: "master"
+  STAGING_BRANCH: "feature/docker-buildkit"
   PROD_BRANCH: "master"
   SKIP_DEPLOY: "False"
-  DOCKER_IMAGE: docker:19.03.8
+  DOCKER_IMAGE: docker:20.10.14
   DEPLOY_IMAGE: alpine:latest
-  DIND_SERVICE_IMAGE: docker:19.03-dind
+  DIND_SERVICE_IMAGE: docker:20.10.14-dind
+  FF_NETWORK_PER_BUILD: 1
 
 default:
   image: python:3.8
