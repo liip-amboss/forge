@@ -1,7 +1,7 @@
 include: ".gitlab-tasks.yml"
 
 variables:
-  STAGING_BRANCH: "feature/docker-buildkit"
+  STAGING_BRANCH: "master"
   PROD_BRANCH: "master"
   SKIP_DEPLOY: "False"
   DOCKER_IMAGE: docker:20.10.14
