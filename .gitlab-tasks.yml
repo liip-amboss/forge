@@ -6,7 +6,7 @@
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: "/certs"
-    IMAGE_TAG: ${CI_REGISTRY}/${CI_PROJECT_PATH}:${APP}_${ENVIRONMENT}
+    IMAGE_TAG: ${CI_REGISTRY}/${CI_PROJECT_PATH}:${APP}_${IMAGE_SUFFIX}
     RELEASE_TAG: $RELEASE_TAG
     DOCKERFILE: Dockerfile
     DOCKER_BUILDKIT: 1
@@ -16,13 +16,13 @@
     - docker info
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN ${CI_REGISTRY}
-    - echo "Building docker image from git tag $RELEASE_TAG with image tag ${IMAGE_TAG}"
+    - echo "Building docker image from git tag $CI_COMMIT_SHORT_SHA with image tag ${IMAGE_TAG}"
     - > 
       docker build 
       --cache-from ${IMAGE_TAG} 
       --build-arg BUILDKIT_INLINE_CACHE=1 
       --build-arg env=${ENVIRONMENT} 
-      --build-arg release_tag=$RELEASE_TAG
+      --build-arg release_tag=$CI_COMMIT_SHORT_SHA
       -t ${IMAGE_TAG} 
       ${APP}/. 
       -f ${APP}/${DOCKERFILE}
@@ -38,9 +38,9 @@
 .docker-deploy: &docker-deploy
   image: $DEPLOY_IMAGE
   variables:
-    DEPLOY_COMMAND: "cd /home/manager/srv/app/scripts/; chmod u+x deploy.sh; ./deploy.sh ${CI_DEPLOY_USER} ${CI_DEPLOY_PASSWORD} ${CI_REGISTRY} ${CI_PROJECT_PATH} ${ENVIRONMENT}"
+    DEPLOY_COMMAND: "cd /home/manager/srv/app/scripts/; chmod u+x deploy.sh; ./deploy.sh ${CI_DEPLOY_USER} ${CI_DEPLOY_PASSWORD} ${CI_REGISTRY} ${CI_PROJECT_PATH} ${IMAGE_SUFFIX}"
   environment:
-    name: ${ENVIRONMENT}
+    name: ${IMAGE_SUFFIX}
     url: https://$DOMAIN
   before_script:
     - apk add --no-cache rsync
