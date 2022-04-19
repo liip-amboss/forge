@@ -106,5 +106,4 @@
     - pip install -r ${REQUIREMENTS_FILE}
   tags:
     - docker
-  except:
-    - tags
+

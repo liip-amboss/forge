@@ -1,12 +1,19 @@
 include: ".gitlab-tasks.yml"
 
 variables:
-  STAGING_BRANCH: "feature/docker-buildkit"
+  STAGING_BRANCH: "master"
   PROD_BRANCH: "master"
   SKIP_DEPLOY: "False"
   DOCKER_IMAGE: docker:20.10.14
   DEPLOY_IMAGE: alpine:latest
   DIND_SERVICE_IMAGE: docker:20.10.14-dind
+
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS'
+      when: never
+    - if: '$CI_COMMIT_BRANCH'
 
 default:
   image: python:3.8
@@ -23,6 +30,10 @@ flake8:
     - .pip-requirements
   script:
     - flake8
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    - when: always
   variables:
     REQUIREMENTS_FILE: "requirements/test.txt"
 
@@ -30,10 +41,6 @@ Pytest:
   stage: test-build
   extends:
     - .pip-requirements
-  variables:
-    POSTGRES_PASSWORD: unsafe
-    REQUIREMENTS_FILE: "requirements/test.txt"
-    MIN_COVERAGE_BACKEND: 70
   services:
     - postgres:latest
   script:
@@ -48,20 +55,24 @@ Pytest:
       junit: $CI_PROJECT_DIR/backend/report.xml
       cobertura:
         - $CI_PROJECT_DIR/backend/coverage.xml
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    - when: always
+  variables:
+    POSTGRES_PASSWORD: unsafe
+    REQUIREMENTS_FILE: "requirements/test.txt"
+    MIN_COVERAGE_BACKEND: 70
 
 Test Frontend:
   stage: test-build
   image: node:14
-  variables:
-    MIN_COVERAGE_FRONTEND: 15
   before_script:
     - cd frontend && npm ci --cache .npm --prefer-offline
   script:
     - npm run test -- --coverageThreshold='{"global":{"statements":"$MIN_COVERAGE_FRONTEND"}}'
   tags:
     - docker
-  except:
-    - tags
   cache:
     key:
       files:
@@ -74,6 +85,12 @@ Test Frontend:
       junit:
         - $CI_PROJECT_DIR/frontend/junit.xml
       cobertura: $CI_PROJECT_DIR/frontend/coverage/cobertura-coverage.xml
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    - when: always
+  variables:
+    MIN_COVERAGE_FRONTEND: 15
 
 # STAGE: build-staging
 # Containerize Vue frontend and push to gitlab container registry
@@ -81,47 +98,40 @@ Build Frontend:
   stage: test-build
   extends:
     - .docker-build
-  except:
-    - tags
-  variables:
-    IMAGE_SUFFIX: $CI_COMMIT_SHORT_SHA
-    APP: frontend
-    DOCKERFILE: Dockerfile.frontend
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: ($CI_COMMIT_BRANCH == $STAGING_BRANCH || $CI_COMMIT_BRANCH == $PROD_BRANCH || $CI_COMMIT_TAG)
       when: never
+  variables:
+    IMAGE_SUFFIX: $CI_COMMIT_SHORT_SHA
+    APP: frontend
+    DOCKERFILE: Dockerfile.frontend
 
 # Containerize Vue frontend styleguide and push to gitlab container registry
 Build Frontend Styleguide:
   stage: test-build
   extends:
     - .docker-build
-  except:
-    - tags
-  variables:
-    APP: frontend
-    DOCKERFILE: Dockerfile.styleguide
-    IMAGE_TAG: ${CI_REGISTRY}/${CI_PROJECT_PATH}:styleguide_${CI_COMMIT_SHORT_SHA}
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: ($CI_COMMIT_BRANCH == $STAGING_BRANCH || $CI_COMMIT_BRANCH == $PROD_BRANCH || $CI_COMMIT_TAG)
       when: never
-
+  variables:
+    APP: frontend
+    DOCKERFILE: Dockerfile.styleguide
+    IMAGE_TAG: ${CI_REGISTRY}/${CI_PROJECT_PATH}:styleguide_${CI_COMMIT_SHORT_SHA}
 # Containerize VuePress docs app and push to gitlab container registry
 Build Forge Docs:
   stage: test-build
   extends:
     - .docker-build
-  except:
-    - tags
-  variables:
-    IMAGE_SUFFIX: $CI_COMMIT_SHORT_SHA
-    APP: docs
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: ($CI_COMMIT_BRANCH == $STAGING_BRANCH || $CI_COMMIT_BRANCH == $PROD_BRANCH || $CI_COMMIT_TAG)
       when: never
+  variables:
+    IMAGE_SUFFIX: $CI_COMMIT_SHORT_SHA
+    APP: docs
 
 # STAGE: build-staging
 # Containerize Django backend and push to gitlab container registry
@@ -129,15 +139,13 @@ Build Backend:
   stage: test-build
   extends:
     - .docker-build
-  except:
-    - tags
-  variables:
-    IMAGE_SUFFIX: $CI_COMMIT_SHORT_SHA
-    APP: backend
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: ($CI_COMMIT_BRANCH == $STAGING_BRANCH || $CI_COMMIT_BRANCH == $PROD_BRANCH || $CI_COMMIT_TAG)
       when: never
+  variables:
+    IMAGE_SUFFIX: $CI_COMMIT_SHORT_SHA
+    APP: backend
 
 # STAGE: deploy-staging
 # Deploy merge request to k8s cluster.
@@ -148,18 +156,13 @@ Deploy Review App:
     url: https://$CI_ENVIRONMENT_SLUG.k8s.liip.ch
   extends:
     - .k8s-deploy
-  needs:
-    - job: Build Backend
-    - job: Build Frontend
-    - job: Build Frontend Styleguide
-    - job: Build Forge Docs
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: ($CI_COMMIT_BRANCH == $STAGING_BRANCH || $CI_COMMIT_BRANCH == $PROD_BRANCH || $CI_COMMIT_TAG)
       when: never
   variables:
     IMAGE_SUFFIX: $CI_COMMIT_SHORT_SHA
-    ENVIRONMENT_NAMESPACE: forge
+    ENVIRONMENT_NAMESPACE: forge-review
     FRONTEND_DOMAIN: https://$CI_ENVIRONMENT_SLUG.k8s.liip.ch
     BACKEND_DOMAIN: https://$CI_ENVIRONMENT_SLUG.k8s.liip.ch
 
@@ -171,11 +174,6 @@ Deploy Staging:
     - .docker-deploy
   rules:
     - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
-  needs:
-    - job: Build Backend
-    - job: Build Frontend
-    - job: Build Frontend Styleguide
-    - job: Build Forge Docs
   variables:
     IMAGE_SUFFIX: staging
     DOMAIN: ${STAGING_DOMAIN}
@@ -215,9 +213,6 @@ Update Sentry:
   needs:
     - job: Deploy Staging
       optional: true
-    - job: Generate Release Tag
-      artifacts: true
-      optional: true
     - job: Build Frontend
       artifacts: true
       optional: true
@@ -225,14 +220,14 @@ Update Sentry:
     - export SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
     - export SENTRY_ORG=$SENTRY_ORG
     - export SENTRY_PROJECT=$SENTRY_PROJECT
-    - echo "Creating new sentry release with tag $RELEASE_TAG..."
-    - sentry-cli releases new $RELEASE_TAG
+    - echo "Creating new sentry release with tag $CI_COMMIT_SHORT_SHA..."
+    - sentry-cli releases new $CI_COMMIT_SHORT_SHA
     - echo "Uploading sourcemaps files to Sentry..."
     - ls ${CI_PROJECT_DIR}/sourcemaps
-    - sentry-cli releases files $RELEASE_TAG upload-sourcemaps ${CI_PROJECT_DIR}/sourcemaps
+    - sentry-cli releases files $CI_COMMIT_SHORT_SHA upload-sourcemaps ${CI_PROJECT_DIR}/sourcemaps
     - echo "Finalizing sentry release and setting commits..."
-    - sentry-cli releases finalize $RELEASE_TAG
-    - sentry-cli releases set-commits --auto $RELEASE_TAG
-    - echo "Finalized release, set commits and uploaded sourcemaps for release $RELEASE_TAG"
+    - sentry-cli releases finalize $CI_COMMIT_SHORT_SHA
+    - sentry-cli releases set-commits --auto $CI_COMMIT_SHORT_SHA
+    - echo "Finalized release, set commits and uploaded sourcemaps for release $CI_COMMIT_SHORT_SHA"
   tags:
     - docker
