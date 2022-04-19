@@ -163,8 +163,8 @@ Deploy Review App:
   variables:
     IMAGE_SUFFIX: $CI_COMMIT_SHORT_SHA
     ENVIRONMENT_NAMESPACE: forge-review
-    FRONTEND_DOMAIN: https://$CI_ENVIRONMENT_SLUG.k8s.liip.ch
-    BACKEND_DOMAIN: https://$CI_ENVIRONMENT_SLUG.k8s.liip.ch
+    FRONTEND_DOMAIN: $CI_ENVIRONMENT_SLUG.k8s.liip.ch
+    BACKEND_DOMAIN: $CI_ENVIRONMENT_SLUG.k8s.liip.ch
 
 # STAGE: deploy-staging
 # Deployment on staging server
