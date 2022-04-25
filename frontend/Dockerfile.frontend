@@ -17,6 +17,10 @@ RUN npm install
 RUN npm run build -- --mode $env
 
 FROM caddy:2.1.1-alpine
-COPY Caddyfile.frontend /etc/caddy/Caddyfile
+RUN mkdir -p /config/caddy /data/caddy
+RUN addgroup -g 10000 -S www-data
+RUN adduser -u 10000 -D -S -G www-data www-data;
+RUN chown -R www-data:www-data /config /data
 
+COPY Caddyfile.frontend /etc/caddy/Caddyfile
 COPY --from=frontend-builder /code/src/dist /usr/share/caddy/
