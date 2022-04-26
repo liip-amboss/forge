@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <!-- Runtime variables are loaded through k8s configmaps and served statically as config.js -->
+    <script src="<%= BASE_URL %>static/config.js"></script>
     <title>Forge</title>
   </head>
   <body>
@@ -12,6 +14,8 @@
       <strong>We're sorry but vue-starter doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <div id="app"></div>
+    <!-- Runtime variables are loaded through k8s configmaps and served statically as config.js -->
+    <script src="<%= BASE_URL %>static/config.js"></script>
     <!-- built files will be auto injected -->
   </body>
 </html>
