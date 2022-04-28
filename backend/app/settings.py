@@ -27,7 +27,7 @@ if os.path.exists(ENV_PATH):
     environ.Env.read_env(ENV_PATH)
 
 ENVIRONMENT = env('ENVIRONMENT', default='development')
-
+RELEASE_TAG = env('RELEASE_TAG', default="RELEASE_TAG_MISSING")
 #################
 # PATH SETTINGS #
 #################
@@ -235,5 +235,5 @@ if SENTRY_DSN and ENVIRONMENT in ['staging', 'production']:
         traces_sample_rate=1.0,  # Consider reducing this value in production.
         send_default_pii=True,
         # RELEASE_TAG is generated in the gitlab pipeline and passed to the dockerfile.
-        release=env('RELEASE_TAG', default="RELEASE_TAG_MISSING")
+        release=RELEASE_TAG
     )
