@@ -1,4 +1,10 @@
-include: ".gitlab-tasks.yml"
+include:
+  - local: ".gitlab-tasks.yml"
+  - template: Code-Quality.gitlab-ci.yml
+
+code_quality:
+  tags:
+    - docker
 
 variables:
   STAGING_BRANCH: "master"
