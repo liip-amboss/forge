@@ -84,7 +84,7 @@
       --set "frontend.configmap.data.VUE_APP_API_URL=$BACKEND_DOMAIN" 
       --set "backend.postgresql.fullnameOverride=postgres-django-${IMAGE_SUFFIX}" 
       --set "backend.configmap.data.DATABASE_URL=postgres://postgres:postgres@postgres-django-${IMAGE_SUFFIX}/postgres" 
-      --create-namespace ${ENVIRONMENT_NAMESPACE} forge-helm-chart
+      --create-namespace ${ENVIRONMENT_NAMESPACE}-${IMAGE_SUFFIX} forge-helm-chart
 
 # Install pip requirements using cache.
 # Requirements only reinstalled if requirements file changes
