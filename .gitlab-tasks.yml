@@ -6,6 +6,7 @@
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: "/certs"
+    IMAGE_NAME: ${CI_REGISTRY}/${CI_PROJECT_PATH}
     IMAGE_TAG: ${CI_REGISTRY}/${CI_PROJECT_PATH}:${APP}_${IMAGE_SUFFIX}
     RELEASE_TAG: $RELEASE_TAG
     DOCKERFILE: Dockerfile
@@ -26,7 +27,9 @@
       -t ${IMAGE_TAG} 
       ${APP}/. 
       -f ${APP}/${DOCKERFILE}
-    - docker push ${IMAGE_TAG}
+    - if [ "${ENVIRONMENT}" == "staging" ]; then docker image tag ${IMAGE_TAG} ${IMAGE_NAME}:${APP}_${ENVIRONMENT} ; fi
+    - if [ "${ENVIRONMENT}" == "production" ]; then docker image tag ${IMAGE_TAG} ${IMAGE_NAME}:${APP}_latest ; fi
+    - docker image push --all-tags ${IMAGE_NAME}
     # Extract sourcemaps from docker image if frontend image
     - if [ "${DOCKERFILE}" == "Dockerfile.frontend" ]; then mkdir sourcemaps && docker cp $(docker create --rm ${IMAGE_TAG}):/usr/share/caddy/js/. sourcemaps ; fi
   artifacts:
@@ -84,7 +87,19 @@
       --set "frontend.configmap.data.VUE_APP_API_URL=$BACKEND_DOMAIN" 
       --set "backend.postgresql.fullnameOverride=postgres-django-${IMAGE_SUFFIX}" 
       --set "backend.configmap.data.DATABASE_URL=postgres://postgres:postgres@postgres-django-${IMAGE_SUFFIX}/postgres" 
-      --create-namespace ${ENVIRONMENT_NAMESPACE}-${IMAGE_SUFFIX} forge-helm-chart
+      --create-namespace $CI_ENVIRONMENT_SLUG forge-helm-chart
+
+# Uninstall helm release from given namespace
+.k8s-remove: &k8s-remove
+  image:
+    name: alpine/helm
+    entrypoint: [""]
+  tags:
+    - docker-privileged
+  before_script:
+    - export KUBECONFIG=${KUBE_CONFIG_FILE}
+  script:
+    - helm uninstall --namespace "${ENVIRONMENT_NAMESPACE}" "$CI_ENVIRONMENT_SLUG"
 
 # Install pip requirements using cache.
 # Requirements only reinstalled if requirements file changes

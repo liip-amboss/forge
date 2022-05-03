@@ -106,8 +106,16 @@ Build Frontend:
     - .docker-build
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: ($CI_COMMIT_BRANCH == $STAGING_BRANCH || $CI_COMMIT_BRANCH == $PROD_BRANCH || $CI_COMMIT_TAG)
+      variables:
+        ENVIRONMENT: review
+    - if: $CI_COMMIT_TAG
       when: never
+    - if: $CI_COMMIT_BRANCH == $PROD_BRANCH
+      variables:
+        ENVIRONMENT: production
+    - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
+      variables:
+        ENVIRONMENT: staging
   variables:
     IMAGE_SUFFIX: $CI_COMMIT_SHORT_SHA
     APP: frontend
@@ -120,12 +128,21 @@ Build Frontend Styleguide:
     - .docker-build
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: ($CI_COMMIT_BRANCH == $STAGING_BRANCH || $CI_COMMIT_BRANCH == $PROD_BRANCH || $CI_COMMIT_TAG)
+      variables:
+        ENVIRONMENT: review
+    - if: $CI_COMMIT_TAG
       when: never
+    - if: $CI_COMMIT_BRANCH == $PROD_BRANCH
+      variables:
+        ENVIRONMENT: production
+    - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
+      variables:
+        ENVIRONMENT: staging
   variables:
     APP: frontend
     DOCKERFILE: Dockerfile.styleguide
     IMAGE_TAG: ${CI_REGISTRY}/${CI_PROJECT_PATH}:styleguide_${CI_COMMIT_SHORT_SHA}
+
 # Containerize VuePress docs app and push to gitlab container registry
 Build Forge Docs:
   stage: test
@@ -133,8 +150,16 @@ Build Forge Docs:
     - .docker-build
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: ($CI_COMMIT_BRANCH == $STAGING_BRANCH || $CI_COMMIT_BRANCH == $PROD_BRANCH || $CI_COMMIT_TAG)
+      variables:
+        ENVIRONMENT: review
+    - if: $CI_COMMIT_TAG
       when: never
+    - if: $CI_COMMIT_BRANCH == $PROD_BRANCH
+      variables:
+        ENVIRONMENT: production
+    - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
+      variables:
+        ENVIRONMENT: staging
   variables:
     IMAGE_SUFFIX: $CI_COMMIT_SHORT_SHA
     APP: docs
@@ -147,8 +172,16 @@ Build Backend:
     - .docker-build
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: ($CI_COMMIT_BRANCH == $STAGING_BRANCH || $CI_COMMIT_BRANCH == $PROD_BRANCH || $CI_COMMIT_TAG)
+      variables:
+        ENVIRONMENT: review
+    - if: $CI_COMMIT_TAG
       when: never
+    - if: $CI_COMMIT_BRANCH == $PROD_BRANCH
+      variables:
+        ENVIRONMENT: production
+    - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
+      variables:
+        ENVIRONMENT: staging
   variables:
     IMAGE_SUFFIX: $CI_COMMIT_SHORT_SHA
     APP: backend
@@ -172,12 +205,28 @@ Deploy Review App:
     FRONTEND_DOMAIN: frontend-$CI_ENVIRONMENT_SLUG.k8s.liip.ch
     BACKEND_DOMAIN: backend-$CI_ENVIRONMENT_SLUG.k8s.liip.ch
 
+Stop Review App:
+  stage: deploy
+  extends:
+    - .k8s-remove
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    action: stop
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+      when: manual
+  variables:
+    ENVIRONMENT_NAMESPACE: forge-review
+
 # STAGE: deploy-staging
 # Deployment on staging server
 Deploy Staging:
   stage: deploy
   extends:
     - .docker-deploy
+  environment:
+    name: staging
+    url: https://forge.bedev.liip.ch
   rules:
     - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
   variables:
