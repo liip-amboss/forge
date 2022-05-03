@@ -1,4 +1,10 @@
-include: ".gitlab-tasks.yml"
+include:
+  - local: ".gitlab-tasks.yml"
+  - template: Code-Quality.gitlab-ci.yml
+
+code_quality:
+  tags:
+    - docker
 
 variables:
   STAGING_BRANCH: "master"
@@ -19,13 +25,13 @@ default:
   image: python:3.8
 
 stages:
-  - test-build
+  - test
   - deploy
   - release
 
 # STAGE: test
 flake8:
-  stage: test-build
+  stage: test
   extends:
     - .pip-requirements
   script:
@@ -38,7 +44,7 @@ flake8:
     REQUIREMENTS_FILE: "requirements/test.txt"
 
 Pytest:
-  stage: test-build
+  stage: test
   extends:
     - .pip-requirements
   services:
@@ -65,7 +71,7 @@ Pytest:
     MIN_COVERAGE_BACKEND: 70
 
 Test Frontend:
-  stage: test-build
+  stage: test
   image: node:14
   before_script:
     - cd frontend && npm ci --cache .npm --prefer-offline
@@ -95,7 +101,7 @@ Test Frontend:
 # STAGE: build-staging
 # Containerize Vue frontend and push to gitlab container registry
 Build Frontend:
-  stage: test-build
+  stage: test
   extends:
     - .docker-build
   rules:
@@ -109,7 +115,7 @@ Build Frontend:
 
 # Containerize Vue frontend styleguide and push to gitlab container registry
 Build Frontend Styleguide:
-  stage: test-build
+  stage: test
   extends:
     - .docker-build
   rules:
@@ -122,7 +128,7 @@ Build Frontend Styleguide:
     IMAGE_TAG: ${CI_REGISTRY}/${CI_PROJECT_PATH}:styleguide_${CI_COMMIT_SHORT_SHA}
 # Containerize VuePress docs app and push to gitlab container registry
 Build Forge Docs:
-  stage: test-build
+  stage: test
   extends:
     - .docker-build
   rules:
@@ -136,7 +142,7 @@ Build Forge Docs:
 # STAGE: build-staging
 # Containerize Django backend and push to gitlab container registry
 Build Backend:
-  stage: test-build
+  stage: test
   extends:
     - .docker-build
   rules:

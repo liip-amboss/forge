@@ -1,5 +1,5 @@
 FROM node:14 as frontend-builder
-ARG release_tag=staging
+ARG release_tag=RELEASE_TAG_MISSING
 ARG env=production
 ENV VUE_APP_RELEASE_TAG=$release_tag
 WORKDIR /code/src

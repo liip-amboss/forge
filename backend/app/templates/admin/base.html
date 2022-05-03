@@ -1,0 +1,6 @@
+{% extends "admin/base.html" %}
+{% load custom_tags %}
+{% block footer %}
+ <div id="footer">App Version - {% get_setting "RELEASE_TAG" %}</div>
+ {{ block.super }}
+{% endblock %}

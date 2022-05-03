@@ -13,7 +13,7 @@ RUN mkdir /uploads
 RUN chown 1000 /uploads
 
 FROM python:3.8-buster
-ARG release_tag=staging
+ARG release_tag=RELEASE_TAG_MISSING
 ENV RELEASE_TAG=$release_tag
 EXPOSE 8000
 RUN mkdir /code
