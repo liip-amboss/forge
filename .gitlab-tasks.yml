@@ -24,6 +24,9 @@
       --build-arg BUILDKIT_INLINE_CACHE=1 
       --build-arg env=${ENVIRONMENT} 
       --build-arg release_tag=$CI_COMMIT_SHORT_SHA
+      --build-arg api_url=$API_URL
+      --build-arg enable_axe=True
+      --build-arg sentry_dsn=$SENTRY_DSN
       -t ${IMAGE_TAG} 
       ${APP}/. 
       -f ${APP}/${DOCKERFILE}
@@ -76,15 +79,15 @@
       helm upgrade --install --namespace "${ENVIRONMENT_NAMESPACE}" 
       --set "frontend.image.suffix=${IMAGE_SUFFIX}" 
       --set "backend.image.suffix=${IMAGE_SUFFIX}" 
-      --set "frontend.ingress.hosts[0].host=$FRONTEND_DOMAIN" 
-      --set "backend.ingress.hosts[0].host=$BACKEND_DOMAIN" 
-      --set "frontend.ingress.tls[0].hosts[0]=$FRONTEND_DOMAIN" 
-      --set "backend.ingress.tls[0].hosts[0]=$BACKEND_DOMAIN" 
-      --set "frontend.configmap.data.FRONTEND_URL=$FRONTEND_DOMAIN" 
-      --set "backend.configmap.data.BACKEND_URL=$BACKEND_DOMAIN" 
-      --set "backend.configmap.data.ALLOWED_HOSTS=$BACKEND_DOMAIN" 
-      --set "backend.configmap.data.CORS_ORIGIN_WHITELIST=https://$BACKEND_DOMAIN" 
-      --set "frontend.configmap.data.VUE_APP_API_URL=$BACKEND_DOMAIN" 
+      --set "frontend.ingress.hosts[0].host=$FRONTEND_URL" 
+      --set "backend.ingress.hosts[0].host=$BACKEND_URL" 
+      --set "frontend.ingress.tls[0].hosts[0]=$FRONTEND_URL" 
+      --set "backend.ingress.tls[0].hosts[0]=$BACKEND_URL" 
+      --set "frontend.configmap.data.FRONTEND_URL=$FRONTEND_URL" 
+      --set "backend.configmap.data.BACKEND_URL=$BACKEND_URL" 
+      --set "backend.configmap.data.ALLOWED_HOSTS=$BACKEND_URL" 
+      --set "backend.configmap.data.CORS_ORIGIN_WHITELIST=https://$FRONTEND_URL" 
+      --set "frontend.configmap.data.VUE_APP_API_URL=$BACKEND_URL" 
       --set "backend.postgresql.fullnameOverride=postgres-django-${IMAGE_SUFFIX}" 
       --set "backend.configmap.data.DATABASE_URL=postgres://postgres:postgres@postgres-django-${IMAGE_SUFFIX}/postgres" 
       --create-namespace $CI_ENVIRONMENT_SLUG forge-helm-chart

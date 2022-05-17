@@ -107,15 +107,16 @@ Build Frontend:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       variables:
-        ENVIRONMENT: review
+        ENVIRONMENT: $CI_ENVIRONMENT_SLUG
+        NODE_ENV: $CI_ENVIRONMENT_SLUG
+        API_URL: https://forge-backend-$CI_COMMIT_SHORT_SHA.k8s.liip.ch/api/v1/
     - if: $CI_COMMIT_TAG
       when: never
-    - if: $CI_COMMIT_BRANCH == $PROD_BRANCH
-      variables:
-        ENVIRONMENT: production
     - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
       variables:
         ENVIRONMENT: staging
+        NODE_ENV: staging
+        API_URL: https://api.forge.bedev.liip.ch/api/v1/
   variables:
     IMAGE_SUFFIX: $CI_COMMIT_SHORT_SHA
     APP: frontend
@@ -202,8 +203,8 @@ Deploy Review App:
   variables:
     IMAGE_SUFFIX: $CI_COMMIT_SHORT_SHA
     ENVIRONMENT_NAMESPACE: forge-review
-    FRONTEND_DOMAIN: frontend-$CI_ENVIRONMENT_SLUG.k8s.liip.ch
-    BACKEND_DOMAIN: backend-$CI_ENVIRONMENT_SLUG.k8s.liip.ch
+    FRONTEND_URL: forge-frontend-$CI_COMMIT_SHORT_SHA.k8s.liip.ch
+    BACKEND_URL: forge-backend-$CI_COMMIT_SHORT_SHA.k8s.liip.ch
 
 Stop Review App:
   stage: deploy
