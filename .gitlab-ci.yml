@@ -17,9 +17,9 @@ variables:
 workflow:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS'
+    - if: '$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME && $CI_OPEN_MERGE_REQUESTS'
       when: never
-    - if: '$CI_COMMIT_BRANCH'
+    - if: '$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME'
 
 default:
   image: python:3.8
@@ -114,7 +114,7 @@ Build Frontend:
         API_URL: https://forge-backend-$CI_MERGE_REQUEST_ID.k8s.liip.ch/api/v1/
     - if: $CI_COMMIT_TAG
       when: never
-    - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
+    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == $STAGING_BRANCH
       variables:
         ENVIRONMENT: staging
         NODE_ENV: staging
@@ -135,10 +135,10 @@ Build Frontend Styleguide:
         ENVIRONMENT: review
     - if: $CI_COMMIT_TAG
       when: never
-    - if: $CI_COMMIT_BRANCH == $PROD_BRANCH
+    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == $PROD_BRANCH
       variables:
         ENVIRONMENT: production
-    - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
+    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == $STAGING_BRANCH
       variables:
         ENVIRONMENT: staging
   variables:
@@ -157,10 +157,10 @@ Build Forge Docs:
         ENVIRONMENT: review
     - if: $CI_COMMIT_TAG
       when: never
-    - if: $CI_COMMIT_BRANCH == $PROD_BRANCH
+    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == $PROD_BRANCH
       variables:
         ENVIRONMENT: production
-    - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
+    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == $STAGING_BRANCH
       variables:
         ENVIRONMENT: staging
   variables:
@@ -179,10 +179,10 @@ Build Backend:
         ENVIRONMENT: review
     - if: $CI_COMMIT_TAG
       when: never
-    - if: $CI_COMMIT_BRANCH == $PROD_BRANCH
+    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == $PROD_BRANCH
       variables:
         ENVIRONMENT: production
-    - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
+    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == $STAGING_BRANCH
       variables:
         ENVIRONMENT: staging
   variables:
@@ -199,9 +199,9 @@ Deploy Review App:
   extends:
     - .k8s-deploy
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: ($CI_COMMIT_BRANCH == $STAGING_BRANCH || $CI_COMMIT_BRANCH == $PROD_BRANCH || $CI_COMMIT_TAG)
+    - if: ($CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == $STAGING_BRANCH || $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == $PROD_BRANCH || $CI_COMMIT_TAG)
       when: never
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
   variables:
     IMAGE_SUFFIX: $CI_COMMIT_SHORT_SHA
     ENVIRONMENT_NAMESPACE: forge-review
@@ -231,7 +231,7 @@ Deploy Staging:
     name: staging
     url: https://forge.bedev.liip.ch
   rules:
-    - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
+    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == $STAGING_BRANCH
   variables:
     IMAGE_SUFFIX: staging
     DOMAIN: ${STAGING_DOMAIN}
@@ -246,7 +246,7 @@ Create Gitlab Release:
   rules:
     - if: $CI_COMMIT_TAG
       when: never
-    - if: ($CI_COMMIT_BRANCH == $STAGING_BRANCH || $CI_COMMIT_BRANCH == $PROD_BRANCH)
+    - if: ($CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == $STAGING_BRANCH || $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == $PROD_BRANCH)
   needs:
     - job: Deploy Staging
       optional: true
@@ -267,7 +267,7 @@ Update Sentry:
   rules:
     - if: $CI_COMMIT_TAG
       when: never
-    - if: ($CI_COMMIT_BRANCH == $STAGING_BRANCH || $CI_COMMIT_BRANCH == $PROD_BRANCH) && $SENTRY_AUTH_TOKEN
+    - if: ($CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == $STAGING_BRANCH || $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == $PROD_BRANCH) && $SENTRY_AUTH_TOKEN
   needs:
     - job: Deploy Staging
       optional: true

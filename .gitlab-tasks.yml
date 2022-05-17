@@ -30,8 +30,8 @@
       -t ${IMAGE_TAG} 
       ${APP}/. 
       -f ${APP}/${DOCKERFILE}
-    - if [ "${ENVIRONMENT}" == "staging" ]; then docker image tag ${IMAGE_TAG} ${IMAGE_NAME}:${APP}_${ENVIRONMENT} ; fi
-    - if [ "${ENVIRONMENT}" == "production" ]; then docker image tag ${IMAGE_TAG} ${IMAGE_NAME}:${APP}_latest ; fi
+    - if [ "${ENVIRONMENT}" == "staging" ]; then docker image tag $(docker images -q ${IMAGE_TAG}) ${IMAGE_NAME}:${APP}_${ENVIRONMENT} ; fi
+    - if [ "${ENVIRONMENT}" == "production" ]; then docker image tag $(docker images -q ${IMAGE_TAG}) ${IMAGE_NAME}:${APP}_latest ; fi
     - docker image push --all-tags ${IMAGE_NAME}
     # Extract sourcemaps from docker image if frontend image
     - if [ "${DOCKERFILE}" == "Dockerfile.frontend" ]; then mkdir sourcemaps && docker cp $(docker create --rm ${IMAGE_TAG}):/usr/share/caddy/js/. sourcemaps ; fi
