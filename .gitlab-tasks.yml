@@ -88,8 +88,8 @@
       --set "backend.configmap.data.ALLOWED_HOSTS=$BACKEND_URL" 
       --set "backend.configmap.data.CORS_ORIGIN_WHITELIST=https://$FRONTEND_URL" 
       --set "frontend.configmap.data.VUE_APP_API_URL=$BACKEND_URL" 
-      --set "backend.postgresql.fullnameOverride=postgres-django-${IMAGE_SUFFIX}" 
-      --set "backend.configmap.data.DATABASE_URL=postgres://postgres:postgres@postgres-django-${IMAGE_SUFFIX}/postgres" 
+      --set "backend.postgresql.fullnameOverride=postgres-django-${CI_ENVIRONMENT_SLUG}" 
+      --set "backend.configmap.data.DATABASE_URL=postgres://postgres:postgres@postgres-django-${CI_ENVIRONMENT_SLUG}/postgres" 
       --create-namespace $CI_ENVIRONMENT_SLUG forge-helm-chart
 
 # Uninstall helm release from given namespace

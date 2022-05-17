@@ -102,14 +102,16 @@ Test Frontend:
 # Containerize Vue frontend and push to gitlab container registry
 Build Frontend:
   stage: test
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
   extends:
     - .docker-build
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       variables:
-        ENVIRONMENT: $CI_ENVIRONMENT_SLUG
-        NODE_ENV: $CI_ENVIRONMENT_SLUG
-        API_URL: https://forge-backend-$CI_COMMIT_SHORT_SHA.k8s.liip.ch/api/v1/
+        ENVIRONMENT: review
+        NODE_ENV: review
+        API_URL: https://forge-backend-$CI_MERGE_REQUEST_ID.k8s.liip.ch/api/v1/
     - if: $CI_COMMIT_TAG
       when: never
     - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
@@ -203,8 +205,8 @@ Deploy Review App:
   variables:
     IMAGE_SUFFIX: $CI_COMMIT_SHORT_SHA
     ENVIRONMENT_NAMESPACE: forge-review
-    FRONTEND_URL: forge-frontend-$CI_COMMIT_SHORT_SHA.k8s.liip.ch
-    BACKEND_URL: forge-backend-$CI_COMMIT_SHORT_SHA.k8s.liip.ch
+    FRONTEND_URL: forge-frontend-$CI_MERGE_REQUEST_ID.k8s.liip.ch
+    BACKEND_URL: forge-backend-$CI_MERGE_REQUEST_ID.k8s.liip.ch
 
 Stop Review App:
   stage: deploy
