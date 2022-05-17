@@ -7,7 +7,7 @@ code_quality:
     - docker
 
 variables:
-  STAGING_BRANCH: "master"
+  STAGING_BRANCH: "feature/k8s-review-apps-test2"
   PROD_BRANCH: "master"
   SKIP_DEPLOY: "False"
   DOCKER_IMAGE: docker:20.10.14
@@ -195,7 +195,7 @@ Deploy Review App:
   stage: deploy
   environment:
     name: review/$CI_COMMIT_REF_NAME
-    url: https://$CI_ENVIRONMENT_SLUG.k8s.liip.ch
+    url: https://forge-frontend-$CI_MERGE_REQUEST_ID.k8s.liip.ch
   extends:
     - .k8s-deploy
   rules:
