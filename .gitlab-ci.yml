@@ -203,6 +203,8 @@ Deploy Review App:
   environment:
     name: review/$CI_COMMIT_REF_NAME
     url: https://forge-frontend-$CI_MERGE_REQUEST_ID.k8s.liip.ch
+    on_stop: Stop Review App
+    auto_stop_in: 1 week
   extends:
     - .k8s-deploy
   rules:
