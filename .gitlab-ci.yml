@@ -7,7 +7,7 @@ code_quality:
     - docker
 
 variables:
-  STAGING_BRANCH: "feature/k8s-review-apps-test2"
+  STAGING_BRANCH: "develop"
   PROD_BRANCH: "master"
   SKIP_DEPLOY: "False"
   DOCKER_IMAGE: docker:20.10.14
