@@ -6,8 +6,7 @@
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: "/certs"
-    IMAGE_NAME: ${CI_REGISTRY}/${CI_PROJECT_PATH}
-    IMAGE_TAG: ${IMAGE_NAME}:${APP}_${IMAGE_SUFFIX}
+    IMAGE_NAME: ${CI_REGISTRY}/${CI_PROJECT_PATH}:${APP}_${IMAGE_SUFFIX}
     RELEASE_TAG: $RELEASE_TAG
     DOCKERFILE: Dockerfile
     DOCKER_BUILDKIT: 1
@@ -17,22 +16,22 @@
     - docker info
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN ${CI_REGISTRY}
-    - echo "Building docker image from git tag $CI_COMMIT_SHORT_SHA with image tag ${IMAGE_TAG}"
+    - echo "Building docker image from git tag $CI_COMMIT_SHORT_SHA with image tag ${IMAGE_NAME}"
     - > 
       docker build 
-      --cache-from ${IMAGE_TAG} 
+      --cache-from ${IMAGE_NAME} 
       --build-arg BUILDKIT_INLINE_CACHE=1 
       --build-arg env=${ENVIRONMENT} 
       --build-arg release_tag=$CI_COMMIT_SHORT_SHA
       --build-arg api_url=$API_URL
       --build-arg enable_axe=True
       --build-arg sentry_dsn=$SENTRY_DSN
-      -t ${IMAGE_TAG} 
+      -t ${IMAGE_NAME} 
       ${APP}/. 
       -f ${APP}/${DOCKERFILE}
-    - docker image push ${IMAGE_TAG}
+    - docker image push ${IMAGE_NAME}
     # Extract sourcemaps from docker image if frontend image
-    - if [ "${DOCKERFILE}" == "Dockerfile.frontend" ]; then mkdir sourcemaps && docker cp $(docker create --rm ${IMAGE_TAG}):/usr/share/caddy/js/. sourcemaps ; fi
+    - if [ "${DOCKERFILE}" == "Dockerfile.frontend" ]; then mkdir sourcemaps && docker cp $(docker create --rm ${IMAGE_NAME}):/usr/share/caddy/js/. sourcemaps ; fi
   artifacts:
     paths:
       - sourcemaps/
