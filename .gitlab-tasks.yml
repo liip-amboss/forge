@@ -73,7 +73,7 @@
     - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.liip.ch/amboss/ambops/forge-helm-chart.git
     - helm dependency update forge-helm-chart/charts/backend
     - >
-      helm upgrade --install --namespace "${ENVIRONMENT_NAMESPACE}" 
+      helm upgrade --install --namespace "${K8S_NAMESPACE}" 
       --set "frontend.image.suffix=${IMAGE_SUFFIX}" 
       --set "backend.image.suffix=${IMAGE_SUFFIX}" 
       --set "frontend.ingress.hosts[0].host=$FRONTEND_URL" 
@@ -99,7 +99,7 @@
   before_script:
     - export KUBECONFIG=${KUBE_CONFIG_FILE}
   script:
-    - helm uninstall --namespace "${ENVIRONMENT_NAMESPACE}" "$CI_ENVIRONMENT_SLUG"
+    - helm uninstall --namespace "${K8S_NAMESPACE}" "$CI_ENVIRONMENT_SLUG"
 
 # Install pip requirements using cache.
 # Requirements only reinstalled if requirements file changes
