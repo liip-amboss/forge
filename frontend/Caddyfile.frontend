@@ -4,11 +4,13 @@
 # Set this path to your site's directory.
 root * /usr/share/caddy
 
+# Route all requests to index.html
+try_files {path} /index.html
+file_server
+
 header {
 	Access-Control-Allow-Origin *
 }
-file_server
-
 
 log {
   output stdout
