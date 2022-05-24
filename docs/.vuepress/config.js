@@ -51,6 +51,15 @@ module.exports = {
           "/backend/notifications",
           "/backend/SentryIntegration",
         ]
+      },
+      {
+        title: "CI/CD",
+        collapsable: false,
+        children: [
+          "/cicd/",
+          "/cicd/testing",
+          "/cicd/reviewapps",
+        ]
       }
     ]
   }

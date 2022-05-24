@@ -16,6 +16,7 @@ variables:
 code_quality:
   tags:
     - docker
+  stage: test-build
   rules:
     - if: $CODE_QUALITY_DISABLED
       when: never
@@ -30,7 +31,7 @@ code_quality:
 workflow:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: '$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME && $CI_OPEN_MERGE_REQUESTS'
+    - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS'
       when: never
     - if: '$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME'
     - when: always
@@ -39,12 +40,12 @@ default:
   image: python:3.8
 
 stages:
-  - test
+  - test-build
   - deploy
   - release
 
 flake8:
-  stage: test
+  stage: test-build
   extends:
     - .pip-requirements
   script:
@@ -57,7 +58,7 @@ flake8:
     REQUIREMENTS_FILE: "requirements/test.txt"
 
 Pytest:
-  stage: test
+  stage: test-build
   extends:
     - .pip-requirements
   services:
@@ -84,7 +85,7 @@ Pytest:
     MIN_COVERAGE_BACKEND: 70
 
 Test Frontend:
-  stage: test
+  stage: test-build
   image: node:14
   before_script:
     - cd frontend && npm ci --cache .npm --prefer-offline
@@ -113,7 +114,7 @@ Test Frontend:
 
 # Containerize Vue frontend and push to gitlab container registry.
 Build Frontend:
-  stage: test
+  stage: test-build
   extends:
     - .docker-build
   rules:
@@ -135,7 +136,7 @@ Build Frontend:
 
 # Containerize Vue frontend styleguide and push to gitlab container registry.
 Build Frontend Styleguide:
-  stage: test
+  stage: test-build
   extends:
     - .docker-build
   rules:
@@ -162,7 +163,7 @@ Build Frontend Styleguide:
 
 # Containerize VuePress docs app and push to gitlab container registry.
 Build Forge Docs:
-  stage: test
+  stage: test-build
   extends:
     - .docker-build
   rules:
@@ -188,7 +189,7 @@ Build Forge Docs:
 
 # Containerize Django backend and push to gitlab container registry.
 Build Backend:
-  stage: test
+  stage: test-build
   extends:
     - .docker-build
   rules:
