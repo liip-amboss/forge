@@ -4,7 +4,7 @@ ARG api_url=http://api.forge.docker.test/api/v1/
 ARG enable_axe=True
 ARG sentry_dsn
 ARG release_tag=RELEASE_TAG_MISSING
-ARG env=staging
+ARG env=production
 
 ENV VUE_APP_RELEASE_TAG=$release_tag
 ENV VUE_APP_I18N_LOCALE=de
