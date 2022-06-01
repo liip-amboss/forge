@@ -125,7 +125,7 @@ Build Frontend:
         IMAGE_SUFFIX: ${CI_MERGE_REQUEST_ID}_${CI_COMMIT_SHORT_SHA}
     - if: $CI_COMMIT_TAG
       when: never
-    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == $STAGING_BRANCH
+    - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
       variables:
         ENVIRONMENT: staging
         API_URL: https://api.forge.bedev.liip.ch/api/v1/
@@ -148,12 +148,12 @@ Build Frontend Styleguide:
         ENVIRONMENT: review
         IMAGE_NAME: ${CI_REGISTRY}/${CI_PROJECT_PATH}:styleguide_${CI_COMMIT_SHORT_SHA}
     # Staging env variables
-    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == $STAGING_BRANCH
+    - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
       variables:
         ENVIRONMENT: staging
         IMAGE_NAME: ${CI_REGISTRY}/${CI_PROJECT_PATH}:styleguide_staging
     # Production env variables
-    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == $PROD_BRANCH
+    - if: $CI_COMMIT_BRANCH == $PROD_BRANCH
       variables:
         ENVIRONMENT: production
         IMAGE_NAME: ${CI_REGISTRY}/${CI_PROJECT_PATH}:styleguide_production
@@ -175,12 +175,12 @@ Build Forge Docs:
         ENVIRONMENT: review
         IMAGE_SUFFIX: ${CI_COMMIT_SHORT_SHA}
     # Staging env variables
-    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == $STAGING_BRANCH
+    - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
       variables:
         ENVIRONMENT: staging
         IMAGE_SUFFIX: staging
     # Production env variables
-    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == $PROD_BRANCH
+    - if: $CI_COMMIT_BRANCH == $PROD_BRANCH
       variables:
         ENVIRONMENT: production
         IMAGE_SUFFIX: staging
@@ -199,11 +199,11 @@ Build Backend:
         IMAGE_SUFFIX: ${CI_MERGE_REQUEST_ID}_${CI_COMMIT_SHORT_SHA}
     - if: $CI_COMMIT_TAG
       when: never
-    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == $PROD_BRANCH
+    - if: $CI_COMMIT_BRANCH == $PROD_BRANCH
       variables:
         ENVIRONMENT: production
         IMAGE_SUFFIX: staging
-    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == $STAGING_BRANCH
+    - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
       variables:
         ENVIRONMENT: staging
         IMAGE_SUFFIX: staging
@@ -253,7 +253,7 @@ Deploy Staging:
     name: staging
     url: https://forge.bedev.liip.ch
   rules:
-    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == $STAGING_BRANCH
+    - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
   variables:
     IMAGE_SUFFIX: staging
     DOMAIN: ${STAGING_DOMAIN}
@@ -267,7 +267,7 @@ Create Gitlab Release:
   rules:
     - if: $CI_COMMIT_TAG
       when: never
-    - if: ($CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == $STAGING_BRANCH || $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == $PROD_BRANCH)
+    - if: ($CI_COMMIT_BRANCH == $STAGING_BRANCH || $CI_COMMIT_BRANCH == $PROD_BRANCH)
   needs:
     - job: Deploy Staging
       optional: true
@@ -288,7 +288,7 @@ Update Sentry:
   rules:
     - if: $CI_COMMIT_TAG
       when: never
-    - if: ($CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == $STAGING_BRANCH || $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == $PROD_BRANCH) && $SENTRY_AUTH_TOKEN
+    - if: ($CI_COMMIT_BRANCH == $STAGING_BRANCH || $CI_COMMIT_BRANCH == $PROD_BRANCH) && $SENTRY_AUTH_TOKEN
   needs:
     - job: Deploy Staging
       optional: true
