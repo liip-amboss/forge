@@ -6,7 +6,7 @@
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: "/certs"
-    IMAGE_TAG: ${CI_REGISTRY}/${CI_PROJECT_PATH}:${APP}_${ENVIRONMENT}
+    IMAGE_NAME: ${CI_REGISTRY}/${CI_PROJECT_PATH}:${APP}_${IMAGE_SUFFIX}
     RELEASE_TAG: $RELEASE_TAG
     DOCKERFILE: Dockerfile
     DOCKER_BUILDKIT: 1
@@ -16,19 +16,22 @@
     - docker info
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN ${CI_REGISTRY}
-    - echo "Building docker image from git tag $RELEASE_TAG with image tag ${IMAGE_TAG}"
+    - echo "Building docker image from git tag $CI_COMMIT_SHORT_SHA with image tag ${IMAGE_NAME}"
     - > 
       docker build 
-      --cache-from ${IMAGE_TAG} 
+      --cache-from ${IMAGE_NAME} 
       --build-arg BUILDKIT_INLINE_CACHE=1 
       --build-arg env=${ENVIRONMENT} 
-      --build-arg release_tag=$RELEASE_TAG
-      -t ${IMAGE_TAG} 
+      --build-arg release_tag=$CI_COMMIT_SHORT_SHA
+      --build-arg api_url=$API_URL
+      --build-arg enable_axe=True
+      --build-arg sentry_dsn=$SENTRY_DSN
+      -t ${IMAGE_NAME} 
       ${APP}/. 
       -f ${APP}/${DOCKERFILE}
-    - docker push ${IMAGE_TAG}
+    - docker image push ${IMAGE_NAME}
     # Extract sourcemaps from docker image if frontend image
-    - if [ "${DOCKERFILE}" == "Dockerfile.frontend" ]; then mkdir sourcemaps && docker cp $(docker create --rm ${IMAGE_TAG}):/usr/share/caddy/js/. sourcemaps ; fi
+    - if [ "${DOCKERFILE}" == "Dockerfile.frontend" ]; then mkdir sourcemaps && docker cp $(docker create --rm ${IMAGE_NAME}):/usr/share/caddy/js/. sourcemaps ; fi
   artifacts:
     paths:
       - sourcemaps/
@@ -38,9 +41,9 @@
 .docker-deploy: &docker-deploy
   image: $DEPLOY_IMAGE
   variables:
-    DEPLOY_COMMAND: "cd /home/manager/srv/app/scripts/; chmod u+x deploy.sh; ./deploy.sh ${CI_DEPLOY_USER} ${CI_DEPLOY_PASSWORD} ${CI_REGISTRY} ${CI_PROJECT_PATH} ${ENVIRONMENT}"
+    DEPLOY_COMMAND: "cd /home/manager/srv/app/scripts/; chmod u+x deploy.sh; ./deploy.sh ${CI_DEPLOY_USER} ${CI_DEPLOY_PASSWORD} ${CI_REGISTRY} ${CI_PROJECT_PATH} ${IMAGE_SUFFIX}"
   environment:
-    name: ${ENVIRONMENT}
+    name: ${IMAGE_SUFFIX}
     url: https://$DOMAIN
   before_script:
     - apk add --no-cache rsync
@@ -56,6 +59,47 @@
     - ssh -p $SSH_PORT manager@$DOMAIN $DEPLOY_COMMAND
   tags:
     - docker-privileged
+
+# Pull forge helm chart and deploy to a k8s cluster.
+.k8s-deploy: &k8s-deploy
+  image:
+    name: alpine/helm
+    entrypoint: [""]
+  tags:
+    - docker-privileged
+  before_script:
+    - export KUBECONFIG=${KUBE_CONFIG_FILE}
+  script:
+    - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.liip.ch/amboss/ambops/forge-helm-chart.git
+    - helm dependency update forge-helm-chart/charts/backend
+    - >
+      helm upgrade --install --namespace "${K8S_NAMESPACE}" 
+      --set "frontend.image.suffix=${IMAGE_SUFFIX}" 
+      --set "backend.image.suffix=${IMAGE_SUFFIX}" 
+      --set "frontend.ingress.hosts[0].host=$FRONTEND_URL" 
+      --set "backend.ingress.hosts[0].host=$BACKEND_URL" 
+      --set "frontend.ingress.tls[0].hosts[0]=$FRONTEND_URL" 
+      --set "backend.ingress.tls[0].hosts[0]=$BACKEND_URL" 
+      --set "frontend.configmap.data.FRONTEND_URL=$FRONTEND_URL" 
+      --set "backend.configmap.data.BACKEND_URL=$BACKEND_URL" 
+      --set "backend.configmap.data.ALLOWED_HOSTS=$BACKEND_URL" 
+      --set "backend.configmap.data.CORS_ORIGIN_WHITELIST=https://$FRONTEND_URL" 
+      --set "frontend.configmap.data.VUE_APP_API_URL=$BACKEND_URL" 
+      --set "backend.postgresql.fullnameOverride=postgres-django-${CI_ENVIRONMENT_SLUG}" 
+      --set "backend.configmap.data.DATABASE_URL=postgres://postgres:postgres@postgres-django-${CI_ENVIRONMENT_SLUG}/postgres" 
+      --create-namespace $CI_ENVIRONMENT_SLUG forge-helm-chart
+
+# Uninstall helm release from given namespace
+.k8s-remove: &k8s-remove
+  image:
+    name: alpine/helm
+    entrypoint: [""]
+  tags:
+    - docker-privileged
+  before_script:
+    - export KUBECONFIG=${KUBE_CONFIG_FILE}
+  script:
+    - helm uninstall --namespace "${K8S_NAMESPACE}" "$CI_ENVIRONMENT_SLUG"
 
 # Install pip requirements using cache.
 # Requirements only reinstalled if requirements file changes
@@ -78,5 +122,4 @@
     - pip install -r ${REQUIREMENTS_FILE}
   tags:
     - docker
-  except:
-    - tags
+

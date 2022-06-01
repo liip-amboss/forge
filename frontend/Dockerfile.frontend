@@ -1,7 +1,19 @@
 FROM node:14 as frontend-builder
+
+ARG api_url=http://api.forge.docker.test/api/v1/
+ARG enable_axe=True
+ARG sentry_dsn
 ARG release_tag=RELEASE_TAG_MISSING
 ARG env=production
+
 ENV VUE_APP_RELEASE_TAG=$release_tag
+ENV VUE_APP_I18N_LOCALE=de
+ENV VUE_APP_I18N_FALLBACK_LOCALE=de
+ENV VUE_APP_SENTRY_DSN=$sentry_dsn
+ENV NODE_ENV=$env
+ENV VUE_APP_API_URL=$api_url
+ENV VUE_APP_ENABLE_AXE=$enable_axe
+
 WORKDIR /code/src
 COPY src ./src
 COPY package*.json ./
@@ -17,6 +29,10 @@ RUN npm install
 RUN npm run build -- --mode $env
 
 FROM caddy:2.1.1-alpine
-COPY Caddyfile.frontend /etc/caddy/Caddyfile
+RUN mkdir -p /config/caddy /data/caddy
+RUN addgroup -g 10000 -S www-data
+RUN adduser -u 10000 -D -S -G www-data www-data;
+RUN chown -R www-data:www-data /config /data
 
+COPY Caddyfile.frontend /etc/caddy/Caddyfile
 COPY --from=frontend-builder /code/src/dist /usr/share/caddy/
