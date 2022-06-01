@@ -242,6 +242,7 @@ Stop Review App:
       when: never
     - if: $CI_MERGE_REQUEST_ID
       when: manual
+      allow_failure: true
 
 # Deploy staging app to server at given domain via SSH. deploy/scripts/deploy.sh is executed on the server.
 Deploy Staging:
