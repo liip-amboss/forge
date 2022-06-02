@@ -70,7 +70,7 @@
   before_script:
     - export KUBECONFIG=${KUBE_CONFIG_FILE}
   script:
-    - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.liip.ch/amboss/ambops/forge-helm-chart.git
+    - git clone --depth 1 --branch v1.0.0 https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.liip.ch/amboss/ambops/forge-helm-chart.git
     - helm dependency update forge-helm-chart/charts/backend
     - >
       helm upgrade --install --namespace "${K8S_NAMESPACE}" 
