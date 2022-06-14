@@ -67,8 +67,6 @@
     entrypoint: [""]
   tags:
     - docker-privileged
-  before_script:
-    - export KUBECONFIG=${KUBE_CONFIG_FILE}
   script:
     - git clone --depth 1 --branch v1.0.0 https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.liip.ch/amboss/ambops/forge-helm-chart.git
     - helm dependency update forge-helm-chart/charts/backend
@@ -87,7 +85,7 @@
       --set "frontend.configmap.data.VUE_APP_API_URL=$BACKEND_URL" 
       --set "backend.postgresql.fullnameOverride=postgres-django-${CI_ENVIRONMENT_SLUG}" 
       --set "backend.configmap.data.DATABASE_URL=postgres://postgres:postgres@postgres-django-${CI_ENVIRONMENT_SLUG}/postgres" 
-      --create-namespace $CI_ENVIRONMENT_SLUG forge-helm-chart
+      $CI_ENVIRONMENT_SLUG forge-helm-chart
 
 # Uninstall helm release from given namespace
 .k8s-remove: &k8s-remove

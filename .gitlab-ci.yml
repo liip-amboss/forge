@@ -213,6 +213,7 @@ Build Backend:
 # Pull forge-helm-chart helm chart. Update helm dependencies. Deploy app to k8s cluster. For every Merge Request.
 Deploy Review App:
   stage: deploy
+  allow_failure: true
   environment:
     name: review/$CI_COMMIT_REF_NAME
     url: https://forge-frontend-$CI_MERGE_REQUEST_ID.k8s.liip.ch
