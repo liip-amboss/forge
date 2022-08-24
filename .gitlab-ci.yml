@@ -1,6 +1,6 @@
 include:
   - local: ".gitlab-tasks.yml"
-  - template: Code-Quality.gitlab-ci.yml
+  # - template: Code-Quality.gitlab-ci.yml
 
 variables:
   STAGING_BRANCH: "Test-forge-vue3"
