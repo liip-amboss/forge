@@ -118,7 +118,7 @@ Build Frontend:
   extends:
     - .docker-build
   rules:
-    - if: ($CI_PIPELINE_SOURCE == "merge_request_event" && $ENABLE_REVIEW_APPS)
+    - if: ($CI_PIPELINE_SOURCE == "merge_request_event" && $ENABLE_REVIEW_APPS && $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME != $STAGING_BRANCH)
       variables:
         ENVIRONMENT: review
         API_URL: https://forge-backend-$CI_MERGE_REQUEST_ID.k8s.liip.ch/api/v1/
