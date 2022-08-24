@@ -14,7 +14,7 @@ ENV NODE_ENV=$env
 ENV VUE_APP_API_URL=$api_url
 ENV VUE_APP_ENABLE_AXE=$enable_axe
 
-WORKDIR /code/src
+WORKDIR /code
 COPY src ./src
 COPY package*.json ./
 COPY .eslintrc.js ./
