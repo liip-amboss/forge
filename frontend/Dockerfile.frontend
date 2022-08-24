@@ -35,4 +35,4 @@ RUN adduser -u 10000 -D -S -G www-data www-data;
 RUN chown -R www-data:www-data /config /data
 
 COPY Caddyfile.frontend /etc/caddy/Caddyfile
-COPY --from=frontend-builder /code/src/dist /usr/share/caddy/
+COPY --from=frontend-builder /code/dist /usr/share/caddy/
