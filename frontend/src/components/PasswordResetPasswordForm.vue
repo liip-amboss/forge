@@ -91,7 +91,7 @@ const state = ref({
   passwordConfirm: '',
 });
 
-const errorMessage = ref('');
+const passwordError = ref('');
 
 const rules = {
   password: { required },
