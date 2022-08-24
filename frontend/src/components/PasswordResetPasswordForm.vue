@@ -59,6 +59,7 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import ValidationText from '@/components/ValidationText.vue';
 import { required, sameAs } from '@vuelidate/validators';
 import { resetPassword } from '@/services/auth';
@@ -89,6 +90,8 @@ const state = ref({
   password: '',
   passwordConfirm: '',
 });
+
+const errorMessage = ref('');
 
 const rules = {
   password: { required },
