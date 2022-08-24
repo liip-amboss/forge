@@ -1,0 +1,22 @@
+{$BACKEND_URL} {
+    root /srv
+    proxy / backend:8000 {
+        transparent
+        except /static
+    }
+}
+{$FRONTEND_URL} {
+    proxy / frontend:8080 {
+        transparent
+    }
+}
+{$DOCS_URL} {
+    proxy / docs:8081 {
+        transparent
+    }
+}
+{$STYLEGUIDE_URL} {
+    proxy / styleguide:8082 {
+        transparent
+    }
+}

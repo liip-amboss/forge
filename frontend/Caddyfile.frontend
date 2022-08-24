@@ -1,0 +1,17 @@
+# The Caddyfile is an easy way to configure your Caddy web server.
+:8080
+
+# Set this path to your site's directory.
+root * /usr/share/caddy
+
+# Route all requests to index.html
+try_files {path} /index.html
+file_server
+
+header {
+	Access-Control-Allow-Origin *
+}
+
+log {
+  output stdout
+}

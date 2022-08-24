@@ -1,0 +1,139 @@
+{
+  "general": {
+    "projectName": "Forge",
+    "footerText": "powered by {'@'}Liip",
+    "logout": "Abmelden",
+    "cancel": "Abbrechen",
+    "next": "Weiter"
+  },
+  "login": {
+    "title": "Login",
+    "error": "Die Anmeldedaten sind nicht korrekt. Versuchen Sie es nochmals.",
+    "password": "Passwort",
+    "emailRequired": "Die E-Mail-Adresse ist ein Pflichtfeld",
+    "invalidEmail": "Die E-Mail Adresse ist ungültig. Bitte überprüfe deine Eingabe.",
+    "passwordRequired": "Geben Sie bitte Ihr Passwort ein",
+    "submitButtonText": "Anmelden",
+    "twoFactorError": "Der Zwei-Faktor Code ist nicht korrekt. Versuchen Sie es nochmals.",
+    "twoFactorTitle": "Zwei-Faktor-Überprüfung",
+    "twoFactorText": "Bestätigungscode über Ihre Authenticator App anfordern und hier eingeben:",
+    "forgotPassword": "Passwort vergessen?",
+    "register": "Registrierung",
+    "notRegistered": "Noch nicht registriert?",
+    "googleLogin": "Login mit Google"
+  },
+  "register": {
+    "title": "Registrierung",
+    "error": "Die Angaben sind nicht korrekt. Versuchen Sie es nochmals.",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "phoneNumber": "Telefonnummer",
+    "password": "Passwort",
+    "passwordConfirm": "Passwort bestätigen",
+    "emailRequired": "Die E-Mail-Adresse ist ein Pflichtfeld",
+    "invalidEmail": "Die E-Mail Adresse ist ungültig. Bitte überprüfe deine Eingabe.",
+    "passwordRequired": "Geben Sie bitte Ihr Passwort ein",
+    "passwordLeng": "Dein Passwort muss mindestens 8 Zeichen lang sein",
+    "confirmPasswordRequired": "Geben Sie bitte Ihr Passwort nochmals ein",
+    "passwordsNotMatching": "Die beiden Passwörter stimmen nicht überein",
+    "submitButtonText": "Konto erstellen",
+    "backToLogin": "Zurück zur Anmeldung"
+  },
+  "forgotPassword": {
+    "title": "Passwort vergessen",
+    "text": "Wir können wir Ihnen einen Link zum Zurücksetzen des Passwortes schicken. Bitte geben Sie die E-Mail-Adresse ein, die Sie in ihrem Konto eingetragen haben:",
+    "emailRequired": "Die E-Mail-Adresse ist ein Pflichtfeld",
+    "invalidEmail": "Die E-Mail Adresse ist ungültig. Bitte überprüfe deine Eingabe.",
+    "submitButtonText": "Link anfordern",
+    "backToLogin": "Zurück zur Anmeldung"
+  },
+  "resetPassword": {
+    "title": "Passwort zurücksetzen",
+    "text": "Bitte geben Sie zur Bestätigung Ihre E-Mail Adresse an:",
+    "emailRequired": "Die E-Mail-Adresse ist ein Pflichtfeld",
+    "submitButtonText": "Mail Adresse bestätigen",
+    "password": "Passwort",
+    "passwordConfirm": "Passwort bestätigen",
+    "passwordRequired": "Bitte geben Sie ein Passwort ein.",
+    "passwordsNotMatching": "Die beiden Passwörter stimmen nicht überein",
+    "changePassword": "Passwort ändern"
+  },
+  "notifications": {
+    "forgotPasswordError": "Es ist ein Fehler bei der \"Passwort-vergessen-Funktion\" aufgetreten.",
+    "forgotPasswordSuccess": "Falls ein Benutzer mit dieser E-Mail existiert, wurde eine E-Mail mit Informationen zum Zurücksetzen des Passwortes verschickt.",
+    "checkResetTokenError": "Dieser Link ist ungültig. Bitte fordern Sie einen neuen an.",
+    "resetPasswordSuccess": "Das Passwort wurde erfolgreich geändert.",
+    "activate2FAError": "Es ist ein Fehler beim Aktivieren von der Zwei-Faktor Überprüfung aufgetreten.",
+    "activate2FASuccess": "Zwei-Faktor-Überprüfung erfolgreich aktiviert.",
+    "deactivate2FAError": "Es ist ein Fehler beim Deaktivieren von der Zwei-Faktor Überprüfung aufgetreten.",
+    "deactivate2FASuccess": "Zwei-Faktor-Überprüfung erfolgreich deaktiviert.",
+    "verifyTokenError": "Der Verifizierungscode ist nicht korrekt."
+  },
+  "dashboard": {
+    "title": "Dashboard"
+  },
+  "twoFactorAuthentication": "Zwei-Faktor-Überprüfung",
+  "twoFactor": {
+    "text": "Bieten Sie sicheren und effizienten Schutz für Ihren profile mit einfach integrierbarem 2FA.",
+    "enable": "Zwei-Faktor-Überprüfung aktivieren",
+    "disable": "Zwei-Faktor-Überprüfung deaktivieren",
+    "introduction": {
+      "title": "Zwei-Faktor-Überprüfung",
+      "text": "Ein zweiter Schritt nach Eingabe Ihres Passwortes überprüft, dass Sie die Person sind, die sich gerade einloggt.\n\nDurch diese Aktivierung erhalten Sie Überprüfungscodes von einer Authentication App Ihrer Wahl. Das funktioniert auch, wenn Sie keine Internetverbindung haben."
+    },
+    "setup": {
+      "title": "Einrichtung einer Authentication App",
+      "firstPoint": "Bitte laden Sie eine Authentication App ihrer Wahl vom {appStore} (wenn Sie ein iPhone benutzen) oder {googleStore} (wenn Sie ein Android Gerät haben) herunter. z.B. die Google Authenticator App",
+      "appStore": "App Store",
+      "googleStore": "Google Play Store",
+      "secondPoint": "Wählen Sie in der App die Option \"Konto einrichten\"",
+      "thirdPoint": "Dann wählen Sie \"QR-Code scannen\" aus",
+      "codeNotScannable": "Ich kann den Code nicht scannen"
+    },
+    "notScannable": {
+      "title": "Können Sie den QR-Code nicht scannen?",
+      "firstPoint": "Tippen Sie auf {menu} und dann auf {createAccount}",
+      "menu": "Menü",
+      "createAccount": "Konto erstellen",
+      "secondPoint": "Tippen Sie auf {insertKey}",
+      "insertKey": "Schlüssel eingeben",
+      "thirdPoint": "Geben Sie bitte Ihre E-Mail-Adresse und diesen Schlüssel ein:",
+      "noSpaces": "(Leerzeichen werden nicht berücksichtigt.)",
+      "fourthPoint": "Überprüfen Sie bitte, ob {timeBased} aktiviert ist und tippen Sie \"Hinzufügen\", um den Vorgang abzuschliessen.",
+      "timeBased": "Zeitbasiert"
+    },
+    "verify": {
+      "title": "Aktivieren der Zwei-Faktor-Überprüfung",
+      "text": "Geben Sie hier bitte den 6-stelligen Code ein, der in der App erscheint.",
+      "activate": "Aktivieren"
+    },
+    "finish": {
+      "title": "Fertig!",
+      "text": "Nun ist alles eingerichtet.\nBitte verwenden Sie ab sofort eine Authentication App, um sich in Ihr Konto einzuloggen.",
+      "finish": "Fertig"
+    }
+  },
+  "profile": {
+    "title": "Konto-Einstellungen",
+    "titleData": "Persönliche Informationen",
+    "title2FA": "Zwei-Faktor-Authentifizierung",
+    "edit": "Edieren",
+    "editForm": {
+      "firstName": "Vorname",
+      "lastName": "Nachname",
+      "phoneNumber": "Telefonnummer",
+      "firstNameRequired": "Geben Sie bitte ihren Vorname ein",
+      "lastNameRequired": "Geben Sie bitte ihren Nachname ein",
+      "phoneNumberRequired": "Geben Sie bitte ihren Telefonnummer ein",
+      "submitButton": "Speichern",
+      "discardButton": "Abbrechen",
+      "discardMessage": "Sind Sie sicher? Ihre Änderungen werden nicht gespeichert.",
+      "error": "Es ist ein Fehler. Versuchen Sie es nochmals.",
+      "profilePicture": "profilbild"
+    },
+    "avatar": {
+      "upload": "Laden Sie ein Bild hoch",
+      "dragDrop": "oder drag und drop"
+    }
+  }
+}

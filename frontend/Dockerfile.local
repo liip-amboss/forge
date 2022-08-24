@@ -1,0 +1,20 @@
+FROM node:16
+
+ARG release_tag=staging
+
+ENV VITE_RELEASE_TAG=$release_tag
+
+WORKDIR /code
+
+COPY public ./public
+COPY src ./src
+
+COPY .env* ./
+COPY .eslintrc.js ./
+COPY babel.config.js ./
+COPY index.html ./
+COPY package*.json ./
+COPY postcss.config.js ./
+COPY prettier.config.js ./
+COPY tailwind.config.cjs ./
+COPY vite.config.js ./

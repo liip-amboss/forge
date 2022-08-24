@@ -1,0 +1,20 @@
+##### BASE IGNORES #####
+.idea/
+*.env
+upload
+
+##### FORONTEND IGNORES #####
+frontend/node_modules
+node_modules
+frontend/yarn.lock
+docs/yarn.lock
+docs/.vuepress/dist/*
+frontend/junit.xml
+
+##### BACKEND IGNORES #####
+*.pyc
+backend/.data
+backend/.venv
+backend/coverage.xml
+# Local Netlify folder
+.netlify

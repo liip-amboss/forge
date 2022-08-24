@@ -1,0 +1,60 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:alpine
+    environment:
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    restart: unless-stopped
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+
+  backend:
+    image: ${DOCKER_REGISTRY}:backend_staging
+    env_file:
+      - .env
+    depends_on:
+      - db
+    restart: unless-stopped
+    volumes:
+      - ./uploads/:/uploads
+      - static-content:${STATIC_ROOT}
+    tty: true
+
+  frontend:
+    image: ${DOCKER_REGISTRY}:frontend_staging
+    env_file:
+      - .env
+    restart: unless-stopped
+    tty: true
+
+  docs:
+    image: ${DOCKER_REGISTRY}:docs_staging # TODO
+    env_file:
+      - .env
+    restart: unless-stopped
+    tty: true
+
+  styleguide:
+    image: ${DOCKER_REGISTRY}:styleguide_staging
+    env_file:
+      - .env
+    restart: unless-stopped
+    tty: true
+
+  caddy:
+    image: abiosoft/caddy
+    env_file:
+      - .env
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - backend
+    volumes:
+      - ./Caddyfile:/etc/Caddyfile
+      - static-content:/srv/static
+    restart: unless-stopped
+
+volumes:
+  static-content:

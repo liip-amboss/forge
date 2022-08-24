@@ -1,0 +1,127 @@
+/*----------------------------------------*\
+  Tooltip
+\*----------------------------------------*/
+
+:root {
+  --tooltip-bg-color: theme(colors.gray.800);
+  --tooltip-text-color: theme(colors.white);
+  --tooltip-arrow-size: theme(spacing.1);
+}
+
+.tooltip {
+  @apply z-30;
+  display: block !important;
+}
+
+.tooltip-inner {
+  @apply py-1 px-3;
+  @apply rounded;
+
+  background: var(--tooltip-bg-color);
+  color: var(--tooltip-text-color);
+}
+
+.tooltip-arrow {
+  @apply w-0 h-0;
+  @apply absolute z-10;
+  margin: var(--tooltip-arrow-size);
+  border-style: solid;
+  border-color: var(--tooltip-bg-color);
+}
+
+/**
+* Popover styles
+* NOTE: The popover component inheritates styles from the tooltip
+* NOTE: Unfortunately postcss-env does not support this way of
+* using custom properties - meaning the popover does not have a fallback for IE11
+* https://github.com/liip-amboss/forge/issues/56
+*/
+.popover-inner,
+.popover-arrow {
+  --tooltip-bg-color: theme(colors.white);
+}
+
+.popover-inner {
+  --tooltip-text-color: theme(colors.black);
+  @apply px-5 py-2;
+  @apply shadow;
+}
+
+.popover-arrow {
+  --arrow-size: theme(spacing.2);
+}
+
+/**
+* Visibility
+*/
+.tooltip[aria-hidden='true'] {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity .15s;
+}
+
+.tooltip[aria-hidden='false'] {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity .15s;
+}
+
+
+/**
+* Arrow placement and look
+*/
+.tooltip[x-placement^="top"] {
+  margin-bottom: var(--tooltip-arrow-size);
+}
+
+.tooltip[x-placement^="top"] .tooltip-arrow {
+  @apply my-0;
+  bottom: calc(var(--tooltip-arrow-size) * -1 );
+  left: calc(50% - var(--tooltip-arrow-size));
+  border-width: var(--tooltip-arrow-size) var(--tooltip-arrow-size) 0 var(--tooltip-arrow-size);
+  border-left-color: transparent !important;
+  border-right-color: transparent !important;
+  border-bottom-color: transparent !important;
+}
+
+.tooltip[x-placement^="bottom"] {
+  margin-top: var(--tooltip-arrow-size);
+}
+
+.tooltip[x-placement^="bottom"] .tooltip-arrow {
+  @apply my-0;
+  top: calc(var(--tooltip-arrow-size) * -1 );
+  left: calc(50% - var(--tooltip-arrow-size));
+  border-width: 0 var(--tooltip-arrow-size) var(--tooltip-arrow-size) var(--tooltip-arrow-size);
+  border-left-color: transparent !important;
+  border-right-color: transparent !important;
+  border-top-color: transparent !important;
+}
+
+.tooltip[x-placement^="right"] {
+  margin-left: var(--tooltip-arrow-size);
+}
+
+.tooltip[x-placement^="right"] .tooltip-arrow {
+  @apply mx-0;
+  left: calc(var(--tooltip-arrow-size) * -1 );
+  top: calc(50% - var(--tooltip-arrow-size));
+  border-width: var(--tooltip-arrow-size) var(--tooltip-arrow-size) var(--tooltip-arrow-size) 0;
+  border-left-color: transparent !important;
+  border-top-color: transparent !important;
+  border-bottom-color: transparent !important;
+}
+
+.tooltip[x-placement^="left"] {
+  margin-right: var(--tooltip-arrow-size);
+}
+
+.tooltip[x-placement^="left"] .tooltip-arrow {
+  @apply mx-0;
+  right: calc(var(--tooltip-arrow-size) * -1 );
+  top: calc(50% - var(--tooltip-arrow-size));
+  border-width: var(--tooltip-arrow-size) 0 var(--tooltip-arrow-size) var(--tooltip-arrow-size);
+  border-top-color: transparent !important;
+  border-right-color: transparent !important;
+  border-bottom-color: transparent !important;
+}

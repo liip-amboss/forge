@@ -1,0 +1,58 @@
+.loading-directive__container {
+  @apply relative;
+  overflow: hidden;
+}
+
+.loading-directive {
+  @apply absolute;
+  @apply inset-0;
+  @apply min-h-32;
+  @apply z-50;
+
+  background-color: rgba(255, 255, 255, .8);
+
+  /*
+  This div is to center the loader relative to the
+  screen height. If we were to skip this div and
+  position in in the middle of the parent div, the loader
+  would not be visible in very long parents
+  */
+  & div {
+    @apply absolute;
+    @apply inset-0;
+    @apply max-h-screen;
+
+    /*
+    This one is to center the loader inside the wrapper div
+    hence the nesting
+    */
+    & div {
+      top: 50%;
+      left: 50%;
+      @apply h-16 w-16;
+      transform: translate(-50%, -50%);
+    }
+
+    & svg {
+      @apply h-16 w-16;
+      @apply absolute;
+      @apply text-gray-700 fill-current;
+
+      animation: rotate 2s infinite ease-in-out;
+    }
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotateZ(0deg);
+  }
+
+  50% {
+    transform: rotateZ(180deg);
+  }
+
+  100% {
+    transform: rotateZ(360deg);
+  }
+}
