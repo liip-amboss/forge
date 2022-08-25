@@ -177,6 +177,10 @@ const doLogin = async () => {
       show2FA.value = true;
       return;
     }
+    if (!response.data) {
+      errorMessage.value = t('login.error');
+      return;
+    }
     const loginData = response.data;
     errorMessage.value = '';
     authStore.setToken(loginData.access);
