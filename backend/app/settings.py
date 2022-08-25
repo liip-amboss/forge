@@ -9,6 +9,7 @@ Django settings for liip forge project.
 
 """
 
+from math import fabs
 import os
 import environ
 from datetime import timedelta
@@ -181,7 +182,7 @@ SIMPLE_JWT = {
 ##################
 # AUTHENTICATION #
 ##################
-DISABLE_2FA = env.bool('DISABLE_2FA', default= True)
+DISABLE_2FA = env.bool('DISABLE_2FA', default= False)
 AUTH_USER_MODEL = 'accounts.User'
 
 if not DISABLE_2FA:
@@ -255,7 +256,7 @@ AUTHENTICATION_BACKENDS = (
 
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
-LOGIN_URL = 'auth/'
+# LOGIN_URL = 'auth/'
 LOGIN_REDIRECT_URL = '/'
 # SOCIAL_AUTH_GOOGLE_OAUTH2_WHITELISTED_DOMAINS = ['liip.ch']
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY', default='458834679614-e4quhsjgs9ge89uaocdpuusel74dkln4.apps.googleusercontent.com')  #Paste CLient Key

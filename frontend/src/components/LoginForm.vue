@@ -117,7 +117,7 @@
         </p>
       </div>
     </form>
-    <form v-else class="max-w-lg">
+    <form class="max-w-lg">
       <h2 class="mb-8">{{ $t('login.twoFactorTitle') }}</h2>
       <p class="mb-6">
         {{ $t('login.twoFactorText') }}

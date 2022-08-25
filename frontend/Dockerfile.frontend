@@ -1,18 +1,18 @@
 FROM node:16 as frontend-builder
 
-ARG api_url=http://api.forge.docker.test/api/v1/
+ARG api_url=http://api.forge.bedev.liip.ch/api/v1/
 ARG enable_axe=True
 ARG sentry_dsn
 ARG release_tag=RELEASE_TAG_MISSING
 ARG env=production
 
-ENV VUE_APP_RELEASE_TAG=$release_tag
-ENV VUE_APP_I18N_LOCALE=de
-ENV VUE_APP_I18N_FALLBACK_LOCALE=de
-ENV VUE_APP_SENTRY_DSN=$sentry_dsn
+ENV VITE_RELEASE_TAG=$release_tag
+ENV VITE_I18N_LOCALE=de
+ENV VITE_I18N_FALLBACK_LOCALE=de
+ENV VITE_SENTRY_DSN=$sentry_dsn
 ENV NODE_ENV=$env
-ENV VUE_APP_API_URL=$api_url
-ENV VUE_APP_ENABLE_AXE=$enable_axe
+ENV VITE_API_URL=$api_url
+ENV VITE_ENABLE_AXE=$enable_axe
 
 WORKDIR /code
 COPY src ./src
