@@ -70,6 +70,8 @@ djangorestframework-camel-case==1.2.0
     # via -r requirements/base.in
 djangorestframework-simplejwt==4.7.1
     # via -r requirements/base.in
+social-auth-app-django==5.0.0
+    #via 
 drf-yasg==1.20.0
     # via -r requirements/base.in
 factory-boy==3.2.0
