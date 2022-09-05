@@ -1,38 +1,16 @@
 <template>
   <div class="shadow overflow-hidden sm:rounded-md">
     <div class="px-4 py-5 bg-white sm:p-6">
-      <div>
-        <label class="block text-sm font-medium text-gray-700"> Photo </label>
-        <div class="mt-1 flex items-center">
-          <span
-            class="inline-block h-32 w-32 rounded-full overflow-hidden bg-gray-100"
-          >
-            <img
-              :src="getURL()"
-              alt="User avatar"
-              class="object-cover inline-block w-32 h-32 rounded-full"
-              @error="imageError = true"
-            />
-          </span>
-          <button
-            class="ml-5 bg-indigo-200 py-1 px-2 border border-gray-300 rounded-lg shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            @click.prevent="doEdit"
-            type="button"
-          >
-            Change
-          </button>
-        </div>
-      </div>
-      <div>
+      <div class="flex justify-center items-center">
         <div
-          class="mt-4 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md"
+          class="flex justify-center items-center border-2 p-20 border-gray-300 border-dashed rounded-md h-64 w-auto"
         >
-          <div class="space-y-1 text-center">
+          <div class="text-center">
             <img
               v-if="imgSrc"
               :src="imgSrc"
               alt="User avatar"
-              class="object-cover inline-block w-20 h-20 rounded-lg"
+              class="object-cover inline-block w-48 h-48 rounded-lg"
             />
             <svg
               v-else
@@ -53,25 +31,41 @@
             <p v-if="selectedPicture">
               {{ selectedPicture.name }}
             </p>
-            <div v-else class="flex text-sm text-gray-600">
+            <div v-else class="text-sm text-gray-600">
               <label
                 for="picture"
-                class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+                class="relative bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500 flex justify-center items-center"
               >
-                <span>{{ t('profile.avatar.upload') }}</span>
                 <input
                   id="picture"
                   :accept="acceptedFileType"
                   name="picture"
                   type="file"
-                  class="sr-only"
+                  class="dropbox md:h-[256px] md:w-[317px] h-[253px] w-[253px] absolute opacity-0 md:mb-2 cursor-pointer"
                   @change="(e) => fileChange(e)"
                 />
+                <span>{{ t('profile.avatar.upload') }}</span>
               </label>
               <p class="pl-1">{{ t('profile.avatar.dragDrop') }}</p>
+              <p class="text-xs text-gray-500">PNG, JPG, GIF</p>
             </div>
-            <p class="text-xs text-gray-500">PNG, JPG, GIF</p>
           </div>
+        </div>
+        <div v-if="imgSrc" class="flex flex-col justify-end items-center mt-3">
+          <button
+            class="inline-flex justify-center ml-4 py-1 px-2 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            @click.prevent="doEdit"
+            type="button"
+          >
+            {{ t('profile.editForm.submitButton') }}
+          </button>
+          <button
+            class="inline-flex justify-center ml-4 mt-2 py-1 px-2 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            @click.prevent="doDiscard"
+            type="button"
+          >
+            {{ t('profile.editForm.discardButton') }}
+          </button>
         </div>
       </div>
       <div
@@ -85,7 +79,6 @@
 <script setup>
 import { ref } from 'vue';
 import { updatePictuer } from '@/services/auth.js';
-import defaultImage from '@/assets/images/defaultAvatar.jpeg';
 import { useAuthStore } from '@/store/Auth';
 import { useI18n } from 'vue-i18n';
 const authStore = useAuthStore();
@@ -102,16 +95,11 @@ const props = defineProps({
   },
 });
 
-const imageError = ref(false);
-const getURL = () => {
-  return imageError.value ? defaultImage : authStore.profilePic;
-};
-
 const acceptedFileTypeMatches = (fileType) => {
   return props.acceptedFileType.split(',').includes(fileType);
 };
 
-const MAX_SIZE = import.meta.VUE_APP_MAX_IMAGE_UPLOAD * 1024 * 1024;
+const MAX_SIZE = import.meta.VUE_APP_MAX_IMAGE_UPLOAD * 2048 * 2048;
 const IMAGE_MODE = 'image';
 
 const selectedPicture = ref(null);
@@ -120,6 +108,7 @@ const fileChange = (e) => {
   if (!e.target.files?.[0]) {
     return;
   }
+
   const file = e.target.files[0];
   if (!acceptedFileTypeMatches(file.type)) {
     // this.error = this.$t('upload.typeError_' + this.mode);
@@ -153,6 +142,14 @@ const doEdit = async () => {
   }
   selectedPicture.value = '';
   imgSrc.value = '';
+};
+
+const doDiscard = () => {
+  const con = confirm(t('profile.editForm.discardMessage'));
+  if (con) {
+    imgSrc.value = null;
+    selectedPicture.value = null;
+  }
 };
 </script>
 

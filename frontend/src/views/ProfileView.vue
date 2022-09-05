@@ -1,10 +1,10 @@
 <template>
   <DefaultLayout>
-    <UserProfileEdit />
+    <UserProfileData />
   </DefaultLayout>
 </template>
 
 <script setup>
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
-import UserProfileEdit from '../components/UserProfileEdit.vue';
+import UserProfileData from '../components/UserProfileData.vue';
 </script>

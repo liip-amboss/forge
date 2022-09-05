@@ -118,18 +118,18 @@
     "titleData": "Persönliche Informationen",
     "title2FA": "Zwei-Faktor-Authentifizierung",
     "edit": "Edieren",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "phoneNumber": "Telefonnummer",
+    "profilePicture": "profilbild",
     "editForm": {
-      "firstName": "Vorname",
-      "lastName": "Nachname",
-      "phoneNumber": "Telefonnummer",
       "firstNameRequired": "Geben Sie bitte ihren Vorname ein",
       "lastNameRequired": "Geben Sie bitte ihren Nachname ein",
       "phoneNumberRequired": "Geben Sie bitte ihren Telefonnummer ein",
       "submitButton": "Speichern",
       "discardButton": "Abbrechen",
       "discardMessage": "Sind Sie sicher? Ihre Änderungen werden nicht gespeichert.",
-      "error": "Es ist ein Fehler. Versuchen Sie es nochmals.",
-      "profilePicture": "profilbild"
+      "error": "Es ist ein Fehler. Versuchen Sie es nochmals."
     },
     "avatar": {
       "upload": "Laden Sie ein Bild hoch",

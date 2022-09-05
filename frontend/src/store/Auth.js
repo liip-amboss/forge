@@ -12,6 +12,7 @@ export const useAuthStore = defineStore('Auth', {
       firstName: sessionStorage.getItem('firstName') || null,
       lastName: sessionStorage.getItem('lastName') || null,
       phoneNumber: sessionStorage.getItem('phoneNumber') || null,
+      email: sessionStorage.getItem('email') || null,
       profilePic: sessionStorage.getItem('profilePic') || null,
       isTwoFactorActive: sessionStorage.getItem('twoFactorActive') || false,
     };
@@ -32,6 +33,7 @@ export const useAuthStore = defineStore('Auth', {
       this.firstName = null;
       this.lastName = null;
       this.phoneNumber = null;
+      this.email = null;
       this.profilePic = null;
       this.id = null;
       this.isTwoFactorActive = false;
@@ -69,6 +71,14 @@ export const useAuthStore = defineStore('Auth', {
      */
     setPhoneNumber(phoneNumber) {
       this.phoneNumber = phoneNumber;
+    },
+    /**
+     * Set the user Email
+     *
+     * @param {string} token token
+     */
+    setEmail(email) {
+      this.email = email;
     },
     /**
      * Set the user picture

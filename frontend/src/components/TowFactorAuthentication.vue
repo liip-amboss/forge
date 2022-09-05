@@ -4,8 +4,16 @@
       <label for="about" class="block text-sm font-medium text-gray-700">
         {{ $t('twoFactorAuthentication') }}
       </label>
-      <div class="mt-1">
+      <div class="my-4">
+        <div v-if="authStore.isTwoFactorActive">
+          <span class="ml-auto"
+            ><span class="bg-green-500 py-2 px-3 rounded text-white text-sm"
+              >Active</span
+            ></span
+          >
+        </div>
         <button
+          v-else
           type="button"
           @click="activate2FA"
           class="ml-5 bg-white py-1 px-2 border border-gray-300 rounded-lg shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -44,6 +52,7 @@ const authStore = useAuthStore();
 
 const { t } = useI18n();
 
+// const showTwoFactorButton = ref();
 const showTwoFactorWizard = ref(false);
 const twoFactorWizard = ref(null);
 

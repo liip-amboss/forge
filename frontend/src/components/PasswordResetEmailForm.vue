@@ -1,8 +1,10 @@
 <template>
-  <div>
-    <h2>{{ $t('resetPassword.title') }}</h2>
+  <div
+    class="max-w-lg mx-auto my-10 bg-white p-8 rounded-lg shadow shadow-slate-300"
+  >
+    <h2 class="text-4xl font-medium">{{ $t('resetPassword.title') }}</h2>
     <p class="mt-4 mb-4">{{ $t('resetPassword.text') }}</p>
-    <form>
+    <form class="my-10">
       <input
         v-model.trim="v$.email.$model"
         class="w-full form-input"

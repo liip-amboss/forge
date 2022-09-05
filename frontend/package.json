@@ -32,6 +32,7 @@
     "vue-markdown": "^2.2.4",
     "vue-router": "^4.0.14",
     "vue-upload-component": "^3.1.2",
+    "vue3-tel-input": "^1.0.4",
     "vuejs-smart-table": "^1.0.0-beta.6"
   },
   "devDependencies": {

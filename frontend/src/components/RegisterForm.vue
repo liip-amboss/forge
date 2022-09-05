@@ -28,15 +28,18 @@
             />
           </LabelField>
         </div>
-
-        <LabelField :label="$t('register.phoneNumber')" is-block class="mt-2">
-          <input
-            type="number"
-            v-model.trim="v$.phoneNumber.$model"
-            class="w-full py-2 border border-slate-200 rounded-lg px-3"
+        <div class="mt-2 block">
+          <label>{{ $t('register.phoneNumber') }}</label>
+          <!-- just you can give style for the vue-tel-input component in style tag -->
+          <vue-tel-input
+            v-model.trim:phone="v$.phoneNumber.$model"
+            mode="international"
+            class="telephone-input"
+            @input="onInput"
             @blur="v$.phoneNumber.$touch"
-          />
-        </LabelField>
+          ></vue-tel-input>
+        </div>
+
         <LabelField label="E-Mail" is-block class="mt-2">
           <input
             v-model.trim="v$.email.$model"
@@ -63,7 +66,7 @@
         </LabelField>
         <PasswordField
           v-model="v$.password.$model"
-          labelClass="mt-2 "
+          labelClass="mt-2"
           :inputClass="{
             'focus:outline-none py-2 pr-2 pl-12 border-red-500':
               v$.password.$error,
@@ -158,12 +161,13 @@ import { ref, computed } from 'vue';
 import LabelField from '@/components/LabelField.vue';
 import PasswordField from '@/components/PasswordField.vue';
 import ValidationText from '@/components/ValidationText.vue';
-
 import { required, email, minLength, sameAs } from '@vuelidate/validators';
 import { register } from '@/services/auth.js';
 import useVuelidate from '@vuelidate/core';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { VueTelInput } from 'vue3-tel-input';
+import 'vue3-tel-input/dist/vue3-tel-input.css';
 
 const router = useRouter();
 const { t } = useI18n();
@@ -176,6 +180,7 @@ const state = ref({
   password: '',
   passwordConfirm: '',
 });
+
 const errorMessage = ref('');
 
 const rules = computed(() => ({
@@ -191,6 +196,12 @@ const rules = computed(() => ({
 }));
 
 const v$ = useVuelidate(rules, state);
+
+const onInput = (_, phoneObject) => {
+  if (phoneObject?.formatted) {
+    state.value.phoneNumber = phoneObject.formatted;
+  }
+};
 
 const doRegister = async () => {
   try {
@@ -214,8 +225,24 @@ const doRegister = async () => {
 };
 </script>
 
-<style>
-input[type='number']::-webkit-inner-spin-button {
-  -webkit-appearance: none;
+<style lang="postcss">
+.telephone-input.vue-tel-input:focus-within {
+  box-shadow: none;
+  border: 2px solid rgba(39, 93, 197);
+}
+.telephone-input.vue-tel-input {
+  width: 100%;
+  border-radius: 0.5rem;
+  border: solid #e2e8f0;
+  border-width: 1px;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+}
+.telephone-input.vue-tel-input input::placeholder {
+  overflow: hidden;
+  color: transparent;
+  display: none;
 }
 </style>

@@ -16,6 +16,10 @@
         <span> {{ $t('login.googleLogin') }}</span>
       </a>
     </div>
+    <span v-if="errorMessage" class="block mt-4 text-red-600">
+      {{ errorMessage }}
+    </span>
+
     <form v-if="!show2FA" class="my-10">
       <div class="flex flex-col space-y-5">
         <LabelField label="E-Mail" is-block class="mt-4">
@@ -117,19 +121,28 @@
         </p>
       </div>
     </form>
-    <form class="max-w-lg">
+    <form v-else class="max-w-lg">
       <h2 class="mb-8">{{ $t('login.twoFactorTitle') }}</h2>
       <p class="mb-6">
         {{ $t('login.twoFactorText') }}
       </p>
 
       <input
+        ref="filter_fld"
         v-model="twoFactorToken"
-        autofocus
-        class="w-full mb-6 form-input"
+        required
+        v-focus
+        class="w-full py-2 border border-slate-200 rounded-lg px-3"
+        :class="{
+          'focus:outline-none py-2 pr-2 pl-12 border-red-500': errorMessage,
+        }"
       />
-      <button class="px-12 btn btn--primary" @click.prevent="doLogin">
-        {{ $t('login.next') }}
+
+      <button
+        class="w-full py-3 font-medium text-white bg-indigo-600 hover:bg-indigo-500 rounded-lg border-indigo-500 hover:shadow inline-flex space-x-2 items-center justify-center mt-4"
+        @click.prevent="doLogin"
+      >
+        {{ $t('general.next') }}
       </button>
     </form>
   </div>
@@ -155,8 +168,10 @@ const state = ref({
   email: '',
   password: '',
 });
+
 const errorMessage = ref('');
 const show2FA = ref(false);
+
 const twoFactorToken = ref('');
 
 const rules = {
@@ -187,6 +202,7 @@ const doLogin = async () => {
     authStore.setRefreshToken(loginData.refresh);
     authStore.setId(loginData.id);
     authStore.setPhoneNumber(loginData.phoneNumber);
+    authStore.setEmail(loginData.email);
     authStore.setPictureUrl(loginData.profilePic);
     authStore.setUserName({
       firstName: loginData.firstName,
@@ -195,11 +211,16 @@ const doLogin = async () => {
     authStore.setIsTwoFactorActive(loginData.twoFactorActive);
     router.push({ name: 'dashboard' });
   } catch (e) {
-    if (e.response.data === 'twofactor') {
+    if (e.response?.data === 'twofactor') {
       errorMessage.value = t('login.twoFactorError');
     } else {
       errorMessage.value = t('login.error');
     }
   }
+};
+const vFocus = {
+  mounted: (el) => {
+    el.focus();
+  },
 };
 </script>
