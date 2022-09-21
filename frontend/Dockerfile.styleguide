@@ -1,5 +1,5 @@
 FROM node:14 as frontend-builder
-WORKDIR /code/src
+WORKDIR /code
 COPY src ./src
 COPY package*.json ./
 COPY .eslintrc.js ./
@@ -16,4 +16,4 @@ RUN npm run build:styleguide -- --mode dev
 FROM caddy:2.1.1-alpine
 COPY Caddyfile.styleguide /etc/caddy/Caddyfile
 
-COPY --from=frontend-builder /code/src/styleguide  /usr/share/caddy/
+COPY --from=frontend-builder /code/styleguide  /usr/share/caddy/
