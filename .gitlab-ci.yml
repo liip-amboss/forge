@@ -216,7 +216,7 @@ Deploy Review App:
   allow_failure: true
   environment:
     name: review/$CI_COMMIT_REF_NAME
-    url: https://forge-frontend-$CI_MERGE_REQUEST_ID.k8s.liip.ch
+    url: https://forge-frontend-$CI_MERGE_REQUEST_ID.staging.k8s.liip.ch
     on_stop: Stop Review App
     auto_stop_in: 1 week
   extends:
@@ -227,8 +227,8 @@ Deploy Review App:
     - if: ($CI_PIPELINE_SOURCE == "merge_request_event" && $ENABLE_REVIEW_APPS)
   variables:
     IMAGE_SUFFIX: ${CI_MERGE_REQUEST_ID}_${CI_COMMIT_SHORT_SHA}
-    FRONTEND_URL: forge-frontend-$CI_MERGE_REQUEST_ID.k8s.liip.ch
-    BACKEND_URL: forge-backend-$CI_MERGE_REQUEST_ID.k8s.liip.ch
+    FRONTEND_URL: forge-frontend-$CI_MERGE_REQUEST_ID.staging.k8s.liip.ch
+    BACKEND_URL: forge-backend-$CI_MERGE_REQUEST_ID.staging.k8s.liip.ch
 
 # Delete k8s review app after 1 week, when MR is closed/Merged or when user manually executes it.
 Stop Review App:
