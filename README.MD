@@ -1,21 +1,38 @@
-# Forge
-
-Forge is a easy to use combination of the most modern frameworks to create custom
+# <h1 align="center">Forge</h1>
+<p align="center">Forge is a easy to use combination of the most modern frameworks to create custom
 web-applications.
 The frontend is based on vue.js and tailwind while the backend is based on django.
 All components run in docker containers, so there is no need to install anything
-else than docker to use forge. However, to run forge locally you will need [pontsun](https://github.com/liip/pontsun).
+else than docker to use forge. However, to run forge locally you will need [pontsun](https://github.com/liip/pontsun).</p>
 
-## Quickstart
-Please read the setup instructions on https://amboss-forge-docs.netlify.com
+![Build Status](https://gitlab.liip.ch/liip/forge/badges/master/pipeline.svg)
+
+## Local Setup
+1. Install and run pontsun https://github.com/liip/pontsun   
+
+2. Start docker compose.
+    ```bash
+    # Copy template env file
+    cp .env.dist .env
+
+    # Start containers
+    docker-compose up
+
+    # Run django migrations_
+    docker-compose exec backend python manage.py migrate
+    ```
+3. If you used default env files for pontsun and forge the following urls should be available:
+Frontend: http://forge.docker.test
+Docs: http://docs.forge.docker.test
+Styleguide: http://styleguide.forge.docker.test
+backend: http://api.forge.docker.test/admin
 
 ## Documentation and Styleguide
-[![Frontend Build Status](https://travis-ci.org/liip-amboss/forge.svg?branch=master)](https://travis-ci.org/liip-amboss/forge)<br />
-Styleguide: https://amboss-forge.netlify.com [![Netlify Status](https://api.netlify.com/api/v1/badges/6d9b0ae6-809a-4bc3-b5af-ad3bdd80d6f4/deploy-status)](https://app.netlify.com/sites/amboss-forge/deploys)<br />
-Documentation: https://amboss-forge-docs.netlify.com [![Netlify Status](https://api.netlify.com/api/v1/badges/a37f08ab-7987-400b-8005-6f4728dd8976/deploy-status)](https://app.netlify.com/sites/amboss-forge-docs/deploys)<br />
+Styleguide: https://styleguide.forge.bedev.liip.ch/
+Documentation: https://docs.forge.bedev.liip.ch
 
 ## Want to help?
 Want to file a bug, contribute some code, or improve documentation? Excellent! 
 Read up on our guidelines for [contributing][contributing].
 
-[contributing]: https://github.com/liip-amboss/forge/blob/master/CODE_OF_CONDUCT.md
+[contributing]: https://gitlab.liip.ch/liip/forge/-/blob/master/CODE_OF_CONDUCT.md

@@ -68,24 +68,22 @@
   tags:
     - docker-privileged
   script:
-    - git clone --depth 1 --branch v1.0.0 https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.liip.ch/amboss/ambops/forge-helm-chart.git
+    - git clone --depth 1 --branch v1.1.0  https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.liip.ch/amboss/ambops/forge-helm-chart.git
     - helm dependency update forge-helm-chart/charts/backend
     - >
       helm upgrade --install --namespace "${K8S_NAMESPACE}" 
-      --set "frontend.image.suffix=${IMAGE_SUFFIX}" 
-      --set "backend.image.suffix=${IMAGE_SUFFIX}" 
-      --set "frontend.ingress.hosts[0].host=$FRONTEND_URL" 
-      --set "backend.ingress.hosts[0].host=$BACKEND_URL" 
-      --set "frontend.ingress.tls[0].hosts[0]=$FRONTEND_URL" 
-      --set "backend.ingress.tls[0].hosts[0]=$BACKEND_URL" 
-      --set "frontend.configmap.data.FRONTEND_URL=$FRONTEND_URL" 
-      --set "backend.configmap.data.BACKEND_URL=$BACKEND_URL" 
-      --set "backend.configmap.data.ALLOWED_HOSTS=$BACKEND_URL" 
-      --set "backend.configmap.data.CORS_ORIGIN_WHITELIST=https://$FRONTEND_URL" 
-      --set "frontend.configmap.data.VUE_APP_API_URL=$BACKEND_URL" 
+      --set "global.image.suffix=${IMAGE_SUFFIX}" 
+      --set "global.image.repository=${CI_REGISTRY}/${CI_PROJECT_PATH}" 
+      --set "global.imagePullSecretName=container-registry-read"
+      --set "global.frontendHostName=$FRONTEND_URL" 
+      --set "global.backendHostName=$BACKEND_URL" 
       --set "backend.postgresql.fullnameOverride=postgres-django-${CI_ENVIRONMENT_SLUG}" 
-      --set "backend.configmap.data.DATABASE_URL=postgres://postgres:postgres@postgres-django-${CI_ENVIRONMENT_SLUG}/postgres" 
+      --set "backend.djangoEnv.DATABASE_URL=postgres://postgres:postgres@postgres-django-${CI_ENVIRONMENT_SLUG}/postgres"
+      --set "backend.djangoEnv.DJANGO_SUPERUSER_PASSWORD=$REVIEW_APP_SUPERUSER_PASSWORD" 
+      --set "backend.djangoEnv.DJANGO_SUPERUSER_EMAIL=$REVIEW_APP_SUPERUSER_EMAIL" 
+      --set "frontend.containerPort=8080"
       $CI_ENVIRONMENT_SLUG forge-helm-chart
+
 
 # Uninstall helm release from given namespace
 .k8s-remove: &k8s-remove
