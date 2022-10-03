@@ -1,6 +1,6 @@
 -r base.in
 
-flake8
+black
 pytest
 pytest-cov
 pytest-django

@@ -1,0 +1,8 @@
+#!/bin/sh
+docker run --rm -v $(pwd)/backend:/backend --workdir /backend pyfound/black:latest_release black . -S --check; if [[ $? == 1 ]]; then black . -S -q | /bin/sh -c "exit 1"; else /bin/sh -c "exit 0"; fi
+
+if [[ $? == 1 ]]; then
+    echo "\nWARNING:"
+    echo "Some files were changed by black. Please review changes before committing again."
+    exit 1
+fi

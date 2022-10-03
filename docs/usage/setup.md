@@ -22,5 +22,5 @@ All your services are now available on the urls you added in .env:
  
 ## Add git config                                                                
 ```                                                                             
-mkdir -p .git/hooks/ && ln -f templates/git/hooks/commit-msg .git/hooks/commit-msg
+mkdir -p .git/hooks/ && ln -f templates/git/hooks/commit-msg .git/hooks/commit-msg && ln -f templates/git/hooks/pre-commit .git/hooks/pre-commit
 ``` 
