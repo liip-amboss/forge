@@ -235,5 +235,5 @@ if SENTRY_DSN and ENVIRONMENT in ['staging', 'production']:
         traces_sample_rate=1.0,  # Consider reducing this value in production.
         send_default_pii=True,
         # RELEASE_TAG is generated in the gitlab pipeline and passed to the dockerfile.
-        release=RELEASE_TAG
+        release=RELEASE_TAG,
     )

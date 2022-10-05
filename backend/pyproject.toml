@@ -1,0 +1,2 @@
+[tool.black]
+exclude = '(virtualization|manage\.py|\.tox|node_modules|\.git|deployment|\.pycharm_helpers|\.pytest_cache|\.venv|\.data)'

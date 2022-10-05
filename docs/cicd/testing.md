@@ -9,9 +9,9 @@ $MIN_COVERAGE_BACKEND is a gitlab ci variable. If the pytest threshold falls bel
 ```npm run test -- --coverageThreshold='{"global":{"statements":"$MIN_COVERAGE_FRONTEND"}}' ```
 $MIN_COVERAGE_FRONTEND is a gitlab ci variable. If the pytest threshold falls below this the pipeline will fail
 
-## flake8
-```flake8 ```   
-flake8 runs python linting on the backend
+## black
+```black backend/ -S```
+black runs python linting on the backend
 
 ## Code Quality
 The Gitlab provided code quality test is used to measure changes in code quality. 

@@ -56,7 +56,7 @@ A release tag is generated in gitlab ci in the release stage.
         - if: $CI_COMMIT_TAG
           when: never
         - if: ($CI_COMMIT_BRANCH == $STAGING_BRANCH || $CI_COMMIT_BRANCH == $PROD_BRANCH)
-      needs: ["Pytest", "flake8", "Test Frontend"]
+      needs: ["Pytest", "black", "Test Frontend"]
       script:
         - echo "RELEASE_TAG=$CI_COMMIT_SHORT_SHA" >> variables.env
       artifacts:

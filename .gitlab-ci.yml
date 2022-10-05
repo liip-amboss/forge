@@ -44,12 +44,12 @@ stages:
   - deploy
   - release
 
-flake8:
+black:
   stage: test-build
   extends:
     - .pip-requirements
   script:
-    - flake8
+    - black . -S --check
   rules:
     - if: $CI_COMMIT_TAG
       when: never

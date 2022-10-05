@@ -1,3 +1,0 @@
-[flake8]
-exclude = */migrations/,settings.py,virtualization/,manage.py,.tox,node_modules,.git,deployment,.pycharm_helpers,.pytest_cache,.venv,.data
-max-line-length=120
