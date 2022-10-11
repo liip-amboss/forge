@@ -3,7 +3,7 @@
 web-applications.
 The frontend is based on vue.js and tailwind while the backend is based on django.
 All components run in docker containers, so there is no need to install anything
-else than docker to use forge. However, to run forge locally you will need [pontsun](https://github.com/liip/pontsun).</p>
+else than docker to use forge. However, to run forge locally you will need [pontsun](https://github.com/liip/pontsun/tree/main).</p>
 
 ![Build Status](https://gitlab.liip.ch/liip/forge/badges/master/pipeline.svg)
 
