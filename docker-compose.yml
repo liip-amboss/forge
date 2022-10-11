@@ -26,9 +26,10 @@ services:
     stdin_open: true
     tty: true
     labels:
-      - 'traefik.enable=true'
-      - 'traefik.frontend.rule=Host:${BACKEND_URL}'
-      - 'traefik.docker.network=pontsun'
+      - traefik.enable=true
+      - traefik.http.routers.backend.entrypoints=http
+      - traefik.http.routers.backend.rule=Host(`${BACKEND_URL}`)
+      - traefik.http.services.backend.loadbalancer.server.port=8000
     networks:
       - default
       - pontsun
@@ -47,9 +48,10 @@ services:
     stdin_open: true
     tty: true
     labels:
-      - 'traefik.enable=true'
-      - 'traefik.frontend.rule=Host:${FRONTEND_URL}'
-      - 'traefik.docker.network=pontsun'
+      - traefik.enable=true
+      - traefik.http.routers.frontend.rule=Host(`${FRONTEND_URL}`)
+      - traefik.http.routers.frontend.entrypoints=http
+      - traefik.http.services.frontend.loadbalancer.server.port=8080
     networks:
       - default
       - pontsun
@@ -66,9 +68,10 @@ services:
     stdin_open: true
     tty: true
     labels:
-      - 'traefik.enable=true'
-      - 'traefik.frontend.rule=Host:${STYLEGUIDE_URL}'
-      - 'traefik.docker.network=pontsun'
+      - traefik.enable=true
+      - traefik.http.routers.styleguide.rule=Host(`${STYLEGUIDE_URL}`)
+      - traefik.http.routers.styleguide.entrypoints=http
+      - traefik.http.services.styleguide.loadbalancer.server.port=6060
     networks:
       - default
       - pontsun
@@ -84,9 +87,10 @@ services:
     stdin_open: true
     tty: true
     labels:
-      - 'traefik.enable=true'
-      - 'traefik.frontend.rule=Host:${DOCS_URL}'
-      - 'traefik.docker.network=pontsun'
+      - traefik.enable=true
+      - traefik.http.routers.docs.rule=Host(`${DOCS_URL}`)
+      - traefik.http.routers.docs.entrypoints=http
+      - traefik.http.services.docs.loadbalancer.server.port=8081
     networks:
       - default
       - pontsun
@@ -100,9 +104,10 @@ services:
     env_file:
       - .env
     labels:
-      - 'traefik.enable=true'
-      - 'traefik.frontend.rule=Host:${PGADMIN_URL}'
-      - 'traefik.docker.network=pontsun'
+      - traefik.enable=true
+      - traefik.http.routers.pgadmin.rule=Host(`${PGADMIN_URL}`)
+      - traefik.http.routers.pgadmin.entrypoints=http
+      - traefik.http.services.pgadmin.loadbalancer.server.port=80
     networks:
       - default
       - pontsun
@@ -112,5 +117,4 @@ services:
 networks:
   default:
   pontsun:
-    external:
-      name: pontsun
+    name: pontsun
