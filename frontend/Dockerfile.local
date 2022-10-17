@@ -1,5 +1,5 @@
 FROM node:14
-ARG release_tag=staging
+ARG release_tag=local
 ENV VUE_APP_RELEASE_TAG=$release_tag
 WORKDIR /code
 COPY src ./src
