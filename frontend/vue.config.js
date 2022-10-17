@@ -4,6 +4,14 @@ module.exports = {
   productionSourceMap: PROD_SOURCE_MAP_ENVS.includes(process.env.NODE_ENV),
   chainWebpack: (config) => {
     config.module.rule('svg-sprite').use('svgo-loader').loader('svgo-loader');
+    // Add meta tag including app-version into the generated index.html
+    config
+      .plugin('html')
+      .tap(args => {
+        args[0].meta = {'app-version': process.env.VUE_APP_RELEASE_TAG};
+
+        return args;
+      });
   },
   pluginOptions: {
     i18n: {

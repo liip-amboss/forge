@@ -10,6 +10,10 @@
   },
   "ignorePaths": ["kubernetes/**"],
   "pip_requirements": {
-    "fileMatch": ["\\.base$", "\\.dev$", "\\.test$"]
+    "fileMatch": [
+      "backend/requirements/base.in", 
+      "backend/requirements/dev.in", 
+      "backend/requirements/test.in"
+  ]
   }
 }
