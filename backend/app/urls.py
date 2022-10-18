@@ -16,9 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf import settings
-from django.conf.urls import url
 from django.conf.urls.static import static
-from django.urls import include
+from django.urls import include, re_path
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
@@ -58,7 +57,7 @@ urlpatterns = (
 # Only add redoc if redoc is enabled
 if settings.ENABLE_REDOC:
     urlpatterns = [
-        url(r'^redoc/$', schema_view.with_ui('redoc'), name='schema-redoc'),
+        re_path(r'^redoc/$', schema_view.with_ui('redoc'), name='schema-redoc'),
     ] + urlpatterns
 
 if settings.DEBUG:

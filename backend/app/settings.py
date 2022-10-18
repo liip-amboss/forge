@@ -12,7 +12,7 @@ Django settings for liip forge project.
 import os
 import environ
 from datetime import timedelta
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 import dj_email_url
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
