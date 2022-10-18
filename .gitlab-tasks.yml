@@ -1,47 +1,8 @@
-# Build project docker image, extract sourcemaps and push image to project container registry
-.docker-build: &docker-build
-  image: $DOCKER_IMAGE
-  tags:
-    - docker-privileged
-  variables:
-    DOCKER_DRIVER: overlay2
-    DOCKER_TLS_CERTDIR: "/certs"
-    IMAGE_NAME: ${CI_REGISTRY}/${CI_PROJECT_PATH}:${APP}_${IMAGE_SUFFIX}
-    RELEASE_TAG: $RELEASE_TAG
-    DOCKERFILE: Dockerfile
-    DOCKER_BUILDKIT: 1
-  services:
-    - $DIND_SERVICE_IMAGE
-  before_script:
-    - docker info
-  script:
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN ${CI_REGISTRY}
-    - echo "Building docker image from git tag $CI_COMMIT_SHORT_SHA with image tag ${IMAGE_NAME}"
-    - > 
-      docker build 
-      --cache-from ${IMAGE_NAME} 
-      --build-arg BUILDKIT_INLINE_CACHE=1 
-      --build-arg env=${ENVIRONMENT} 
-      --build-arg release_tag=$CI_COMMIT_SHORT_SHA
-      --build-arg api_url=$API_URL
-      --build-arg enable_axe=True
-      --build-arg sentry_dsn=$SENTRY_DSN
-      -t ${IMAGE_NAME} 
-      ${APP}/. 
-      -f ${APP}/${DOCKERFILE}
-    - docker image push ${IMAGE_NAME}
-    # Extract sourcemaps from docker image if frontend image
-    - if [ "${DOCKERFILE}" == "Dockerfile.frontend" ]; then mkdir sourcemaps && docker cp $(docker create --rm ${IMAGE_NAME}):/usr/share/caddy/js/. sourcemaps ; fi
-  artifacts:
-    paths:
-      - sourcemaps/
-    expire_in: 1 week
-
-# Copy deploy folder to given target server and run scripts.sh.
+# Copy deploy folder to given target server and run scripts.sh on target server.
 .docker-deploy: &docker-deploy
   image: $DEPLOY_IMAGE
   variables:
-    DEPLOY_COMMAND: "cd /home/manager/srv/app/scripts/; chmod u+x deploy.sh; ./deploy.sh ${CI_DEPLOY_USER} ${CI_DEPLOY_PASSWORD} ${CI_REGISTRY} ${CI_PROJECT_PATH} ${IMAGE_SUFFIX}"
+    DEPLOY_COMMAND: "cd /home/manager/srv/app/scripts/; chmod u+x deploy.sh; ./deploy.sh ${CI_DEPLOY_USER} ${CI_DEPLOY_PASSWORD} ${CI_REGISTRY} ${CI_PROJECT_PATH} ${IMAGE_NAME}"
   environment:
     name: ${IMAGE_SUFFIX}
     url: https://$DOMAIN
@@ -68,12 +29,13 @@
   tags:
     - docker-privileged
   script:
-    - git clone --depth 1 --branch v1.1.0  https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.liip.ch/amboss/ambops/forge-helm-chart.git
+    - git clone --depth 1 --branch v1.1.1  https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.liip.ch/amboss/ambops/forge-helm-chart.git
     - helm dependency update forge-helm-chart/charts/backend
     - >
       helm upgrade --install --namespace "${K8S_NAMESPACE}" 
-      --set "global.image.suffix=${IMAGE_SUFFIX}" 
-      --set "global.image.repository=${CI_REGISTRY}/${CI_PROJECT_PATH}" 
+      --set "backend.imageName=backend:${IMAGE_SUFFIX}"
+      --set "frontend.imageName=frontend:${IMAGE_SUFFIX}"
+      --set "global.image.repository=${CI_REGISTRY}/${CI_PROJECT_PATH}/" 
       --set "global.imagePullSecretName=container-registry-read"
       --set "global.frontendHostName=$FRONTEND_URL" 
       --set "global.backendHostName=$BACKEND_URL" 
@@ -83,7 +45,6 @@
       --set "backend.djangoEnv.DJANGO_SUPERUSER_EMAIL=$REVIEW_APP_SUPERUSER_EMAIL" 
       --set "frontend.containerPort=8080"
       $CI_ENVIRONMENT_SLUG forge-helm-chart
-
 
 # Uninstall helm release from given namespace
 .k8s-remove: &k8s-remove
