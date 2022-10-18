@@ -6,7 +6,7 @@ include:
     ref: v2
 
 variables:
-  STAGING_BRANCH: "master"
+  STAGING_BRANCH: "feature/liip-container-builder"
   PROD_BRANCH: "master"
   SKIP_DEPLOY: "False"
   DOCKER_IMAGE: docker:20.10.14
