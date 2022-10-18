@@ -130,14 +130,13 @@ Build Frontend:
       variables:
         ENVIRONMENT: review
         API_URL: https://forge-backend-$CI_MERGE_REQUEST_ID.k8s.liip.ch/api/v1/
-        IMAGE_SUFFIX: ${CI_MERGE_REQUEST_ID}_${CI_COMMIT_SHORT_SHA}
+        BUILD_IMAGE_TAG_POSTFIX: _${CI_MERGE_REQUEST_ID}_${CI_COMMIT_SHORT_SHA}
     - if: $CI_COMMIT_TAG
       when: never
     - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
       variables:
         ENVIRONMENT: staging
         API_URL: https://api.forge.bedev.liip.ch/api/v1/
-        IMAGE_SUFFIX: staging
   after_script:
     # Extract sourcemaps from docker image if frontend image
     - mkdir sourcemaps && cp -rf /usr/share/caddy/js/. sourcemaps
@@ -150,7 +149,6 @@ Build Frontend:
     BUILD_PATH: frontend
     DOCKERFILE: Dockerfile.frontend
     BUILD_IMAGE_NAME: frontend
-    BUILD_IMAGE_TAG_POSTFIX: $CI_COMMIT_SHORT_SHA
     BUILD_ARGS: >
       --build-arg env=${ENVIRONMENT} 
       --build-arg release_tag=$CI_COMMIT_SHORT_SHA
@@ -158,81 +156,88 @@ Build Frontend:
       --build-arg enable_axe=True
       --build-arg sentry_dsn=$SENTRY_DSN
 
-# # Containerize Vue frontend styleguide and push to gitlab container registry.
-# Build Frontend Styleguide:
-#   stage: test-build
-#   extends:
-#     - .docker-build
-#   rules:
-#     - if: $CI_COMMIT_TAG
-#       when: never
-#     # Review app env variables
-#     - if: ($CI_PIPELINE_SOURCE == "merge_request_event" && $ENABLE_REVIEW_APPS)
-#       variables:
-#         ENVIRONMENT: review
-#         IMAGE_NAME: ${CI_REGISTRY}/${CI_PROJECT_PATH}:styleguide_${CI_COMMIT_SHORT_SHA}
-#     # Staging env variables
-#     - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
-#       variables:
-#         ENVIRONMENT: staging
-#         IMAGE_NAME: ${CI_REGISTRY}/${CI_PROJECT_PATH}:styleguide_staging
-#     # Production env variables
-#     - if: $CI_COMMIT_BRANCH == $PROD_BRANCH
-#       variables:
-#         ENVIRONMENT: production
-#         IMAGE_NAME: ${CI_REGISTRY}/${CI_PROJECT_PATH}:styleguide_production
-#   variables:
-#     APP: frontend
-#     DOCKERFILE: Dockerfile.styleguide
+# Containerize Vue frontend styleguide and push to gitlab container registry.
+Build Frontend Styleguide:
+  stage: test-build
+  extends:
+    - .build-definition
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    # Review app env variables
+    - if: ($CI_PIPELINE_SOURCE == "merge_request_event" && $ENABLE_REVIEW_APPS)
+      variables:
+        ENVIRONMENT: review
+        BUILD_IMAGE_TAG_POSTFIX: _${CI_MERGE_REQUEST_ID}_${CI_COMMIT_SHORT_SHA}
+    # Staging env variables
+    - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
+      variables:
+        ENVIRONMENT: staging
+    # Production env variables
+    - if: $CI_COMMIT_BRANCH == $PROD_BRANCH
+      variables:
+        ENVIRONMENT: production
+  variables:
+    BUILD_PATH: frontend
+    DOCKERFILE: Dockerfile.styleguide
+    BUILD_IMAGE_NAME: styleguide
+    BUILD_ARGS: >
+      --build-arg env=${ENVIRONMENT} 
+      --build-arg release_tag=$CI_COMMIT_SHORT_SHA
 
-# # Containerize VuePress docs app and push to gitlab container registry.
-# Build Forge Docs:
-#   stage: test-build
-#   extends:
-#     - .docker-build
-#   rules:
-#     - if: $CI_COMMIT_TAG
-#       when: never
-#     # Review app env variables
-#     - if: ($CI_PIPELINE_SOURCE == "merge_request_event" && $ENABLE_REVIEW_APPS)
-#       variables:
-#         ENVIRONMENT: review
-#         IMAGE_SUFFIX: ${CI_COMMIT_SHORT_SHA}
-#     # Staging env variables
-#     - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
-#       variables:
-#         ENVIRONMENT: staging
-#         IMAGE_SUFFIX: staging
-#     # Production env variables
-#     - if: $CI_COMMIT_BRANCH == $PROD_BRANCH
-#       variables:
-#         ENVIRONMENT: production
-#         IMAGE_SUFFIX: staging
-#   variables:
-#     APP: docs
+# Containerize VuePress docs app and push to gitlab container registry.
+Build Forge Docs:
+  stage: test-build
+  extends:
+    - .build-definition
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    # Review app env variables
+    - if: ($CI_PIPELINE_SOURCE == "merge_request_event" && $ENABLE_REVIEW_APPS)
+      variables:
+        ENVIRONMENT: review
+        IMAGE_SUFFIX: ${CI_COMMIT_SHORT_SHA}
+        BUILD_IMAGE_TAG_POSTFIX: _${CI_MERGE_REQUEST_ID}_${CI_COMMIT_SHORT_SHA}
+    # Staging env variables
+    - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
+      variables:
+        ENVIRONMENT: staging
+    # Production env variables
+    - if: $CI_COMMIT_BRANCH == $PROD_BRANCH
+      variables:
+        ENVIRONMENT: production
+  variables:
+    BUILD_PATH: docs
+    BUILD_IMAGE_NAME: docs
+    BUILD_ARGS: >
+      --build-arg env=${ENVIRONMENT} 
+      --build-arg release_tag=$CI_COMMIT_SHORT_SHA
 
-# # Containerize Django backend and push to gitlab container registry.
-# Build Backend:
-#   stage: test-build
-#   extends:
-#     - .docker-build
-#   rules:
-#     - if: ($CI_PIPELINE_SOURCE == "merge_request_event" && $ENABLE_REVIEW_APPS)
-#       variables:
-#         ENVIRONMENT: review
-#         IMAGE_SUFFIX: ${CI_MERGE_REQUEST_ID}_${CI_COMMIT_SHORT_SHA}
-#     - if: $CI_COMMIT_TAG
-#       when: never
-#     - if: $CI_COMMIT_BRANCH == $PROD_BRANCH
-#       variables:
-#         ENVIRONMENT: production
-#         IMAGE_SUFFIX: staging
-#     - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
-#       variables:
-#         ENVIRONMENT: staging
-#         IMAGE_SUFFIX: staging
-#   variables:
-#     APP: backend
+# Containerize Django backend and push to gitlab container registry.
+Build Backend:
+  stage: test-build
+  extends:
+    - .build-definition
+  rules:
+    - if: ($CI_PIPELINE_SOURCE == "merge_request_event" && $ENABLE_REVIEW_APPS)
+      variables:
+        ENVIRONMENT: review
+        BUILD_IMAGE_TAG_POSTFIX: _${CI_MERGE_REQUEST_ID}_${CI_COMMIT_SHORT_SHA}
+    - if: $CI_COMMIT_TAG
+      when: never
+    - if: $CI_COMMIT_BRANCH == $PROD_BRANCH
+      variables:
+        ENVIRONMENT: production
+    - if: $CI_COMMIT_BRANCH == $STAGING_BRANCH
+      variables:
+        ENVIRONMENT: staging
+  variables:
+    BUILD_PATH: backend
+    BUILD_IMAGE_NAME: backend
+    BUILD_ARGS: >
+      --build-arg env=${ENVIRONMENT} 
+      --build-arg release_tag=$CI_COMMIT_SHORT_SHA
 
 # Pull forge-helm-chart helm chart. Update helm dependencies. Deploy app to k8s cluster. For every Merge Request.
 Deploy Review App:
