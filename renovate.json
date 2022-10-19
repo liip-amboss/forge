@@ -1,0 +1,19 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  
+  "extends": [
+    "config:base",
+    "group:allNonMajor"
+  ],
+  "major": {
+    "enabled": false
+  },
+  "ignorePaths": ["kubernetes/**"],
+  "pip_requirements": {
+    "fileMatch": [
+      "backend/requirements/base.in", 
+      "backend/requirements/dev.in", 
+      "backend/requirements/test.in"
+  ]
+  }
+}
